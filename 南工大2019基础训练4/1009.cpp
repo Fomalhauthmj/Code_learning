@@ -23,7 +23,6 @@ void StringInGrid(int width, int height, const char* s)
   
   printf("%*s%s%*s",(width-2-strlen(buf))/2,"",buf,width-2-strlen(buf)-(width-strlen(buf)-2)/2,""); //填空
    //空白 字符 空白
-   //(width-2-strlen(s))/2," ",s,width-2-strlen(buf)-(width-strlen(buf)-2)/2," "
   printf("|\n");
   
   for(k=(height-1)/2+1; k<height-1; k++){

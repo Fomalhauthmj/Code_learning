@@ -16,7 +16,8 @@ void f(int m, int n)
   }
   
   printf("+");
-  while(m--&&printf("---+"));
+  //while(m--&&printf("---+"));
+  while(m--)printf("---+");
   //____________; //填空
   printf("\n");
 }
