@@ -1,5 +1,3 @@
 {
-    "editor.fontLigatures": true,
-    "editor.fontSize": 18,
-    "editor.fontWeight": "bold"
+    "C_Cpp.errorSquiggles": "Disabled"
 }
