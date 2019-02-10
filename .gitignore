@@ -1,4 +1,4 @@
 # 此为注释 – 将被 Git 忽略
-*.exe       # 忽略所有 .exe 结尾的文件
+*.exe      
 *.code-workspace
 .vscode/
