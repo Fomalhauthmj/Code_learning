@@ -1,6 +1,7 @@
+TODO : 方法一
 #include <iostream>
 #include <math.h>
-using namespace std;
+       using namespace std;
 long long GCD(long long a, long long b)
 {
     if (b == 0)
