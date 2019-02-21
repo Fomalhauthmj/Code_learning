@@ -1,3 +1,4 @@
+/*
 #include <iostream>
 using namespace std;
 #define N 200020
@@ -44,6 +45,46 @@ int main()
                 if (odd[i / 2] + even[ecnt] - even[i / 2] == odd[ocnt] - odd[i / 2] + even[i / 2 - 1])
                     ans++;
             }
+        }
+        cout << ans << endl;
+    }
+}
+*/
+//TODO:更好的思路
+#include<iostream>
+using namespace std;
+#define N 200020
+long long n;
+int a[N];
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(0);
+    long long pre_even, pre_odd, suf_even, suf_odd;
+    while(cin>>n)
+    {
+        pre_even = pre_odd = suf_even = suf_odd = 0;
+        for (int i = 1; i <= n;i++)
+        {
+            cin >> a[i];
+            if(i&1)
+                suf_odd += a[i];
+            else
+                suf_even += a[i];
+        }
+        long long ans = 0;
+        for (int i = 1; i <= n;i++)
+        {
+            if(i&1)
+                suf_odd -= a[i];
+            else
+                suf_even -= a[i];
+            if(pre_even+suf_odd==pre_odd+suf_even)
+                ans++;
+            if(i&1)
+                pre_odd += a[i];
+            else
+                pre_even += a[i];
         }
         cout << ans << endl;
     }
