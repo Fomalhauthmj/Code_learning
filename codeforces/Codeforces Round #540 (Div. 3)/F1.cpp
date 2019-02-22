@@ -1,77 +1,31 @@
 #include <iostream>
-#include <map>
 #include <vector>
 using namespace std;
 #define N 300030
 int a[N];
 vector<int> V[N];
 int n;
-map<pair<int, int>, int> M;
-bool DFS(int from, int to, int cur)
+int redp;
+int bluep;
+int ans;
+pair<int, int> DFS(int start, int pre = -1)
 {
-    pair<int, int> p1, p2;
-    p1.first = from, p1.second = to;
-    p2.first = to, p2.second = from;
-    int temp1 = M[p1];
-    int temp2 = M[p2];
-    /*
-    if (temp1 != 0)
+    int red = (a[start] == 1);//以start点为起点 先初始化颜色点数量
+    int blue = (a[start] == 2);
+    for (auto ele : V[start])
     {
-        if (temp1 == 1)
-            return true;
-        else
-            return false;
-    }
-    if (temp2 != 0)
-    {
-        if (temp2 == 1)
-            return true;
-        else
-            return false;
-    }
-    */
-    for (auto ele : V[to])
-    {
-        if (ele == from)
-            continue;
-        if (cur == 0 && a[ele] != 0)
+        if(ele!=pre)//向子结点DFS
         {
-            cur = a[ele];
-        }
-        if (cur != 0 && a[ele] != 0 && a[ele] != cur)
-        {
-            M[p1] = 2;
-            M[p2] = 2;
-            return false;
-        }
-        if (!DFS(to, ele, cur))
-            return false;
-    }
-    M[p1] = 1;
-    M[p2] = 1;
-    return true;
-}
-bool judge(int from, int to)
-{
-    for (auto ele : V[from])
-    {
-        if (ele == to)
-            continue;
-        if (!DFS(from, ele, a[from]))
-        {
-            return false;
+            auto temp = DFS(ele, start);
+            //如果子结点的蓝色数量为0 且 子结点的红色数量最大
+            ans += (temp.second == 0) && (temp.first == redp);
+            //如果子结点的红色数量为0 且 子结点的蓝色数量最大
+            ans += (temp.first == 0) && (temp.second == bluep);
+            red += temp.first;//更新颜色点数量
+            blue += temp.second;
         }
     }
-    for (auto ele : V[to])
-    {
-        if (ele == from)
-            continue;
-        if (!DFS(to, ele, a[to]))
-        {
-            return false;
-        }
-    }
-    return true;
+    return make_pair(red, blue);//返回颜色点数量
 }
 int main()
 {
@@ -81,8 +35,13 @@ int main()
     {
         for (int i = 1; i <= n; i++)
             V[i].clear();
+        redp = bluep = 0;
         for (int i = 1; i <= n; i++)
+        {
             cin >> a[i];
+            redp += (a[i] == 1);
+            bluep += (a[i] == 2);
+        }
         int u, v;
         for (int i = 0; i < n - 1; i++)
         {
@@ -90,19 +49,8 @@ int main()
             V[u].push_back(v);
             V[v].push_back(u); //建图
         }
-        int ans = 0;
-        M.clear();
-        for (int i = 1; i <= n; i++)
-        {
-            for (auto ele : V[i]) //枚举删除边
-            {
-                if (i < ele)
-                {
-                    if (judge(i, ele))
-                        ans++;
-                }
-            }
-        }
+        ans = 0;
+        DFS(1);
         cout << ans << endl;
     }
 }

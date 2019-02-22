@@ -1,3 +1,4 @@
+/*
 #include <iostream>
 using namespace std;
 #define N 200020
@@ -61,6 +62,34 @@ int main()
                     dis++;
                 }
                 left++;
+            }
+        }
+    }
+}
+*/
+//TODO:题解
+#include <iostream>
+using namespace std;
+long long n, k;
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(0);
+    while (cin >> n >> k)
+    {
+        if (n > k * (k - 1))
+        {
+            cout << "NO" << endl;
+        }
+        else
+        {
+            cout << "YES" << endl;
+            int cur = 0;
+            for (int i = 0; i < n; i++)
+            {
+                cur += (i % k == 0);
+                cout << i % k + 1 << " " << (cur + i % k) % k + 1 << endl;
+                //左边循环是1.2...k的重复循环 右边循环是+cur%k的循环
             }
         }
     }
