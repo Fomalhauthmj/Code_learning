@@ -57,7 +57,33 @@ void Delete(Position p)
         put_node(q);
     }
 }
+void disp(Cursor l)
+{
+    Cursor p = space[l].next;
+    while (p != -1)
+    {
+        cout << space[p].element << " ";
+        p = space[p].next;
+    }
+    cout << endl;
+}
 int main()
 {
+    init();
+    Cursor l = get_node();
+    space[l].next = -1;
+    Insert(l, 250);
+    disp(l);
+    Insert(l, -99);
+    disp(l);
+    Insert(l, 101);
+    Delete(l);
+    disp(l);
+    Cursor r = get_node();
+    space[r].next = -1;
+    //多个线性表
+    Insert(r, 25);
+    //Delete(r);
+    disp(r);
     system("pause");
 }
