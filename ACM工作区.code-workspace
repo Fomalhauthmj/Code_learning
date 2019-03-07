@@ -1,9 +1,12 @@
 {
     "folders": [
-		{
-			"path": "."
-		}
-	],
+        {
+            "path": "."
+        },
+        {
+            "path": "D:\\Courses\\数据结构与算法"
+        }
+    ],
     "settings": {
         "files.associations": {
             "*.cfg": "ini",
