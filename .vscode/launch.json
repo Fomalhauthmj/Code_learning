@@ -1,12 +1,6 @@
-{  
-    "version": "0.2.0",  
+{
+    "version": "0.2.0",
     "configurations": [
-        {
-            "type": "java",
-            "name": "CodeLens (Launch) - Test1018",
-            "request": "launch",
-            "mainClass": "Test1018"
-        },
         {
             "name": "(Windows) Launch",
             "type": "cppvsdbg",
@@ -39,5 +33,5 @@
                 }
             ]
         }
-    ]  
+    ]
 }
