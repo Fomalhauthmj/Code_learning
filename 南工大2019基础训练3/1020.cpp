@@ -1,5 +1,6 @@
 #include<iostream>
 #include<cstring>
+#include<iomanip>
 using namespace std;
 long long a[35][35];
 double b[35][35];
@@ -31,9 +32,10 @@ int main()
         if(max_w<b[n+1][i]) max_w=b[n+1][i];
         if(min_w>b[n+1][i]) min_w=b[n+1][i];
     }
+    cout<<endl;
     long long temp=2086458231;
-    long long ans=temp*1.0/min_w*max_w;
-    cout<<ans<<endl;
+    double ans=temp/min_w*max_w;
+    cout<<fixed<<setprecision(6)<<ans<<endl;
     //72665192664
     //72664965432.070616751536796926663
     system("pause");
