@@ -51,7 +51,6 @@ int main()
             int temp_max = v[v.size() - 1];
             for (int j = 0; j < temp_max; j++)
                 s.push('x');
-            //Disp(s);
         }
         else
         {
@@ -72,7 +71,7 @@ int main()
             v.push_back(temp);
             temp = 0;
         }
-        else
+        else if (ch == 'x') //注意强判定 可能会有()
             temp++;
     }
     v.push_back(temp);
