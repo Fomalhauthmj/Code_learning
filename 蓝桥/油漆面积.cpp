@@ -1,98 +1,118 @@
 #include <algorithm>
 #include <iostream>
 using namespace std;
-#define N 10010
-//保存所有竖直边
-struct segment
-{
-    int low_y;
-    int high_y;
-    int pos_x;
-    int io; //in or out
-    node(int y1, int y2, int x, int f)
+
+#define MAX 10010
+//以横坐标作为线段(区间),对横坐标线段进行扫描
+//扫描的作用是每次更新下底边总长度和下底边个数,增加新面积
+struct seg
+{ //线段
+    int l, r, h;
+    int d;
+    seg() {}
+    seg(int x1, int x2, int H, int c) : l(x1), r(x2), h(H), d(c) {}
+    bool operator<(const seg &a) const
     {
-        low_y = y1;
-        high_y = y2;
-        pos_x = x;
-        io = f;
+        return h < a.h;
     }
 };
-segment segs[2 * N];
-bool cmp(segment &s1, segment &s2) //根据pos_x排序
+seg s[MAX * 2];
+struct node
 {
-    return s1.pos_x < s2.pos_x;
-}
-int tree[N << 2];
-//线段树 维护y轴区间
-void push_up(int rt)
-{
-    tree[rt] = tree[rt << 1] + tree[rt << 1 | 1];
-}
-void build(int left, int right, int rt)
-{
-    if (left == right)
+    int cnt;
+    int sum;
+    node()
     {
-        tree[rt] = a[left];
+        cnt = 0;
+        sum = 0;
+    }
+};
+node tree[MAX << 2];
+int Hash[MAX * 2];
+void push_up(int rt, int left, int right)
+{
+    if (tree[rt].cnt)
+        tree[rt].sum = Hash[right + 1] - Hash[left]; //表示该区间整个线段长度可以作为底边
+    else if (left == right)
+        tree[rt].sum = 0; //叶子结点则底边长度为0(区间内线段长度为0)
+    else
+        tree[rt].sum = tree[rt << 1].sum + tree[rt << 1 | 1].sum;
+}
+
+void Update(int L, int R, int d, int rt, int left, int right)
+{
+    if (L <= left && right <= R)
+    {                             //该区间是当前扫描线段的一部分,则该区间直接更新
+        tree[rt].cnt += d;        //更新标记值
+        push_up(rt, left, right); //更新覆盖长度
         return;
     }
     int mid = (left + right) >> 1;
-    build(left, mid, rt << 1);
-    build(mid + 1, right, rt << 1 | 1);
-    push_up(rt);
+    if (L <= mid)
+        Update(L, R, d, rt << 1, left, mid);
+    if (R > mid)
+        Update(L, R, d, rt << 1 | 1, mid + 1, right);
+    push_up(rt, left, right);
 }
-int query(int start, int end, int left, int right, int rt)
+
+int search(int key, int *x, int n)
 {
-    if (start == left && right == end)
+    int left = 0, right = n - 1;
+    while (left <= right)
     {
-        return tree[rt];
+        int mid = (left + right) >> 1;
+        if (x[mid] == key)
+            return mid;
+        if (x[mid] > key)
+            right = mid - 1;
+        else
+            left = mid + 1;
     }
-    int mid = (left + right) >> 1;
-    int ans = 0;
-    if (end <= mid)
-        ans += query(start, end, left, mid, rt << 1);
-    else if (start > mid)
-        ans += query(start, end, mid + 1, right, rt << 1 | 1);
-    else
-    {
-        ans += query(start, mid, left, mid, rt << 1);
-        ans += query(mid + 1, end, mid + 1, right, rt << 1 | 1);
-    }
-    return ans;
+    return -1;
 }
 int main()
 {
-    ios::sync_with_stdio(false);
-    cin.tie(0);
-    freopen("input.txt", "r", stdin);
-    freopen("output.txt", "w", stdout);
+    int n;
     cin >> n;
-    int x1, y1, x2, y2;
-    int cnt = 0;
-    for (int i = 0; i < n; i++)
+    int x1, x2, y1, y2;
+    int k = 0;
+    for (int i = 0; i < n; ++i)
     {
         cin >> x1 >> y1 >> x2 >> y2;
-        if (x1 > x2)
+        if (y1 > y2)
         {
-            swap(y1, y2);
             swap(x1, x2);
+            swap(y1, y2);
         }
-        //调整至左下-右上 或左上-右下
-        segs[cnt + 1].low_y = segs[cnt].low_y = min(y1, y2);
-        segs[cnt + 1].high_y = segs[cnt].high_y = max(y1, y2);
-        segs[cnt].pos_x = x1;
-        segs[cnt + 1].pos_x = x2;
-        segs[cnt].io = 1;      //left
-        segs[cnt + 1].io = -1; //right
-        cnt += 2;
+        Hash[k] = x1;
+        s[k++] = seg(x1, x2, y1, 1);
+        Hash[k] = x2;
+        s[k++] = seg(x1, x2, y2, -1);
     }
-    //排序
-    sort(segs, segs + cnt, cmp);
-    long long ans = 0;
-    for (int i = 0; i < cnt; i++)
-    {
-        //扫描线
-        if ()
+    sort(Hash, Hash + k);
+    sort(s, s + k);
+    int m = 1;
+    for (int i = 1; i < k; ++i) //去重复端点 已先排序
+        if (Hash[i] != Hash[i - 1])
+            Hash[m++] = Hash[i];
+    int ans = 0;
+    for (int i = 0; i < k; ++i)
+    { //扫描线段
+        int L = search(s[i].l, Hash, m);
+        int R = search(s[i].r, Hash, m) - 1;
+        Update(L, R, s[i].d, 1, 0, m - 1);          //扫描线段时更新标记值
+        ans += tree[1].sum * (s[i + 1].h - s[i].h); //新增加面积
     }
     cout << ans << endl;
-    system("pause");
+    //system("pause");
+    return 0;
 }
+/*
+这里注意下扫描线段时r-1:int R=search(s[i].l,Hash,m)-1;
+计算底边长时r+1:if(mark[n])sum[n]=Hash[right+1]-Hash[left];
+解释:假设现在有一个线段左端点是l=0,右端点是r=m-1
+则我们去更新的时候,会算到sum[1]=Hash[mid]-Hash[left]+Hash[right]-Hash[mid+1]
+这样的到的底边长sum是错误的,why?因为少算了mid~mid+1的距离,由于我们这利用了
+离散化且区间表示线段,所以mid~mid+1之间是有长度的,比如hash[3]=1.2,Hash[4]=5.6,mid=3
+所以这里用r-1,r+1就很好理解了 
+*/
