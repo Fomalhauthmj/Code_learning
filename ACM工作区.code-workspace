@@ -1,13 +1,13 @@
 {
     "folders": [
         {
-            "path": "."
-        },
-        {
             "path": "C:\\Users\\lenovo\\OneDrive\\Courses\\计算方法"
         },
         {
             "path": "C:\\Users\\lenovo\\OneDrive\\Courses\\数据结构与算法"
+        },
+        {
+            "path": "."
         }
     ],
     "settings": {
@@ -99,6 +99,7 @@
             "xmemory": "cpp",
             "xstddef": "cpp",
             "xtree": "cpp"
-        }
+        },
+        "C_Cpp.default.intelliSenseMode": "gcc-x64"
     }
 }

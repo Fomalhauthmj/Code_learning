@@ -1,120 +1,93 @@
 #include <algorithm>
+#include <cctype>
+#include <cmath>
+#include <cstdio>
+#include <cstring>
 #include <iostream>
-#include <stdio.h>
+#include <map>
+#include <queue>
+#include <set>
+#include <stack>
+#include <stdlib.h>
 #include <string>
+#include <vector>
 using namespace std;
-const int MAX = 210;
-int N;
-double x[MAX << 2];
-struct Node
+#define mem(a, b) memset(a, b, sizeof(a))
+#define lson l, m, rt << 1
+#define rson m + 1, r, rt << 1 | 1
+typedef long long ll;
+const int N = 10000 + 20;
+struct Seg
 {
-    double l, r;
-    double h;
-    int flag;
-} node[MAX << 2];
-int cmp(Node a, Node b)
+    int l, r, h;
+    int f;
+    Seg() {}
+    Seg(int a, int b, int c, int d) : l(a), r(b), h(c), f(d) {}
+} e[N];
+bool cmp(Seg a, Seg b)
 {
     return a.h < b.h;
 }
-struct Tree
+struct node
 {
-    int l, r;
+    int len;
     int cnt;
-    double len;
-} tree[MAX << 2];
-int findPos(int l, int r, double val)
+} t[N << 2];
+
+int X[N];
+void pushdown(int l, int r, int rt)
 {
-    int mid;
-    while (l <= r)
+    if (t[rt].cnt)
+        t[rt].len = X[r + 1] - X[l];
+    else if (l == r)
+        t[rt].len = 0;
+    else
+        t[rt].len = t[rt << 1].len + t[rt << 1 | 1].len;
+}
+void update(int L, int R, int l, int r, int rt, int val)
+{
+    if (L <= l && r <= R)
     {
-        mid = (l + r) >> 1;
-        if (x[mid] > val)
-            r = mid - 1;
-        else if (x[mid] < val)
-            l = mid + 1;
-        else
-            break;
-    }
-    return mid;
-}
-void build(int rt, int left, int right)
-{
-    tree[rt].l = left;
-    tree[rt].r = right;
-    tree[rt].len = 0;
-    tree[rt].cnt = 0;
-    if (left == right)
-        return;
-    int mid = (left + right) >> 1;
-    build(rt << 1, left, mid);
-    build(rt << 1 | 1, mid + 1, right);
-}
-void pushUp(int rt)
-{
-    if (tree[rt].cnt) //非0，整段覆盖
-        tree[rt].len = x[tree[rt].r + 1] - x[tree[rt].l];
-    else if (tree[rt].l == tree[rt].r) //叶子
-        tree[rt].len = 0;
-    else //部分覆盖
-        tree[rt].len = tree[rt << 1].len + tree[rt << 1 | 1].len;
-}
-void update(int rt, int left, int right, int val)
-{
-    if (left <= tree[rt].l && tree[rt].r <= right) //全部包含
-    {
-        tree[rt].cnt += val;
-        pushUp(rt);
+        t[rt].cnt += val;
+        pushdown(l, r, rt);
         return;
     }
-    int mid = (tree[rt].l + tree[rt].r) >> 1;
-    if (left <= mid)
-        update(rt << 1, left, right, val);
-    if (right > mid)
-        update(rt << 1 | 1, left, right, val);
-    pushUp(rt); //计算该区间被覆盖的总长度
+    int m = (l + r) >> 1;
+    if (L <= m)
+        update(L, R, lson, val);
+    if (R > m)
+        update(L, R, rson, val);
+    pushdown(l, r, rt);
 }
 int main()
 {
-    int K = 0;
-    int l, r;
-    double x1, x2, y1, y2;
     freopen("input.txt", "r", stdin);
     freopen("output.txt", "w", stdout);
-    while (scanf("%d", &N))
+
+    int n;
+    int a, b, c, d;
+    scanf("%d", &n);
+    mem(t, 0);
+    int num = 0;
+    int ans = 0;
+    for (int i = 0; i < n; i++)
     {
-        int cnt = 0;
-        for (int i = 1; i <= N; i++)
-        {
-            scanf("%lf%lf%lf%lf", &x1, &y1, &x2, &y2);
-            x[++cnt] = x1;
-            node[cnt].l = x1;
-            node[cnt].r = x2;
-            node[cnt].h = y1;
-            node[cnt].flag = 1; //下边
-            x[++cnt] = x2;
-            node[cnt].l = x1;
-            node[cnt].r = x2;
-            node[cnt].h = y2;
-            node[cnt].flag = -1; //上边
-        }
-        sort(x + 1, x + cnt + 1); //排序
-        sort(node + 1, node + cnt + 1, cmp);
-        /*
-        int M=1;
-        for(int i=1; i<cnt; i++)//去重  可去可不去
-            if(x[i]!=x[i-1])
-                x[M++]=x[i];
-        */
-        build(1, 1, cnt);
-        double ans = 0;
-        for (int i = 1; i <= cnt; i++) //拿出每条横线并且更新
-        {
-            l = findPos(1, cnt, node[i].l);
-            r = findPos(1, cnt, node[i].r) - 1;
-            update(1, l, r, node[i].flag);
-            ans += tree[1].len * (node[i + 1].h - node[i].h); //求面积
-        }
-        printf("Test case #%d\nTotal explored area: %.2f\n\n", ++K, ans);
+        scanf("%d%d%d%d", &a, &b, &c, &d);
+        X[num] = a;
+        e[num++] = Seg(a, c, b, 1);
+        X[num] = c;
+        e[num++] = Seg(a, c, d, -1);
     }
+    sort(X, X + num);
+    sort(e, e + num, cmp);
+    int m = unique(X, X + num) - X;
+    for (int i = 0; i < num-1; i++)
+    {
+        int l = lower_bound(X, X + m, e[i].l) - X;
+        int r = lower_bound(X, X + m, e[i].r) - X - 1;
+        update(l, r, 0, m, 1, e[i].f);
+        ans += t[1].len * (e[i + 1].h - e[i].h);
+    }
+    printf("%d\n", ans);
     return 0;
 }
