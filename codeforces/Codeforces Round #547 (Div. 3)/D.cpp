@@ -43,7 +43,6 @@ int main()
             vr[i].pop_back();
             ans++;
         }
-        //使用?
         while (vl[i].size() > 0 && vr[26].size() > 0)
         {
             a = vl[i].back();
