@@ -1,9 +1,16 @@
+#include <algorithm>
 #include <iostream>
-#include <set>
 using namespace std;
 #define N 100010
 long long s[N];
 int n;
+long long counting(long long left, long long right)
+{
+    //cout << left << " " << right << endl;
+    long long mid = (left + right) >> 1;
+    if ()
+        return 0;
+}
 int main()
 {
     ios::sync_with_stdio(false);
@@ -13,18 +20,14 @@ int main()
     {
         cin >> s[i];
     }
+    sort(s, s + n);
+    int cnt = unique(s, s + n) - s;
     int q;
     cin >> q;
     long long l, r;
     for (int i = 0; i < q; i++)
     {
         cin >> l >> r;
-        set<long long> s;
-        for (int j = 0; j < n; j++)
-        {
-            s.insert(s[j] + l);
-            s.insert(s[j] + r);
-        }
     }
     cout << endl;
     system("pause");
