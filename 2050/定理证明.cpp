@@ -64,14 +64,19 @@ int main()
         int best_size = 0;
         do
         {
+            /*
             for (auto ele : order)
             {
                 cout << ele << " ";
             }
-            cout << endl;
+            */
             vector<pair<int, int>> temp;
+            for (int i = 0; i <= n; i++)
+                G[i].clear();
+            /*
             for (auto ele : G)
                 ele.clear(); //清空有向图
+                */
             for (auto ele : order)
             {
                 cout << "test:" << kv[ele].first << "->" << kv[ele].second << endl;
