@@ -8,6 +8,9 @@
         },
         {
             "path": "."
+        },
+        {
+            "path": "D:\\MASM_Code"
         }
     ],
     "settings": {

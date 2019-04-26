@@ -1,56 +1,113 @@
-1	1
-1.1	0.8505
-1.2	0.704
-1.3	0.5635
-1.4	0.432
-1.5	0.3125
-1.6	0.208
-1.7	0.1215
-1.8	0.056
-1.9	0.0145
-2	1.18329e-030
-2.1	0.0145
-2.2	0.056
-2.3	0.1215
-2.4	0.208
-2.5	0.3125
-2.6	0.432
-2.7	0.5635
-2.8	0.704
-2.9	0.8505
-3	1
-1.2	3.4
-1.3	3.2957
-1.4	3.19062
-1.5	3.08398
-1.6	2.975
-1.7	2.86289
-1.8	2.74687
-1.9	2.62617
-2	2.5
-2.1	2.36781
-2.2	2.23
-2.3	2.08719
-2.4	1.94
-2.5	1.78906
-2.6	1.635
-2.7	1.47844
-2.8	1.32
-2.9	1.16031
-3	1
-1.2	3.4
-1.3	3.52469
-1.4	3.64464
-1.5	3.75513
-1.6	3.85143
-1.7	3.92879
-1.8	3.9825
-1.9	4.00781
-2	4
-2.1	3.95602
-2.2	3.87959
-2.3	3.77612
-2.4	3.65102
-2.5	3.50969
-2.6	3.35755
-2.7	3.2
+An, R 1
+Bai, Y 2
+Bao, NH 1
+Bao, NZ 8
+Cao, B 1
+Chen, SS 1
+Chen, WP 1
+Chen, Y 1
+FENG, X 1
+Fan, TT 1
+Feng, X 2
+He, HB 1
+He, M 5
+Huang, WJ 1
+Huang, XZ 1
+Ji, XY 1
+Ji, YH 7
+Li, D 3
+Li, LC 1
+Li, W 5
+Liu, C 3
+Liu, H 1
+Liu, WJ 1
+Lu, XH 2
+Mu, LW 5
+Qian, QH 2
+Shen, JJ 1
+Shi, YJ 8
+Shi, YP 1
+Song, M 1
+Sun, JJ 1
+Sun, YH 1
+Wang, CS 1
+Wang, HT 1
+Wang, HY 4
+Wang, XH 1
+Wu, J 6
+Wu, NH 1
+Xie, JW 1
+Xie, WL 3
+Xu, Z 1
+Yang, C 1
+Yang, ZH 3
+Ye, PP 1
+Yin, X 1
+Yu, H 1
+Yu, L 1
+Zhang, SY 2
+Zhang, Y 3
+Zhang, YY 1
+Zhou, XF 3
+Zhou, YX 2
+Zhu, JH 3
+Zhu, XL 1
+Zhu, YH 2
+Zhuang, W 1
+SUM:117
+1 An, R
+1 Bao, NH
+1 Cao, B
+1 Chen, SS
+1 Chen, WP
+1 Chen, Y
+1 FENG, X
+1 Fan, TT
+1 He, HB
+1 Huang, WJ
+1 Huang, XZ
+1 Ji, XY
+1 Li, LC
+1 Liu, H
+1 Liu, WJ
+1 Shen, JJ
+1 Shi, YP
+1 Song, M
+1 Sun, JJ
+1 Sun, YH
+1 Wang, CS
+1 Wang, HT
+1 Wang, XH
+1 Wu, NH
+1 Xie, JW
+1 Xu, Z
+1 Yang, C
+1 Ye, PP
+1 Yin, X
+1 Yu, H
+1 Yu, L
+1 Zhang, YY
+1 Zhu, XL
+1 Zhuang, W
+2 Bai, Y
+2 Feng, X
+2 Lu, XH
+2 Qian, QH
+2 Zhang, SY
+2 Zhou, YX
+2 Zhu, YH
+3 Li, D
+3 Liu, C
+3 Xie, WL
+3 Yang, ZH
+3 Zhang, Y
+3 Zhou, XF
+3 Zhu, JH
+4 Wang, HY
+5 He, M
+5 Li, W
+5 Mu, LW
+6 Wu, J
+7 Ji, YH
+8 Bao, NZ
+8 Shi, YJ
