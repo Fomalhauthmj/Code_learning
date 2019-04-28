@@ -1,10 +1,134 @@
 #include<iostream>
 #include<cstring>
+#include<queue>
+using namespace std;
+//回溯法  
+//->状态压缩
+int matrix[6][6];
+long long ans=0;
+int dir[4][2]={{1,0},{-1,0},{0,1},{0,-1}};
+bool vis[6][6];
+int cnt=1;
+void DFS(int r,int c)
+{
+    for(int i=0;i<4;i++)
+    {
+        int nr=r+dir[i][0];
+        int nc=c+dir[i][1];
+        if(nr>=0&&nr<6&&nc>=0&&nc<6&&matrix[nr][nc]&&!vis[nr][nc])
+        {
+            vis[nr][nc]=1;
+            cnt++;
+            DFS(nr,nc);
+        }
+    }
+}
+
+int BFS(int r,int c)
+{
+    queue<pair<int,int>> q;
+    q.push(make_pair(r,c));
+    memset(vis,0,sizeof(vis));
+    vis[r][c]=1;
+    int cnt=1;
+    while(!q.empty())
+    {
+        pair<int,int> now=q.front();
+        q.pop();
+        int nr,nc;
+        for(int i=0;i<4;i++)
+        {
+            nr=now.first+dir[i][0];
+            nc=now.second+dir[i][1];
+            if(nr>=0&&nr<6&&nc>=0&&nc<6&&matrix[nr][nc]&&!vis[nr][nc])
+            {
+                cnt++;
+                vis[nr][nc]=1;
+                q.push(make_pair(nr,nc));
+            }
+        }
+    }
+    return cnt==18;
+}
+bool judge()
+{
+    bool flag=false;
+    int sr,sc;
+    for(int i=0;i<6;i++)
+    {
+        for(int j=0;j<6;j++)
+        {
+            if(matrix[i][j]==1)
+            {
+                sr=i;
+                sc=j;
+                flag=true;
+                break;
+            }
+        }
+        if(flag) break;
+    }
+    memset(vis,0,sizeof(vis));
+    cnt=1;
+    vis[sr][sc]=1;
+    DFS(sr,sc);
+    if(cnt==18) return true;
+    //if(BFS(sr,sc)) return true;
+    else return false;
+}
+void Search(int step)
+{
+    if(step>=18)
+    {
+        if(judge()) 
+        {
+            ans++;
+        }
+        return;
+    }
+    int r=step/6;
+    int c=step%6;
+    matrix[r][c]=1;
+    matrix[5-r][5-c]=0;
+    Search(step+1);
+    matrix[r][c]=0;
+    matrix[5-r][5-c]=1;
+    Search(step+1);
+}
+int main()
+{
+    memset(matrix,0,sizeof(matrix));
+    Search(0);
+    cout<<ans<<endl;
+    ans=0;
+    //状态压缩
+    for(int i=0;i<(1<<18);i++)
+    {
+        for(int j=0;j<18;j++)
+        {
+            int r=j/6;
+            int c=j%6;
+            int temp=(i>>j) & 1;
+            matrix[r][c]=temp;
+            matrix[5-r][5-c]=1-temp;
+        }
+        if(judge())
+        {
+            ans++;
+        }
+    }
+    cout<<ans<<endl;//2036/4 =509
+    system("pause");
+}
+
+/*
+#include<iostream>
+#include<cstring>
 using namespace std;
 int matrix[7][7];
 int dir[4][2]={{1,0},{0,-1},{0,1},{-1,0}};
 int kinds=0;
-//TODO:搜索剪切线
+// todo 搜索剪切线
 void DFS(int r,int c)
 {
     if(r==0||c==0||r==6||c==6)
@@ -34,7 +158,9 @@ int main()
     cout<<kinds<<endl;
     system("pause");//2036/4=509
 }
-//TODO:由于是按格子边线剪成两块 所以以下DFS做法错误
+*/
+
+//TODO:由于是按格子边线剪成两块 所以以下矩阵DFS做法错误
 // #include<iostream>
 // #include<cstring>
 // using namespace std;

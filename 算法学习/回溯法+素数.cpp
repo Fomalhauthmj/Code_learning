@@ -396,8 +396,10 @@ void gPrime()
     }
 }
 */
+
+
+//欧拉筛法 线性筛法
 /*
-//欧拉筛法
 void gPrime()
 {
     for(int i=2;i<M;i++)
@@ -415,7 +417,9 @@ void gPrime()
     }
 }
 */
-/*费马小定理  p为素数  a^p-1 对p取余 = 1%p;  p不为素数 不成立
+
+/*
+费马小定理  p为素数  a^p-1 对p取余 = 1%p;  p不为素数 不成立
 long long qpow(long long a,long long n,long long p)
 {
     if(n==1) return a;
@@ -434,6 +438,7 @@ bool isprime(long long x)
     return true;
 }
 */
+
 // void DFS(int start,int dep)
 // {
 //     int sum;

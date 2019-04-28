@@ -6,7 +6,7 @@ using namespace std;
 int prime[N];
 bool check[N];
 int tot;
-void gPrime()
+void gPrime() //欧拉筛法
 {
     memset(check,0,sizeof(check));
     tot=0;
@@ -33,13 +33,13 @@ bool find(int d)
         for(int j=1;j<10;j++)
         {
             if(prime[i]+d*j>=N) break;
-            if(check[prime[i]+d*j]) break;
+            if(check[prime[i]+d*j]) break;//非素数
             else cnt++;
         }
         if(cnt==10)
         {
             flag=true;
-            cout<<prime[i]<<endl;
+            //cout<<prime[i]<<endl;
             break;
         }
     }
@@ -57,11 +57,11 @@ int main()
     gPrime();
     for(int i=1;i<1e6;i++)
     {
-        cout<<"cur:"<<i<<endl;
+        //cout<<"cur:"<<i<<endl;
         if(find(i))
         {
             cout<<i<<endl;//210
-            break;
+            //break;
         }
     }
     system("pause");
