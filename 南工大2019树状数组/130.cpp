@@ -1,5 +1,5 @@
 //https://loj.ac/problem/130
-#include<bits/stdc++.h>
+#include<iostream>
 using namespace std;
 #define N 1000100
 long long c[N];
