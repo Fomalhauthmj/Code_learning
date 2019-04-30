@@ -21,5 +21,4 @@ int main()
         if(i%4==3)
             cout << endl;
     }
-    system("pause");
 }
