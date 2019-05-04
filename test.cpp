@@ -1,10 +1,10 @@
-#include<iostream>
-#include<queue>
+#include <iostream>
+#include <queue>
 using namespace std;
 int main()
 {
     ios::sync_with_stdio(false);
     cin.tie(0);
-    cout<<"我"<<endl;
+    cout << "我" << endl;
     return 0;
 }
