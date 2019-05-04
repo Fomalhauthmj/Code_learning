@@ -1,5 +1,6 @@
 # 此为注释 – 将被 Git 忽略
 *.exe
-*.out      
+*.out
+*.txt      
 *.code-workspace
 .vscode/
