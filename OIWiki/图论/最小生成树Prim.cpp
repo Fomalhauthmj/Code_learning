@@ -1,63 +1,50 @@
-#include<iostream>
-#include<vector>
-#include<algorithm>
-#include<cstring>
+#include <algorithm>
+#include <cstring>
+#include <iostream>
+#include <queue>
+#include <vector>
 using namespace std;
 #define inf 0x3f3f3f3f
-const int N=2e5+20;
+const int N = 2e5 + 20;
 struct node
 {
-    long long v,w;
-    node(int vv,int ww):v(vv),w(ww)
+    long long u, v, w;
+    node(int uu, int vv, int ww) : u(uu), v(vv), w(ww)
     {
+    }
+    bool operator<(node n) const
+    {
+        return w > n.w;
     }
 };
-vector<node> G[N];
-long long n,m;
+long long n, m;
+priority_queue<node> q;
+vector<pair<long long, long long>> G[N];
 bool vis[N];
-long long lowcost[N];
 long long Prim()
 {
-    long long ans=0;
-    memset(vis,0,sizeof(vis));
-    vis[1]=1;
-    for(int i=1;i<=n;i++)
+    long long ans = 0;
+    for (auto ele : G[1])
     {
-        lowcost[i]=inf;
+        q.push(node(1, ele.first, ele.second));
     }
-    for(auto ele:G[1])
+    memset(vis, 0, sizeof(vis));
+    vis[1] = 1;
+    int t = n - 1;
+    while (t--)
     {
-        lowcost[ele.v]=ele.w;
-    }
-    int t=n-1;
-    long long minc;
-    long long pos;
-    while(t--)
-    {
-        minc=inf;
-        pos=-1;
-        for(int i=1;i<=n;i++)
+        node top = q.top();
+        q.pop();
+        while (vis[top.v])
         {
-            if(!vis[i]&&minc>lowcost[i])
-            {
-                minc=lowcost[i];
-                pos=i;
-            }
+            top = q.top();
+            q.pop();
         }
-        if(minc==inf) return -1;
-        ans+=minc;
-        //cout<<"add:"<<minc<<" "<<pos<<endl;
-        vis[pos]=1;
-        for(int i=1;i<=n;i++)
+        ans += top.w;
+        vis[top.v] = 1;
+        for (auto ele : G[top.v])
         {
-            if(!vis[i])
-            {
-                for(auto ele:G[pos])
-                {
-                    if(ele.v==i&&lowcost[i]>ele.w)
-                        lowcost[i]=ele.w;
-                }
-            }
+            q.push(node(top.v, ele.first, ele.second));
         }
     }
     return ans;
@@ -66,15 +53,15 @@ int main()
 {
     ios::sync_with_stdio(false);
     cin.tie(0);
-    cin>>n>>m;
-    long long u,v,w;
-    for(int i=0;i<m;i++)
+    cin >> n >> m;
+    long long u, v, w;
+    for (int i = 0; i < m; i++)
     {
-        cin>>u>>v>>w;
-        G[u].push_back(node(v,w));
-        G[v].push_back(node(u,w));
+        cin >> u >> v >> w;
+        G[u].push_back(make_pair(v, w));
+        G[v].push_back(make_pair(u, w));
     }
-    cout<<Prim()<<endl;
+    cout << Prim() << endl;
     //system("pause");
     return 0;
 }
