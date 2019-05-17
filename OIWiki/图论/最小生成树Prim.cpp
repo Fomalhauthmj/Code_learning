@@ -41,6 +41,7 @@ long long Prim()
             q.pop();
         }
         ans += top.w;
+        cout<<ans<<endl;
         vis[top.v] = 1;
         for (auto ele : G[top.v])
         {
@@ -62,6 +63,6 @@ int main()
         G[v].push_back(make_pair(u, w));
     }
     cout << Prim() << endl;
-    //system("pause");
+    system("pause");
     return 0;
 }

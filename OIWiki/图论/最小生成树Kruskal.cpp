@@ -61,6 +61,6 @@ int main()
         q.push(Edge(u, v, w));
     }
     cout << Kruskal() << endl;
-    //system("pause");
+    system("pause");
     return 0;
 }
