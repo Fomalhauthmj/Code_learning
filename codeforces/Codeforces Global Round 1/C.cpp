@@ -1,4 +1,4 @@
-! : 方法一
+//: 方法一
 #include <iostream>
 #include <math.h>
        using namespace std;

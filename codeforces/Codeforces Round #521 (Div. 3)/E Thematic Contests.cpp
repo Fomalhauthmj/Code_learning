@@ -1,4 +1,4 @@
-//!:GNU C++11	Accepted	951 ms	9400 KB
+// !:GNU C++11	Accepted	951 ms	9400 KB
 /*
 #include<iostream>
 #include<map>

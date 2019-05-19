@@ -1,5 +1,6 @@
 #include<iostream>
 #include<cstring>
+#include<math.h>
 using namespace std;
 int N,M,T;
 char maze[60][10];
