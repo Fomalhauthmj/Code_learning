@@ -1,11 +1,11 @@
-//TODO:数论
+//!:数论
 
-//TODO:引例：跳兽问题
+//!:引例：跳兽问题
 //xm=(y-1)*2n+1 或 xm=y*2n-1 -> mx+2ny=1 这里的系数有正负
 
-//TODO:GCD与LCM
+//!:GCD与LCM
 
-//TODO:质因数分解
+//!:质因数分解
 //对于一个数的质因数分解 从2到sqrt(number)
 //未优化 这里使用试除法
 /*
@@ -18,7 +18,7 @@ void func(int n)
 {
     int cnt=0;
     memset(a,0,sizeof(a));
-    for(int i=2;i<=n;i++)  //TODO:优化i从2到sqrt(n)
+    for(int i=2;i<=n;i++)  //!:优化i从2到sqrt(n)
     //这里在寻找n的因数 因为因数是成对出现的 所以不可能有一对因数均大于根号n 
     //如果不能被2到sqrt(n)范围内的数整除 那么也不可能在之后的范围内出现可以整除的数
     //2 3 5 7....素数处理后
@@ -51,12 +51,12 @@ int main()
 }
 */
 
-//TODO:n!的质因数分解
+//!:n!的质因数分解
 //小于n的质因子 其指数分别为n/i^k向下取整后之和  k=1...
 
-//TODO:GCD的性质
+//!:GCD的性质
 
-//TODO:欧几里得算法
+//!:欧几里得算法
 /*
 int GCD(int a,int b)  //复杂度？
 {
@@ -64,7 +64,7 @@ int GCD(int a,int b)  //复杂度？
     else return GCD(b,a%b);
 }
 */
-//TODO:Stein算法  通过位运算  处理大整数
+//!:Stein算法  通过位运算  处理大整数
 /*
 #include<iostream>
 using namespace std;
@@ -106,7 +106,7 @@ int main()
 }
 */
 
-//TODO:http://codeforces.com/contest/891/problem/A
+//!:http://codeforces.com/contest/891/problem/A
 // 含有1  相邻两个元素的GCD=1  区间内GCD=1
 /*
 #include<iostream>
@@ -187,7 +187,7 @@ int main()
     }
 }
 */
-//TODO:http://codeforces.com/contest/798/problem/C
+//!:http://codeforces.com/contest/798/problem/C
 //对于两个相邻的数 这里GCD必为2或2的倍数 因为这些变换？？？
 //如果一奇一偶经过2次变换全为偶数  两奇经过1次变换全为偶数 贪心先变换两奇 处理所有的奇数
 /*
@@ -245,7 +245,7 @@ int main()
 }
 */
 
-//TODO:LCM
+//!:LCM
 /*
 int LCM(int a,int b)
 {
@@ -253,10 +253,10 @@ int LCM(int a,int b)
 }
 */
 
-//TODO:例:除法表达式  贪心 通过添加括号使分母最小为x2 分子最大为x1*x3*...*xn
+//!:例:除法表达式  贪心 通过添加括号使分母最小为x2 分子最大为x1*x3*...*xn
 //循环 d=GCD(x1...xn,x2) x2/=d x2==1 success
 
-//TODO:扩展欧几里德算法  ax+by=GCD(a,b);
+//!:扩展欧几里德算法  ax+by=GCD(a,b);
 /*
 int x,y;
 int Extend_GCD(int a,int b,int &x,int &y)
@@ -278,7 +278,7 @@ int Extend_GCD(int a,int b,int &x,int &y)
 }
 */
 
-//TODO:http://codeforces.com/problemset/problem/7/C
+//!:http://codeforces.com/problemset/problem/7/C
 /*
 #include<iostream>
 using namespace std;
@@ -312,9 +312,9 @@ int main()
 }
 */
 
-//TODO:Magic Horse
+//!:Magic Horse
 
-//TODO:http://codeforces.com/problemset/problem/724/C
+//!:http://codeforces.com/problemset/problem/724/C
 //Tmax=LCM(n,m)// 设t时刻终止 t=k1*n=k2*m t=最小公倍数
 //设原坐标(a,b) 平面对称拓展后: 当2*x*n±a(横坐标)=2*y*m±b(纵坐标) 时点受到光照 这里求最小的x,y(最初相遇)
 //  2xn-2ym=±a±b;
@@ -388,9 +388,9 @@ int main()
 //https://blog.csdn.net/a7f650ebd327889c/article/details/53606852
 */
 
-//TODO:求解模线性方程
-//TODO:取模运算https://baike.baidu.com/item/%E5%8F%96%E6%A8%A1%E8%BF%90%E7%AE%97/10739384?fr=aladdin
-//TODO:Josephus问题
+//!:求解模线性方程
+//!:取模运算https://baike.baidu.com/item/%E5%8F%96%E6%A8%A1%E8%BF%90%E7%AE%97/10739384?fr=aladdin
+//!:Josephus问题
 //模拟
 /*
 #include<iostream>
@@ -442,7 +442,7 @@ int main()
 */
 //队列模拟  当出队元素计数为m时 直接退出  非m时 重新加入队尾
 
-//TODO:数的重排  k*10000 + (1234)
+//!:数的重排  k*10000 + (1234)
 /*
 #include <iostream>
 #include <string>
@@ -498,8 +498,8 @@ int main()
 }
 */
 
-//TODO:同余
-//TODO:模线性方程
+//!:同余
+//!:模线性方程
 /*
 题目
 已知a,b,n，求x，使得ax=b(mod n).
@@ -580,7 +580,7 @@ int main()
 }
 */
 
-//TODO:求mod m 的 逆元
+//!:求mod m 的 逆元
 //ax≡1(mod  p)的解x称为a模p的逆元  当gcd(a,p)==1（即a，p互质）时，方程有唯一解，否则无解
 //根据费马小定理 a*a(p-2)≡1（mod p）对于整数a，p，a关于p的逆元就是a^(p-2)
 //快速幂 但注意这个定理要求a,p互质！
@@ -651,7 +651,7 @@ inv(a) = (p - y) * inv(x) % p
 */
 //应用 快速计算组合数
 
-//TODO:http://codeforces.com/problemset/problem/963/A
+//!:http://codeforces.com/problemset/problem/963/A
 /*
 #include<iostream>
 using namespace std;
@@ -717,7 +717,7 @@ ans:7
 ans:999999228
 */
 
-//TODO:http://codeforces.com/problemset/problem/487/C
+//!:http://codeforces.com/problemset/problem/487/C
 //如果1 在中间出现两个相同的MOD值
 //如果7 在中间在其之后的MOD值均为0
 //合数(非素数)无解 在一对因数之后的MOD值为0
@@ -780,8 +780,8 @@ int main()
 }
 */
 
-//TODO:http://codeforces.com/problemset/problem/710/D
-//TODO:模线性方程
+//!:http://codeforces.com/problemset/problem/710/D
+//!:模线性方程
 //x = a1k + b1 = a2l + b2
 //a1k-a2l=b2-b1   a1X+a2Y=b2-b1
 //x同余b1 (mod a1)
@@ -882,7 +882,7 @@ using namespace std;
 #define N 105
 long long inv(long long a,long long m)
 {
-    while(a>m) a-=m;//TODO:注意这里的语句 使a<m
+    while(a>m) a-=m;//!:注意这里的语句 使a<m
     return a==1?1:((m-m/a)*inv(m%a,m))%m;
 }
 int b[N];//={0,2,3,2};
@@ -948,7 +948,7 @@ int main()
 }
 */
 
-//TODO:模幂运算与欧拉定理
+//!:模幂运算与欧拉定理
 /*
 int quick_pow_mod(int a,int b,int c)
 {
@@ -983,7 +983,7 @@ int euler(int x){
 }
 */
 //https://www.cnblogs.com/flipped/p/5324598.html
-//TODO:Pollard rho  基于Floyd 的环检测
+//!:Pollard rho  基于Floyd 的环检测
 /*
 #include<iostream>
 #include<stdlib.h>

@@ -82,7 +82,7 @@ bool BFS(int sr,int sc)
                 int temp=now.t;
                 if(now.dir!=-1&&now.dir!=i) 
                 {
-                    if(now.dir+i!=3)    temp++;//TODO:注意这里不能对now.t修改 会影响后续路径
+                    if(now.dir+i!=3)    temp++;//!:注意这里不能对now.t修改 会影响后续路径
                 }
                 //cout<<"will add:"<<nr<<" "<<nc<<" "<<temp<<" dir"<<i<<endl;
                 Q.push(node(nr,nc,temp,i));
@@ -92,7 +92,7 @@ bool BFS(int sr,int sc)
                 int temp=now.t;
                 if(now.dir!=-1&&now.dir!=i) 
                 {
-                    if(now.dir+i!=3)    temp++;//TODO:注意这里不能对now.t修改 会影响后续路径
+                    if(now.dir+i!=3)    temp++;//!:注意这里不能对now.t修改 会影响后续路径
                 }
                 //cout<<"will add:"<<nr<<" "<<nc<<" "<<temp<<" dir"<<i<<endl;
                 if(temp<each_min[nr][nc][i])    

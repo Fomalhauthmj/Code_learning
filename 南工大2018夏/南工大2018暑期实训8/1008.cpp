@@ -34,7 +34,7 @@ void DFS()
             DFS();//下一层
             if(current>=n) return;
         }
-        res.erase(initlen);//TODO:删除所有上一层添加的字符 只保留刚进入这一层时的字符串(0-initlen-1)
+        res.erase(initlen);//!:删除所有上一层添加的字符 只保留刚进入这一层时的字符串(0-initlen-1)
     }
 }
 int main()

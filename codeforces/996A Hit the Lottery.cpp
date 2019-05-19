@@ -1,4 +1,4 @@
-//TODO:http://codeforces.com/problemset/problem/996/A
+//!:http://codeforces.com/problemset/problem/996/A
 #include<iostream>
 using namespace std;
 int main()

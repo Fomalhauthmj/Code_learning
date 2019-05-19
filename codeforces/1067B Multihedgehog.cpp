@@ -1,5 +1,5 @@
 //http://codeforces.com/problemset/problem/1067/B
-//TODO:❌  Wrong answer on test 42
+//!:❌  Wrong answer on test 42
 //http://codeforces.com/contest/1067/status/B
 #include<iostream>
 #include<vector>
@@ -46,7 +46,7 @@ bool BFS()
                     if(dis[ele]!=dis[now]+1) return false;
                 }
                 leaf[ele]++;
-                degree[ele]--;  //TODO:子结点now-> 父结点degree-1
+                degree[ele]--;  //!:子结点now-> 父结点degree-1
                 if(degree[ele]==1) Q.push(ele);
             }
         }

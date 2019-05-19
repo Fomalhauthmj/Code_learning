@@ -80,7 +80,7 @@ int main()
 
 
 
-//TODO:先找出LCS 然后填上两个字符串各自两个相邻字符位置之间的字符串 TODO:未实现！
+//!:先找出LCS 然后填上两个字符串各自两个相邻字符位置之间的字符串 !:未实现！
 /*
 #include<iostream>
 #include<string>

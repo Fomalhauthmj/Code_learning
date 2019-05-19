@@ -25,7 +25,7 @@ int main()
         memset(dp,0,sizeof(dp));
         //为了使问题简化，假设在接下来的一段时间里，馅饼都掉落在0-10这11个位置。
         //开始时gameboy站在5这个位置，因此在第一秒，他只能接到4,5,6这三个位置中其中一个位置上的馅饼。
-        /*//TODO:顺序！
+        /*//!:顺序！
         for(int i=1;i<=time;i++)
         {
             if(i==1)
@@ -54,7 +54,7 @@ int main()
         }
         cout<<ans<<endl;
         */
-        //TODO:逆序
+        //!:逆序
         for(int i=time;i>=1;i--)
         {
             dp[i][0]=max(dp[i+1][0],dp[i+1][1])+a[i][0];

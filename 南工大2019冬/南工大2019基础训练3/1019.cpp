@@ -7,7 +7,7 @@
 #include<iostream>
 #include<cstring>
 using namespace std;
-//边长为47+46+61=154  TODO:点阵对每个点深搜
+//边长为47+46+61=154  !:点阵对每个点深搜
 int map[154][154];
 int ans[19];
 int square[19]={2 ,5, 9, 11 ,16, 17, 19 ,21 ,22 ,24, 26, 30, 31 ,33 ,35 ,36, 41 ,50, 52};

@@ -31,7 +31,7 @@ double angle(point p1, point p2)
 }
 //内积应用
 //点到线段的最短距离
-//TODO:对称点连线是否相交
+//!:对称点连线是否相交
 
 //外积
 double cross_product(point p1, point p2)
@@ -139,7 +139,7 @@ line getline(point p1,point p2)
 
 
 
-//TODO:http://codeforces.com/problemset/problem/659/D
+//!:http://codeforces.com/problemset/problem/659/D
 /*
 #include<iostream>
 using namespace std;
@@ -187,11 +187,11 @@ int main()
 }
 */
 
-//TODO:求点关于直线的对称点
+//!:求点关于直线的对称点
 //数学推导即可
-//TODO:管道问题
+//!:管道问题
 
-//TODO:多边形 判断一点是否在多边形内部 -> 线段是否在多边形内部
+//!:多边形 判断一点是否在多边形内部 -> 线段是否在多边形内部
 //PNPoly
 /*
 int pnpoly(int nvert, float *vertx, float *verty, float testx, float testy)
@@ -278,13 +278,13 @@ int main()
 */
 
 
-//TODO:多边形 面积
+//!:多边形 面积
 //对于三角形 已知点 海伦公式 计算量大 精度损失
 //ABxAC=1/2*S  左手系负面积 右手系正面积  通过三角形面积确定两线段或直线交点 
 //在处理凹多边形面积时 可以求和有向面积 (由凸多边形面积推广)
 //Area=∑S△   推广:p0设为坐标原点
 
-//TODO:http://codeforces.com/problemset/problem/340/B
+//!:http://codeforces.com/problemset/problem/340/B
 /*
 #include<iostream>
 #include<math.h>
@@ -372,7 +372,7 @@ int main()
 
 
 
-//TODO:多边形重心
+//!:多边形重心
 
 //对于三角形
 //在平面直角坐标系中，重心的坐标是顶点坐标的算术平均数，
@@ -435,7 +435,7 @@ int main()
 
 
 
-//TODO:凸包
+//!:凸包
 //Graham Scan
 /*
 #include<iostream>

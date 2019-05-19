@@ -1,4 +1,4 @@
-//TODO:区间DP
+//!:区间DP
 /*
 dp[i][j]=区间[i,j]之间计算的最优值
 ans:dp[1][n]
@@ -35,7 +35,7 @@ int main()
             for(int i=1;i<=n-r;i++)//区间左端点
             {
                 int j=i+r;//区间右端点
-                for(int k=i;k<=j;k++)//TODO:区间内断点 枚举最后击杀点 注意k:[i,j]  闭区间
+                for(int k=i;k<=j;k++)//!:区间内断点 枚举最后击杀点 注意k:[i,j]  闭区间
                 { 
                     dp[i][j]=min(dp[i][j],dp[i][k-1]+dp[k+1][j]+a[k]+b[j+1]+b[i-1]);//最后击杀受到伤害由三部分组成
                     //dp[i][k-1],dp[k+1][j]区间范围内已全部击杀 此时与a[k]相邻的是i-1,j+1位置

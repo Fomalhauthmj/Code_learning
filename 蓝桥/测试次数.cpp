@@ -12,7 +12,7 @@ int main()
     //init 初始化
     for(int i=0;i<N;i++) dp[i][1]=i;
     //状态转移
-    //TODO:dp[i][j]=min(dp[i][j],max(dp[k-1][j-1]+1//第一次碎于k层剩余k-1层j-1部,dp[i-k][j]+1//第一次不碎剩余i-k层j部手机))
+    //!:dp[i][j]=min(dp[i][j],max(dp[k-1][j-1]+1//第一次碎于k层剩余k-1层j-1部,dp[i-k][j]+1//第一次不碎剩余i-k层j部手机))
     for(int j=2;j<5;j++)//先循环手机
     {
         for(int i=1;i<N;i++)

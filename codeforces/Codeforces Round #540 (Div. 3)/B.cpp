@@ -50,7 +50,7 @@ int main()
     }
 }
 */
-//TODO:更好的思路
+//!:更好的思路
 #include<iostream>
 using namespace std;
 #define N 200020

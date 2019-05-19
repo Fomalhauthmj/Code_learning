@@ -1,5 +1,5 @@
 //http://codeforces.com/contest/722/problem/C
-//TODO:并查集
+//!:并查集
 #include<iostream>
 #include<algorithm>
 #include<cstring>
@@ -69,7 +69,7 @@ int main()
     }
 }
 
-//TODO:set multiset TODO:WA
+//!:set multiset !:WA
 // #include<iostream>
 // #include<set>
 // #include<cstring>
@@ -119,7 +119,7 @@ int main()
 // }
 
 
-//TODO:朴素方法
+//!:朴素方法
 /*
         bool judge(int pos,int op)
         {

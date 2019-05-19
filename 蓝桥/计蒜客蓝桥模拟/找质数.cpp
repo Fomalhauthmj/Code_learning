@@ -40,7 +40,7 @@ int main()
             if(!check[n-prime[i]])
             {
                 //cout<<prime[i]<<" "<<n-prime[i]<<endl;
-                printf("%d %d\n",prime[i],n-prime[i]); //TODO:注意计蒜客使用上一种输出超时
+                printf("%d %d\n",prime[i],n-prime[i]); //!:注意计蒜客使用上一种输出超时
                 break;
             }
         }

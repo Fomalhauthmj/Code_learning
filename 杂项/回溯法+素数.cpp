@@ -609,7 +609,7 @@ bool isprime(long long x)
 
 //迷宫问题    奇偶剪枝 0-0  1-1 步数为偶数  1-0 0-1 步数为奇数
 
-//小木棍  TODO:严格剪枝
+//小木棍  !:严格剪枝
 #include <iostream>
 #include <cstring>
 #include<algorithm>
@@ -637,7 +637,7 @@ bool DFS(int k, int cur_len, int start)
                     return true;
                 vis[i] = 0;
                 pre=a[i];
-                return false;//TODO:当出现加上某根木棍恰好能填满一根原始木棍,但由在后面的
+                return false;//!:当出现加上某根木棍恰好能填满一根原始木棍,但由在后面的
                                     //搜索中失败了,就不必考虑其他木棍了,直接退出当前的枚举。
             }
             else if (cur_len + a[i] < len)
@@ -647,7 +647,7 @@ bool DFS(int k, int cur_len, int start)
                     return true;
                 vis[i] = 0;
                 pre=a[i];
-                if(cur_len==0) return false;//TODO::考虑每根原始木棍的第一根木棍,如果当前枚举的木棍长度无
+                if(cur_len==0) return false;//!::考虑每根原始木棍的第一根木棍,如果当前枚举的木棍长度无
                                             //        法得出合法解,就不必考虑下一根木棍了，当前木棍一定是作
                                             //        为某根原始木棍的第一根木棍的，现在不行,以后也不可能得
                                             //        出合法解。也就是说每根原始木棍的第一根小木棍一定要成

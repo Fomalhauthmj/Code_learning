@@ -67,7 +67,7 @@ int main()
     }
 }
 */
-//TODO:题解
+//!:题解
 #include <iostream>
 using namespace std;
 long long n, k;

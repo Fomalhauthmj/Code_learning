@@ -28,7 +28,7 @@ int main()
             {
                int temp=abs(p[i].first-p[j].first)+abs(p[i].second-p[j].second);
                //为什么？
-               //TODO:WA |p1x-p2x|+|p1y-p2y|不等于|p1x+p1y-p2x-p2y|
+               //!:WA |p1x-p2x|+|p1y-p2y|不等于|p1x+p1y-p2x-p2y|
                //例如 1 3  3 1 实际是4 错误为0
                if(vis[temp])
                {

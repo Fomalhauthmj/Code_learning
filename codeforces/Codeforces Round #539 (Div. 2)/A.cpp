@@ -3,7 +3,7 @@
 using namespace std;
 #define inf 0x3f3f3f3f
 #define N 105
-//TODO: 贪心
+//!: 贪心
 //因为每次加油价格都随城市序号增加 理想方案是每到一个城市看剩余距离当前油能不能跑完 不能就加到能跑完
 void DP(int n, int v) //动态规划怎么做？
 {

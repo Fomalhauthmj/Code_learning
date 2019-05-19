@@ -1,4 +1,4 @@
-//TODO:http://poj.org/problem?id=1014
+//!:http://poj.org/problem?id=1014
 #include<iostream>
 #include<algorithm>
 #include<cstring>
@@ -110,7 +110,7 @@ int main()
 
 
 
-/*//TODO:有个奇怪的优化 >=8 处 不优化TLE
+/*//!:有个奇怪的优化 >=8 处 不优化TLE
 #include<iostream>
 #include<cstring>
 using namespace std;

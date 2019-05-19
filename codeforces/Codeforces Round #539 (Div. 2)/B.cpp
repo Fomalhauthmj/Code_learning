@@ -6,7 +6,7 @@ using namespace std;
 int n;
 int a[N];
 vector<int> v[101];
-//TODO:贪心 找出最大数的最大因数 同时选择最小的数乘以这个因数？
+//!:贪心 找出最大数的最大因数 同时选择最小的数乘以这个因数？
 //假设最大数是素数 不可行
 //预处理？首先确定出1-100的因子
 //排序去重 暴力枚举
@@ -42,7 +42,7 @@ int main()
         //a[0]->ele*a[0]  a[i]->a[i]/ele
         for (int i = 0; i < cnt; i++)//100*12
         {
-            for (auto ele : v[a[i]]) //TODO: WA这里不要写错了
+            for (auto ele : v[a[i]]) //!: WA这里不要写错了
             {
                 ans = min(ans, sum + (ele - 1) * a[0] - a[i] / ele * (ele - 1));
             }

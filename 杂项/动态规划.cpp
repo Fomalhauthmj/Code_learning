@@ -1,8 +1,8 @@
-//TODO:引例：斐波那契数列的记忆化存储 减少重复计算次数
+//!:引例：斐波那契数列的记忆化存储 减少重复计算次数
 
 
 
-//TODO:数塔
+//!:数塔
 //状态空间：D(i,j)处于(i,j)位置时可取的最大值
 //初始值:D(0,0)=a(0,0)
 //状态转移方程：D(i,j)=max(D(i-1,j-1),D(i-1,j))+a(i,j);
@@ -34,7 +34,7 @@
 //                 cin>>a[i][j];
 //             }
 //         }
-//         //TODO:从上往下
+//         //!:从上往下
 //         /*
 //         int  ret=0;
 //         dp[1][1]=a[1][1];
@@ -51,7 +51,7 @@
 //         }
 //         cout<<ret<<endl;
 //         */
-//         //TODO:从下往上
+//         //!:从下往上
 //         /*
 //         for(int i=1;i<=n;i++) dp[n][i]=a[n][i];
 //         for(int i=n-1;i>=1;i--)
@@ -66,7 +66,7 @@
 //     }
 // }
 
-//TODO:help jimmy POJ 1661
+//!:help jimmy POJ 1661
 //只要计算横向移动距离
 
 // #include<iostream>
@@ -149,11 +149,11 @@
 
 
 
-//TODO:最长上升子序列 LIS
+//!:最长上升子序列 LIS
 //状态：前i个元素且最后一个元素为a[i]的最长有序子序列长度 
 // f(i+1)=f(k)+1 (a[i+1]>=a[i],f(k)为i+1前最大的且a[i+1]>=a[k]) O(n^2)
 // f(i+1)=f(k)+1 (a[i+1]<a[i],f(k)为i+1前最大的且a[i+1]>=a[k])
-//TODO:优化  C[j] 记录目前为止f(k)==j的 最小a[k]值 k<=i;  C[0]=-1  C[] O(nlogn)
+//!:优化  C[j] 记录目前为止f(k)==j的 最小a[k]值 k<=i;  C[0]=-1  C[] O(nlogn)
 //c[j]=a[i] j为a[i]在c中第一个比它大的元素位 upper_bound() 
 // #include<iostream>
 // #include<algorithm>
@@ -227,13 +227,13 @@
 //         betterLIS(n);
 //     }
 // }
-//TODO:
+//!:
 //最长子序列个数？最长公共子序列
 //LIS的应用 Super Jumping!Jumping!Jumping! :求和最大的递增子序列  b[i]=b[k]+a[i](k<i,k为从左起a[k]<a[i]且b[k]最大) 
 //LIS的应用 FatMouse's Speed 最长递减子序列
 
 
-// //TODO:最长公共子序列LCS
+// //!:最长公共子序列LCS
 // //初始条件：f(i,0)=f(0,j)=0 有效索引从1起避免预处理 辅助空间更直观
 // //f(i,j)={ f(i-1,j-1)+1,x[i]==y[j]
 // //         max(f(i-1,j),f(i,j-1))  x[i]!=y[j]
@@ -248,7 +248,7 @@
 // int print[size][size];
 // int pre[size];
 // int cur[size];
-// void printLCS(int r,int c)//TODO:回溯法输出LCS
+// void printLCS(int r,int c)//!:回溯法输出LCS
 // {
 //     if(r==0||c==0) return;
 //     if(print[r][c]==0)
@@ -290,7 +290,7 @@
 //                     else print[i+1][j+1]=-1;
 //                     //cur[j+1]=max(pre[j+1],cur[j]);
 //                 }
-//                 //for(int k=1;k<=b.length();k++) pre[k]=cur[k]; //TODO:滚动！memcpy();
+//                 //for(int k=1;k<=b.length();k++) pre[k]=cur[k]; //!:滚动！memcpy();
 //             }
 //         }
 //         cout<<dp[a.length()][b.length()]<<endl;
@@ -299,9 +299,9 @@
 //         //cout<<cur[b.length()]<<endl;
 //     }
 // }
-// //TODO:二维数组空间如何优化？ 滚动数组！
+// //!:二维数组空间如何优化？ 滚动数组！
 
-// //TODO:LCS->LIS 时间优化
+// //!:LCS->LIS 时间优化
 //先顺序扫描x串取其在y串的所有位置，然后将位置集反序列替换x串中所有对应字母，最终结果在每个反序列集中取一个数构成LIS(严格递增)
 // x:abdba; y:dbaaba
 // a(2,3,5) b(1,4) d(0)
@@ -313,11 +313,11 @@
 //如何求LCS个数？ g(i,j)为到达f(i,j)的匹配个数
 //根据f(i-1,j) f(i,j-1) f(i-1,j-1)与f(i,j)的比较 判断来源 来更新g(i,j)
 //其中a[i]==b[j] g(i,j)+=g(i-1,j-1) 若a[i]!=b[j]但f(i-1,j-1)==f(i,j) g(i,j)-=g(i-1,j-1)
-//TODO:？？？减去两种来源的重复通过辅助空间可看出
+//!:？？？减去两种来源的重复通过辅助空间可看出
 //ans:g(n,m) 
 
 
-//TODO:如何输出所有的LCS？
+//!:如何输出所有的LCS？
 //https://blog.csdn.net/lisonglisonglisong/article/details/41596309
 // #include<iostream>
 // #include<string>
@@ -386,7 +386,7 @@
 //             cout<<*it<<endl;
 //         }
 //     }
-//}//poj.org/problem?id=1934  TODO:TLE
+//}//poj.org/problem?id=1934  !:TLE
 
 
 
@@ -394,7 +394,7 @@
 
 
 
-//TODO:纸牌 level damage 如何转换01背包使得damage和最大？
+//!:纸牌 level damage 如何转换01背包使得damage和最大？
 
 
 
@@ -404,7 +404,7 @@
 
 
 
-//TODO:set 迭代器处理
+//!:set 迭代器处理
 // #include<iostream>
 // #include<set>
 // using namespace std;
@@ -437,7 +437,7 @@
 // }
 
 
-//TODO:dp[][]
+//!:dp[][]
 // #include<iostream>
 // using namespace std;
 // #define N 22
@@ -472,7 +472,7 @@
 
 
 
-TODO:Humble Numbers  HDU 1058
+!:Humble Numbers  HDU 1058
 number=2^k1 * 3^k2 * 5^k3 * 7^k4
 F(n)=min(F(i)*2,F(j)*3,F(k)*m),F(m)*7)
 #include<iostream>
@@ -512,7 +512,7 @@ int main()
 
 
 
-//TODO:棋盘分割 多维状态 dp[][][][][];
+//!:棋盘分割 多维状态 dp[][][][][];
 //http://poj.org/problem?id=1191
 /*
 #include<iostream>
@@ -609,7 +609,7 @@ int main()
 }
 */
 /*
-TODO:矩阵连乘 区间dp
+!:矩阵连乘 区间dp
 dp[i][j]=区间[i,j]之间计算的最小次数
 ans:dp[1][n]
 init:dp[i][i]=0;
@@ -638,7 +638,7 @@ int main()
 {
     while(cin>>n)
     {
-        //TODO:已测试！
+        //!:已测试！
         int i,j,k,r;
         for(i=1;i<=n+1;i++) cin>>p[i];
         for(i=1;i<=n;i++)
@@ -646,7 +646,7 @@ int main()
             dp[i][i]=0;
             for(j=i+1;j<=n;j++)
             {
-                dp[i][j]=inf;//TODO:半初始化
+                dp[i][j]=inf;//!:半初始化
             }
         }
         for(r=1;r<=n;r++)//间隔
@@ -675,7 +675,7 @@ int main()
 */
 
 
-//TODO:括号匹配问题 POJ2955
+//!:括号匹配问题 POJ2955
 /*
 #include<iostream>
 #include<string>
@@ -713,7 +713,7 @@ int main()
 }
 */
 
-//TODO:POJ 1141
+//!:POJ 1141
 /*
 #include<iostream>
 #include<string>
@@ -788,7 +788,7 @@ int main()
 
 
 
-//TODO: n<=1e19 m<=bit(n);  一个整数分割成m部分使其乘积和最大
+//!: n<=1e19 m<=bit(n);  一个整数分割成m部分使其乘积和最大
 /*
 #include<iostream>
 #include<string>
@@ -796,7 +796,7 @@ using namespace std;
 string str;
 int m;
 long long dp[N][N];
-//TODO:dp[i][j]：左起1位-i位 分割成j部分的最大乘积和
+//!:dp[i][j]：左起1位-i位 分割成j部分的最大乘积和
 //dp[i][j]=max(dp[i][j],dp[k][j-1]*num[k+1][j]);
 int main()
 {
@@ -809,7 +809,7 @@ int main()
 */
 
 
-//TODO:n(<1000)个数字成环 相邻两堆合并，得分为两合并堆数量之和  求最大，最小得分
+//!:n(<1000)个数字成环 相邻两堆合并，得分为两合并堆数量之和  求最大，最小得分
 //dp[i][j]:i-j个数字最优值
 /*
 dp[i][j]=max/min(dp[i][j],dp[i][k]+dp[k+1][j])+sum[i][j]//不成环
@@ -850,7 +850,7 @@ int main()
             {
                 int j=i+r;
                 dp[i][j]=inf;
-                //TODO:优化 四边形不等式
+                //!:优化 四边形不等式
                 for(int k=per[i][j-1];k<=per[i+1][j];k++)
                 {
                     int temp=dp[i][k]+dp[k+1][j]+sum[j]-sum[i-1];

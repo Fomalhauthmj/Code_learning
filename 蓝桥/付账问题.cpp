@@ -58,7 +58,7 @@ int main()
                 {
                     a[i]-=temp;
                     b[i]+=temp;
-                    //a[i]-=a[ptr];TODO:这种写法是错误的 因为会对ptr值造成修改 i=ptr a[ptr]=0;
+                    //a[i]-=a[ptr];!:这种写法是错误的 因为会对ptr值造成修改 i=ptr a[ptr]=0;
                     //b[i]+=a[ptr];
                 }
                 //更新e

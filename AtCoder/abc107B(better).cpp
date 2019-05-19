@@ -5,7 +5,7 @@ using namespace std;
 char map[size][size];
 bool row[size];
 bool col[size];
-//TODO:
+//!:
 int main()
 {
     ios::sync_with_stdio(false);

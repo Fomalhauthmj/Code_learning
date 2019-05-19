@@ -1,5 +1,5 @@
 //http://codeforces.com/problemset/problem/1057/A
-//TODO:1700
+//!:1700
 #include<iostream>
 #include<vector>
 using namespace std;

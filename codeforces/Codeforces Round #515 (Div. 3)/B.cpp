@@ -19,7 +19,7 @@ int main()
         {
             int next_h_pos=-1;
             //这里这个条件用来限定h的范围//如果在最后加热点右侧没有合适的h 那就只能在其左侧找且不能为上一个所选h
-            for(int i=n;i>max(0,last_warmed_pos-r+1);i--)//TODO:大于！！！！
+            for(int i=n;i>max(0,last_warmed_pos-r+1);i--)//!:大于！！！！
             {
                 if(a[i]==1&&i-r<=last_warmed_pos)//找到最右端的h使加热范围覆盖进入last_warmed_pos
                 //注意这里的i-r<=last_warmed_pos 所找h的最左未加热部分要确保已加热

@@ -24,7 +24,7 @@ int main()
     }   
 }
 /*
-TODO:Vector 模拟 TLE
+!:Vector 模拟 TLE
 #include<iostream>
 #include<vector>
 #include<algorithm>

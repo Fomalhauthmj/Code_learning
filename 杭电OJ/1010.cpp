@@ -4,7 +4,7 @@ using namespace std;
 int N,M,T;
 char maze[60][10];
 bool visit[60][10];
-int dx[5]={0,1,0,-1,0};//TODO:增量数组
+int dx[5]={0,1,0,-1,0};//!:增量数组
 int dy[5]={0,0,1,0,-1};
 int startx,starty,endx,endy;
 int walls;
@@ -13,8 +13,8 @@ bool running(int x,int y,int time)
     if(x==endx&&y==endy&&time==T) return true;//达到目标点
     if(x<1||x>N||y<1||y>M) return false;
     if(time>T) return false;
-    int temp=T-time-abs(endx-x)-abs(endy-y);//TODO:欧几里得距离
-    if(temp<0||temp&1) return false;//TODO:奇偶剪枝
+    int temp=T-time-abs(endx-x)-abs(endy-y);//!:欧几里得距离
+    if(temp<0||temp&1) return false;//!:奇偶剪枝
     for(int i=1;i<=4;i++)
     {
         int tempx=x+dx[i];

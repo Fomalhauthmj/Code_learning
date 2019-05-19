@@ -85,7 +85,7 @@ int main()
                             if((judge_2r[t][s]&&i>=2)||(judge_1r[t][r]&&i>=1)) continue;//出现不合法状态
                             if(s_cnt[t]+j>n) continue;//超过最大可放置数量
                             if((t&row[i])!=t) continue;
-                            //TODO:假设当前行状态row[i]=11101111 0为皇后位 1为可放置位
+                            //!:假设当前行状态row[i]=11101111 0为皇后位 1为可放置位
                             //t为放置后状态 放置后状态必须为t
                             dp[cur^1][s_cnt[t]+j][t][r]+=dp[cur][j][r][s];//将当前计算结果放入下一层
                             //0^1=1 1^1=0

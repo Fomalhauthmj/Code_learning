@@ -1,8 +1,8 @@
-//TODO:线段树
+//!:线段树
 
 //https://www.cnblogs.com/AC-King/p/7789013.html
 
-//TODO:http://acm.hdu.edu.cn/showproblem.php?pid=1166
+//!:http://acm.hdu.edu.cn/showproblem.php?pid=1166
 /*
 #include <iostream>
 #include <string>
@@ -100,7 +100,7 @@ int main()
     }
 }
 */
-//TODO:http://codeforces.com/problemset/problem/91/B
+//!:http://codeforces.com/problemset/problem/91/B
 /*
 #include<iostream>
 #include<algorithm>
@@ -168,8 +168,8 @@ int main()
     }
 }
 */
-//TODO:http://codeforces.com/problemset/problem/827/A
-//TODO:线段信息为 区间范围内元素是否已经确定
+//!:http://codeforces.com/problemset/problem/827/A
+//!:线段信息为 区间范围内元素是否已经确定
 
 /*
 #include<iostream>
@@ -242,7 +242,7 @@ int main()
 }
 */
 
-//TODO:http://codeforces.com/problemset/problem/19/D
+//!:http://codeforces.com/problemset/problem/19/D
 //以横坐标为区间 区间信息为相同横坐标下最大的纵坐标值 同时保存同横坐标下所有纵坐标值
 //同时进行离散化处理 取x值 排序去重
 /*
@@ -366,7 +366,7 @@ int main()
 }
 */
 //
-//TODO:区间更新
+//!:区间更新
 /*
 #include<iostream>
 #include<cstring>
@@ -454,7 +454,7 @@ int main()
     }
 }
 */
-//TODO:http://codeforces.com/problemset/problem/52/C
+//!:http://codeforces.com/problemset/problem/52/C
 /*
 #include<iostream>
 #include<string>
@@ -490,7 +490,7 @@ void push_up(int rt)
 {
    tree[rt]=min(tree[rt<<1],tree[rt<<1|1]);
 }
-void push_down(int rt)//TODO:update query 函数都需要下推
+void push_down(int rt)//!:update query 函数都需要下推
 {
     inc[rt<<1]+=inc[rt];
     inc[rt<<1|1]+=inc[rt];
@@ -614,7 +614,7 @@ int main()
 }
 */
 
-//TODO:http://codeforces.com/problemset/problem/138/C
+//!:http://codeforces.com/problemset/problem/138/C
 //离线 离散化 
 /*
 #include<iostream>
@@ -727,7 +727,7 @@ int main()
 }
 */
 
-//TODO:http://codeforces.com/problemset/problem/527/C
+//!:http://codeforces.com/problemset/problem/527/C
 /*
 #include<iostream>
 using namespace std;

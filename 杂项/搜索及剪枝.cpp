@@ -1,6 +1,6 @@
-//TODO:引例:二分查找
+//!:引例:二分查找
 
-//TODO:POJ 1226 Substrings 字符串排序按排序结果处理  string::find()!=string::npos
+//!:POJ 1226 Substrings 字符串排序按排序结果处理  string::find()!=string::npos
 //http://poj.org/problem?id=1226
 /*
 #include<iostream>
@@ -72,7 +72,7 @@ int main()
 }
 */
 
-//TODO: HDU 1239
+//!: HDU 1239
 //http://acm.hdu.edu.cn/showproblem.php?pid=1239
 /*
 #include<iostream>
@@ -109,7 +109,7 @@ int main()
     {
         if(m+a+b==0) break;
         long long temp=0;
-        int p,q;//TODO:最优证明 p,q<10000
+        int p,q;//!:最优证明 p,q<10000
         for(int i=0;i<p_cnt;i++)//p
         {
             if(prime[i]>m) break;
@@ -132,11 +132,11 @@ int main()
 }
 */
 
-//TODO:邻接矩阵
-//TODO:二维vector：vector<int> G[N]
-//TODO:邻接表
-//TODO:链式前向星
-//TODO:http://codeforces.com/problemset/problem/377/A
+//!:邻接矩阵
+//!:二维vector：vector<int> G[N]
+//!:邻接表
+//!:链式前向星
+//!:http://codeforces.com/problemset/problem/377/A
 /*
 #include<iostream>
 #include<cstring>
@@ -162,14 +162,14 @@ bool legal(int row,int col)
 void DFS(int row,int col)
 {
     if(need_find==0) return;
-    vis[row][col]=1;//TODO:注意这里条件及状态的书写
+    vis[row][col]=1;//!:注意这里条件及状态的书写
     flag[row][col]=1;
     need_find--;
     for(int i=0;i<4;i++)
     {
         int next_r=row+dir[i][0];
         int next_c=col+dir[i][1];
-        if(legal(next_r,next_c))//TODO:边界检查 多条件 易错！
+        if(legal(next_r,next_c))//!:边界检查 多条件 易错！
         {
             DFS(next_r,next_c);
         }
@@ -235,12 +235,12 @@ bool legal(int row,int col)
 void DFS(int row,int col)
 {
     if(k==0) return;
-    vis[row][col]=1;//TODO:注意这里条件及状态的书写
+    vis[row][col]=1;//!:注意这里条件及状态的书写
     for(int i=0;i<4;i++)
     {
         int next_r=row+dir[i][0];
         int next_c=col+dir[i][1];
-        if(legal(next_r,next_c))//TODO:边界检查 多条件 易错！
+        if(legal(next_r,next_c))//!:边界检查 多条件 易错！
         {
             DFS(next_r,next_c);
             if(k>0) 
@@ -281,7 +281,7 @@ int main()
         }
     }
 }
-//TODO:
+//!:
 3 4 2
 #...
 .#..
@@ -295,7 +295,7 @@ int main()
 //上述样例不成立
 */
 
-//TODO:http://codeforces.com/problemset/problem/120/F
+//!:http://codeforces.com/problemset/problem/120/F
 //如何求树的直径？两次DFS 从任意点出发 再以其最远距点为第二次起点寻找最远距点 就为树的直径
 
 /*
@@ -361,8 +361,8 @@ int main()
 }
 */
 
-//TODO:https://arc078.contest.atcoder.jp/tasks/arc078_b
-//Best:TODO:比较到1和到n的距离 离哪个点更近属于哪个点 距离相等属于先手！
+//!:https://arc078.contest.atcoder.jp/tasks/arc078_b
+//Best:!:比较到1和到n的距离 离哪个点更近属于哪个点 距离相等属于先手！
 /*
 #include<iostream>
 #include<vector>
@@ -421,7 +421,7 @@ int main()
     }
 }
 */
-//Other:TODO:用DFS确定1-n的路径分界点 然后搜索分界点的子结点数
+//Other:!:用DFS确定1-n的路径分界点 然后搜索分界点的子结点数
 /*
 #include<iostream>
 #include<vector>
@@ -496,7 +496,7 @@ int main()
     }
 }
 */
-//TODO:http://codeforces.com/problemset/problem/700/B
+//!:http://codeforces.com/problemset/problem/700/B
 /*
 #include<iostream>
 #include<vector>
@@ -552,7 +552,7 @@ int main()
 }
 */
 
-//TODO:大臣的旅费（第四届A组预赛题10）
+//!:大臣的旅费（第四届A组预赛题10）
 /*
 #include<iostream>
 #include<vector>
@@ -607,8 +607,8 @@ int main()
 }
 */
 
-//TODO:剪格子（第四届A组预赛题9）
-//TODO:DFS_all_possible_solution
+//!:剪格子（第四届A组预赛题9）
+//!:DFS_all_possible_solution
 /*
 3 3
 1 2 1
@@ -735,8 +735,8 @@ int main()
 }
 */
 
-//TODO:http://lx.lanqiao.cn/problem.page?gpid=T36
-//TODO:网络寻路
+//!:http://lx.lanqiao.cn/problem.page?gpid=T36
+//!:网络寻路
 /*
 #include<iostream>
 #include<vector>
@@ -802,7 +802,7 @@ int main()
     }
 }
 */
-//TODO:从边的角度出发 枚举边的贡献 求和 复杂度极小
+//!:从边的角度出发 枚举边的贡献 求和 复杂度极小
 /*
 #include<iostream>
 #include<vector>
@@ -843,9 +843,9 @@ int main()
 }
 */
 
-//TODO:奇偶剪枝
+//!:奇偶剪枝
 
-//TODO:http://acm.hdu.edu.cn/showproblem.php?pid=1241
+//!:http://acm.hdu.edu.cn/showproblem.php?pid=1241
 //求联通子图
 /*
 #include<iostream>
@@ -984,7 +984,7 @@ int main()
 }
 */
 
-//TODO:剪邮票 ans：116
+//!:剪邮票 ans：116
 /*
 #include<iostream>
 #include<cstring>
@@ -1133,8 +1133,8 @@ int main()
 }
 */
 
-//TODO:BFS
-//TODO:http://acm.hdu.edu.cn/showproblem.php?pid=1372
+//!:BFS
+//!:http://acm.hdu.edu.cn/showproblem.php?pid=1372
 /*
 #include<string>
 #include<iostream>
@@ -1204,7 +1204,7 @@ int main()
 }
 */
 
-//TODO:https://arc078.contest.atcoder.jp/tasks/arc078_b
+//!:https://arc078.contest.atcoder.jp/tasks/arc078_b
 /*
 #include<iostream>
 #include<vector>
@@ -1272,7 +1272,7 @@ int main()
 }
 */
 
-//TODO:http://codeforces.com/problemset/problem/689/B
+//!:http://codeforces.com/problemset/problem/689/B
 /*
 #include<iostream>
 #include<queue>
@@ -1336,12 +1336,12 @@ int main()
 }
 */
 
-//TODO:http://codeforces.com/contest/208/problem/C
-//TODO:最短路条数,每边有多少最短路经过,枚举放置点位置
-//TODO:修改BFS 分别获得1->k 和 n->k 的最短路数 乘积即为经过k点的最短路数 乘法原理
-//TODO:dis_from_1[],dis_from_n[] 若dis_from_1[i]+dis_from_n[i]==最短路长 则i在最短路上，缩小范围
+//!:http://codeforces.com/contest/208/problem/C
+//!:最短路条数,每边有多少最短路经过,枚举放置点位置
+//!:修改BFS 分别获得1->k 和 n->k 的最短路数 乘积即为经过k点的最短路数 乘法原理
+//!:dis_from_1[],dis_from_n[] 若dis_from_1[i]+dis_from_n[i]==最短路长 则i在最短路上，缩小范围
 //DFS(限制路长和方向)求出最短路径数
-//TODO:TLE on test18
+//!:TLE on test18
 /*
 #include<iostream>
 #include<queue>
@@ -1448,7 +1448,7 @@ int main()
 }
 */
 
-//TODO: 修改BFS
+//!: 修改BFS
 /*
 #include<iostream>
 #include<queue>
@@ -1559,7 +1559,7 @@ int main()
 }
 */
 
-//TODO:
+//!:
 //http://codeforces.com/problemset/problem/796/D
 /*
 #include<iostream>
@@ -1720,7 +1720,7 @@ int main()
 }
 */
 
-//TODO:Nim博弈 能从某一状态到P状态则该状态为N状态 从某一状态的后继状态都为N状态则该状态为P状态
+//!:Nim博弈 能从某一状态到P状态则该状态为N状态 从某一状态的后继状态都为N状态则该状态为P状态
 //http://codeforces.com/gym/101246/problem/D
 /*
 #include<iostream>
@@ -1798,8 +1798,8 @@ int main()
 }
 */
 
-//TODO:https://codeforces.com/contest/676/problem/D
-//TODO:五种状态 4个方向+旋转 旋转次数不可以为全局变量 应与每个状态相关
+//!:https://codeforces.com/contest/676/problem/D
+//!:五种状态 4个方向+旋转 旋转次数不可以为全局变量 应与每个状态相关
 /*
 #include <iostream>
 #include <cstring>
@@ -1924,7 +1924,7 @@ int main()
 }
 */
 
-//TODO:http://codeforces.com/contest/1037/problem/D
+//!:http://codeforces.com/contest/1037/problem/D
 
 #include<iostream>
 #include<vector>

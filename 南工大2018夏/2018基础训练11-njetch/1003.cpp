@@ -1,7 +1,7 @@
-//TODO:完全背包:必须恰好装满
+//!:完全背包:必须恰好装满
 
 
-//TODO:解法1 基于完全背包装满下的最大价值
+//!:解法1 基于完全背包装满下的最大价值
 /*
 #include<iostream>
 #include<cstring>
@@ -44,7 +44,7 @@ int main()
 }
 */
 
-//TODO:参考解法
+//!:参考解法
 #include<iostream>
 #include<cstring>
 #include<math.h>

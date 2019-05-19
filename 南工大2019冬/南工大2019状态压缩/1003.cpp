@@ -43,7 +43,7 @@ int main()
                     //未做过
                     //cout<<"will make:"<<j<<endl;
                     if(((i&make_need[j])==make_need[j])&&left_E[i]>=energy[j])
-                    //TODO:注意这里条件的书写
+                    //!:注意这里条件的书写
                     {
                         //cout<<"have energy and haven't make it before"<<endl;
                         //满足前置条件且剩余能量满足要求

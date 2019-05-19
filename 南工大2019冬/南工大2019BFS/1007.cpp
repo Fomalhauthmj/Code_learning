@@ -36,7 +36,7 @@ bool BFS(int sr,int sc,int er,int ec)
     for(int i=0;i<4;i++) vis[sr][sc][i]=1;
     node start;
     start.r=sr,start.c=sc;
-    start.t=-1;//TODO:注意-1的初始化
+    start.t=-1;//!:注意-1的初始化
     start.dir=-1;
     Q.push(start);
     int ans=inf;

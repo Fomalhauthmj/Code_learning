@@ -40,19 +40,19 @@ bool BFS()
         {
             int nr=now.r+dir[i][0];
             int nc=now.c+dir[i][1];
-            if(now.k==p.k&&now.r==p.r&&now.c==p.c&&now.t<=t)//TODO:t时刻内
+            if(now.k==p.k&&now.r==p.r&&now.c==p.c&&now.t<=t)//!:t时刻内
             {
                 return true;
             }
             if(legal(now.k,nr,nc))
             {
                 vis[now.k][nr][nc]=1;
-                if(grid[now.k][nr][nc]=='.'||grid[now.k][nr][nc]=='P')//TODO:注意这里的P
+                if(grid[now.k][nr][nc]=='.'||grid[now.k][nr][nc]=='P')//!:注意这里的P
                 {
                     //cout<<"next:"<<now.k<<" "<<nr<<" "<<nc<<" "<<now.t+1<<endl;
                     Q.push(node(now.k,nr,nc,now.t+1));
                 }
-                else if(grid[now.k][nr][nc]=='#'&&grid[1-now.k][nr][nc]!='*'&&grid[1-now.k][nr][nc]!='#')//TODO:注意排除##
+                else if(grid[now.k][nr][nc]=='#'&&grid[1-now.k][nr][nc]!='*'&&grid[1-now.k][nr][nc]!='#')//!:注意排除##
                 {
                     vis[1-now.k][nr][nc]=1;
                     //cout<<"next:"<<1-now.k<<" "<<nr<<" "<<nc<<" "<<now.t+1<<endl;

@@ -1,4 +1,4 @@
-//TODO:GNU C++11	Accepted	951 ms	9400 KB
+//!:GNU C++11	Accepted	951 ms	9400 KB
 /*
 #include<iostream>
 #include<map>
@@ -69,7 +69,7 @@ int main()
 }
 */
 
-//TODO:GNU C++11	Accepted	249 ms	9200 KB
+//!:GNU C++11	Accepted	249 ms	9200 KB
 #include<iostream>
 #include<map>
 #include<vector>

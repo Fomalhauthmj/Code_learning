@@ -1,4 +1,4 @@
-//TODO:完全背包
+//!:完全背包
 #include<iostream>
 #include<cstring>
 using namespace std;
@@ -36,7 +36,7 @@ int main()
                 }
             }
 
-            //TODO:两种循环方式都可以
+            //!:两种循环方式都可以
         }
         bool flag=false;
         for(int i=0;i<=m;i++)//消耗忍耐度由低到高

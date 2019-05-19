@@ -49,7 +49,7 @@ void DFS(long long k,long long t,long long s,long long n)			//利用容斥原理
     DFS(k+1,t,s,n);
     DFS(k+1,t+1,s*factors[k],n);
 }
-//WA?  TODO:int->long long 溢出
+//WA?  !:int->long long 溢出
 long long get_num(long long num)
 {
     //根据容斥原理

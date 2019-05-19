@@ -24,7 +24,7 @@ int mod(int x)
         x += 9;
     return x % 9;
 }
-//todo  BFS???
+//!  BFS???
 int find_0(string str)
 {
     for (int i = 0; i < 9; i++)

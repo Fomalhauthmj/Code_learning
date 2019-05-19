@@ -30,7 +30,7 @@ bool DFS(int k,int cur_len,int start)
                 if(DFS(k,cur_len+len[i],i+1)) return true;
                 vis[i]=0;
                 pre=len[i];
-                if(cur_len==0) return false; //TODO:强剪枝
+                if(cur_len==0) return false; //!:强剪枝
             }
         }
     }

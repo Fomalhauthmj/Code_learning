@@ -24,7 +24,7 @@ int Union(string a,string b)
     if(fa!=fb)
     {
         M[fa].pre=fb;
-        M[fb].num+=M[fa].num;//TODO:lazy只要更新根结点 
+        M[fb].num+=M[fa].num;//!:lazy只要更新根结点 
         return M[fb].num;
     }
     return M[fa].num;

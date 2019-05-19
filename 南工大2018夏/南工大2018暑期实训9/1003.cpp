@@ -1,7 +1,7 @@
 //m and n, the number of rows and columns
 //If m = 0 it signals the end of the input; otherwise 1 <= m <= 100 and 1 <= n <= 100
 //* :缺乏  @：油 八个方向相邻属于同一个
-/* TODO:并查集
+/* !:并查集
 #include<iostream>
 using namespace std;
 #define size 105
@@ -34,7 +34,7 @@ void Union(int r1,int c1,int r2,int c2)
     if(map[r1][c1]=='@'&&map[r2][c2]=='@') flag=1;
     if(flag==1)
     {
-        int p1=Find(r1*n+c1);  //注意是r1*n+c1  TODO:WA!!!
+        int p1=Find(r1*n+c1);  //注意是r1*n+c1  !:WA!!!
         int p2=Find(r2*n+c2);
         if(p1!=p2)
         {
@@ -79,7 +79,7 @@ int main()
 */
 
 
-//TODO:DFS
+//!:DFS
 #include<iostream>
 #include<cstring>
 using namespace std;

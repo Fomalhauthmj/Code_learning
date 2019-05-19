@@ -128,7 +128,7 @@ using namespace std;
 int matrix[7][7];
 int dir[4][2]={{1,0},{0,-1},{0,1},{-1,0}};
 int kinds=0;
-// todo 搜索剪切线
+// ! 搜索剪切线
 void DFS(int r,int c)
 {
     if(r==0||c==0||r==6||c==6)
@@ -160,7 +160,7 @@ int main()
 }
 */
 
-//TODO:由于是按格子边线剪成两块 所以以下矩阵DFS做法错误
+//!:由于是按格子边线剪成两块 所以以下矩阵DFS做法错误
 // #include<iostream>
 // #include<cstring>
 // using namespace std;

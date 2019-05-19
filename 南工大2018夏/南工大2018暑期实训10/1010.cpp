@@ -6,7 +6,7 @@ using namespace std;
 #define size 1010
 string a,b,c;
 bool dp[size][size];
-//TODO:dp[i][j]= (dp[i-1][j]&&(a[i]==c[i+j]))||(dp[i][j-1]&&(b[j]==c[i+j]))  a的前i位b的前j位
+//!:dp[i][j]= (dp[i-1][j]&&(a[i]==c[i+j]))||(dp[i][j-1]&&(b[j]==c[i+j]))  a的前i位b的前j位
 //如果A、B可以组成C，那么，C最后一个字母，必定是 A 或 B 的最后一个字母组成。
 //C去除除最后一位，就变成是否可以求出 A-1和B 或者 A与B-1 与 是否可以构成 C-1
 int main()

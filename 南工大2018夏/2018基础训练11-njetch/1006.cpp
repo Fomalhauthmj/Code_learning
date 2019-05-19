@@ -1,4 +1,4 @@
-//TODO:最大多子段和
+//!:最大多子段和
 #include<iostream>
 #include<cstring>
 #include<algorithm>

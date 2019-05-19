@@ -1,7 +1,7 @@
-//TODO:0-1背包
+//!:0-1背包
 
 
-//TODO:复习  0-1背包 回溯法
+//!:复习  0-1背包 回溯法
 // #include<iostream>
 // using namespace std;
 // #define N 15
@@ -115,7 +115,7 @@
 //f[j]=max(f[j],f[weight-w[i]]+v[i]); 
 
 //若要求刚好装满的最优解 初始化处理 dp[0]=0 else dp[i]=-inf
-//TODO:已测试
+//!:已测试
 // #include<iostream>
 // using namespace std;
 // #define inf 0x3f3f3f3f
@@ -146,7 +146,7 @@
 //15
 
 
-//TODO:完全背包
+//!:完全背包
 #include<iostream>
 #include<cstring>
 using namespace std;
@@ -172,9 +172,9 @@ int main()
         cout<<dp[weight]<<endl;
     }
 }
-// //TODO:优化：for(i:1->n) for(j:0->v)  一维正序
+// //!:优化：for(i:1->n) for(j:0->v)  一维正序
 
 
 
-//TODO:分组背包 for(组：k) for(空间：v->0) for(组属物品:i) 一维空间倒序确保状态正确
-//TODO:多重背包 https://blog.csdn.net/yoer77/article/details/70943462
+//!:分组背包 for(组：k) for(空间：v->0) for(组属物品:i) 一维空间倒序确保状态正确
+//!:多重背包 https://blog.csdn.net/yoer77/article/details/70943462

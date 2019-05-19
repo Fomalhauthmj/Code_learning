@@ -50,7 +50,7 @@ for (int i = 1; i < 2 * n; i++)
         start[i] = i;
     }
 }
-//TODO:80%
+//!:80%
 long long ans = dp[0];
 for (int i = 0; i < 2 * n; i++)
 {

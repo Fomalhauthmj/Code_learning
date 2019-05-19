@@ -43,7 +43,7 @@ int main()
 
 
 
-//TODO:组合数取余+逆元
+//!:组合数取余+逆元
 #include<iostream>
 using namespace std;
 #define N 100010

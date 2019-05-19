@@ -56,7 +56,7 @@ int main()
                 //单点修改
                 edit(l,-a[l]+r,c1);
                 edit(l,l*(r-a[l]),c2);
-                a[l]=r;//TODO:注意这里的修改
+                a[l]=r;//!:注意这里的修改
             }
         }
     }

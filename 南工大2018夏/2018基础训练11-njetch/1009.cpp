@@ -1,4 +1,4 @@
-//TODO:区间DP
+//!:区间DP
 #include<iostream>
 #include<cstring>
 using namespace std;
@@ -8,7 +8,7 @@ using namespace std;
 int n;
 long long dp[N][N];//dp[i][j] 坐满[i,j]范围内的椅子方案数
 bool c[N];//颜色  0:blue  1:red
-long long a[N][N]; //TODO:用二维数组来表示状态 而非简单的一维数组
+long long a[N][N]; //!:用二维数组来表示状态 而非简单的一维数组
 /*
 He won’t sit on the chair if the chair is satisfied the following three conditions.//满足下列所有三个条件则不坐这个椅子
 1.The chair has both left and right adjacent chairs.//当前椅子有左右相邻椅子，即非首尾椅子
@@ -25,7 +25,7 @@ void init_a(int n)
     a[0][0]=1;
     for(int i=1;i<=n;i++)
     {
-        a[i][0]=1;//TODO:初始化
+        a[i][0]=1;//!:初始化
         //C(n,0)=1 C(n,n)=1 C(0,0)=1
         for(int j=1;j<=i;j++)
         {

@@ -23,7 +23,7 @@ double Dp(int S)
     int i=0;//固定一个点
     while((S&(1<<i))==0) i++;
     //例如 有 a b   c d 两次射击 那么 先a b再c d  和先c d 再a b 效果一样
-    for(int j=i+1;j<n;j++)//  先选取i之前的点导致 TODO:内存超限  例如1-2  2-1 重复搜索了
+    for(int j=i+1;j<n;j++)//  先选取i之前的点导致 !:内存超限  例如1-2  2-1 重复搜索了
     {
         //确定两个相异点 并且S中包含i,j 
         //cout<<"cur:"<<S<<" "<<i<<" "<<j<<endl;
@@ -66,7 +66,7 @@ int main()
 
 
 /*
-//TODO:正推 TLE
+//!:正推 TLE
 #include<bits/stdc++.h>
 using namespace std;
 #define N 20

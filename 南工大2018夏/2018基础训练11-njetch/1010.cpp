@@ -16,7 +16,7 @@ bool cmp(const node &n1,const node &n2)
     else n1.left<n2.left;
 }
 node each[N];
-int dp[N][N];//dp[i][j] TODO:在1-i范围内 选择j个不同邮票集 可获得的最大不同邮票种类
+int dp[N][N];//dp[i][j] !:在1-i范围内 选择j个不同邮票集 可获得的最大不同邮票种类
 int main()
 {
     ios::sync_with_stdio(false);

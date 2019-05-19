@@ -1,4 +1,4 @@
-//TODO:此题的b范围未知！
+//!:此题的b范围未知！
 #include<iostream>
 #include<algorithm>
 #include<cstring>
@@ -96,7 +96,7 @@ int main()
 
 
 
-/*//TODO:WA
+/*//!:WA
 #include<iostream>
 #include<vector>
 #include<iomanip>
@@ -174,7 +174,7 @@ int main()
                  cout<<i<<" "<<j<<" "<<dp[i][j].now_max_bp<<endl;
             }
         }
-        //TODO:此种思路在处理时对于前面忽略的选择不能进行回顾 WA！  实质是贪心并非dp
+        //!:此种思路在处理时对于前面忽略的选择不能进行回顾 WA！  实质是贪心并非dp
         double ans=0;
         for(int i=0;i<V[n].size();i++) ans=max(ans,dp[n][i].now_max_bp);
         cout<<fixed<<setprecision(3)<<ans<<endl;

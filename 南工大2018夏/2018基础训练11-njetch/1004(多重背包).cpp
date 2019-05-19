@@ -1,4 +1,4 @@
-//TODO:http://poj.org/problem?id=1014
+//!:http://poj.org/problem?id=1014
 
 #include<iostream>
 #include<algorithm>
