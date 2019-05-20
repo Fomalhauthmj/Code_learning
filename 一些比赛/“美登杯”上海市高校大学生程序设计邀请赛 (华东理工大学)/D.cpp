@@ -11,24 +11,45 @@ int main()
     cin.tie(0);
     cin >> n;
     memset(ans, 0, sizeof(ans));
+    int flag = 1;
     for (int i = 1; i <= n; i++)
     {
         cin >> a[i];
         a[i + n] = a[i];
+        if (a[i] > 1)
+            flag = 0;
     }
-    for (int i = 2*n; i >=1; i--)
+    if (flag)
+    {
+        //全为1
+        if (n & 1)
+        {
+            for (int i = 1; i <= n; i++)
+            {
+                cout << "First" << endl;
+            }
+        }
+        else
+        {
+            for (int i = 1; i <= n; i++)
+            {
+                cout << "Second" << endl;
+            }
+        }
+        return 0;
+    }
+    for (int i = 2 * n; i >= 1; i--)
     {
         if (a[i] > 1)
         {
-            ans[i]=1;
+            ans[i] = 1;
             //必胜
-            int j = i;
-            while (a[j] == 1 && j <= i + n - 1)
+            int j = i - 1;
+            while (a[j] == 1 && j >= 1)
             {
                 ans[j] = !ans[j + 1];
-                j++;
+                j--;
             }
-            i = j - 1;
         }
     }
     for (int i = 1; i <= n; i++)

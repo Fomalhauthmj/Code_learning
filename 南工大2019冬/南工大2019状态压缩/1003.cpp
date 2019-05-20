@@ -1,4 +1,5 @@
-#include<bits/stdc++.h>
+#include<iostream>
+#include<string.h>
 using namespace std;
 #define N 17
 int n,E;
