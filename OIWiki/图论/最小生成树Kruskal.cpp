@@ -2,7 +2,7 @@
 #include <iostream>
 #include <queue>
 using namespace std;
-const long long MAXN=2e5+20;
+const long long MAXN = 2e5 + 20;
 struct Edge
 {
     long long u, v, w;
@@ -27,26 +27,28 @@ long long n; //点
 long long m; //边
 long long Kruskal()
 {
-    memset(fa,-1,sizeof(fa));
-    long long cnt=0;
-    long long ans=0;
-    long long fu,fv;
-    while(!q.empty())
+    memset(fa, -1, sizeof(fa));
+    long long cnt = 0;
+    long long ans = 0;
+    long long fu, fv;
+    while (!q.empty())
     {
-        Edge now=q.top();
+        Edge now = q.top();
         q.pop();
-        fu=Find(now.u);
-        fv=Find(now.v);
-        if(fu!=fv)
+        fu = Find(now.u);
+        fv = Find(now.v);
+        if (fu != fv)
         {
             //cout<<"add:"<<now.u<<" "<<now.v<<" "<<now.w<<endl;
-            ans+=now.w;
-            fa[fu]=fv;
+            ans += now.w;
+            fa[fu] = fv;
             cnt++;
         }
-        if(cnt==n-1) break;
+        if (cnt == n - 1)
+            break;
     }
-    if(cnt<n-1) return -1;
+    if (cnt < n - 1)
+        return -1;
     return ans;
 }
 int main()

@@ -102,8 +102,8 @@ int main()
 */
 //!:http://codeforces.com/problemset/problem/91/B
 /*
-#include<iostream>
 #include<algorithm>
+#include<iostream>
 using namespace std;
 #define N 100010
 int n;
@@ -172,9 +172,9 @@ int main()
 //!:线段信息为 区间范围内元素是否已经确定
 
 /*
+#include<cstring>
 #include<iostream>
 #include<string>
-#include<cstring>
 #include<vector>
 using namespace std;
 #define N 100010
@@ -246,11 +246,11 @@ int main()
 //以横坐标为区间 区间信息为相同横坐标下最大的纵坐标值 同时保存同横坐标下所有纵坐标值
 //同时进行离散化处理 取x值 排序去重
 /*
-#include <iostream>
-#include <string>
-#include <cstring>
 #include <algorithm>
+#include <cstring>
+#include <iostream>
 #include <set>
+#include <string>
 using namespace std;
 #define N 200010
 int n, m;
@@ -368,8 +368,8 @@ int main()
 //
 //!:区间更新
 /*
-#include<iostream>
 #include<cstring>
+#include<iostream>
 using namespace std;
 #define N 100010
 int tree[N<<2];//存储区间和
@@ -456,10 +456,10 @@ int main()
 */
 //!:http://codeforces.com/problemset/problem/52/C
 /*
+#include<algorithm>
+#include<cstring>
 #include<iostream>
 #include<string>
-#include<cstring>
-#include<algorithm>
 using namespace std;
 #define N 200020
 #define inf 0x3f3f3f3f3f
@@ -615,11 +615,11 @@ int main()
 */
 
 //!:http://codeforces.com/problemset/problem/138/C
-//离线 离散化 
+//离线 离散化
 /*
-#include<iostream>
 #include<algorithm>
 #include<iomanip>
+#include<iostream>
 using namespace std;
 #define N 100010
 struct tree
