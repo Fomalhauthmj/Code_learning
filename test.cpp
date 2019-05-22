@@ -1,82 +1,92 @@
-//! : help jimmy POJ 1661 只要计算横向移动距离
-
 #include <algorithm>
 #include <cstring>
 #include <iostream>
+#include <map>
 using namespace std;
-#define size 1010
-#define inf 99999
-struct node
+const int MAXN = 110;
+const int INF = 10000000;
+
+struct Node
 {
-    int lx;
-    int rx;
-    int h;
-    bool operator<(const node &n) const
+    int s[9];
+    Node()
     {
-        return h < n.h;
+        memset(s, 0, sizeof(s));
+    }
+    bool operator==(const Node &a) const
+    {
+        for (int i = 0; i < 9; i++)
+        {
+            if (s[i] != a.s[i])
+                return false;
+        }
+        return true;
+    }
+    bool operator<(const Node &a) const
+    {
+        for (int i = 0; i < 9; i++)
+        {
+            if (s[i] < a.s[i])
+                return true;
+            else if (s[i] > a.s[i])
+                return false;
+        }
+        return false;
     }
 };
-node layer[size];
-int n, Max;
-int dp[size][2];
-int down(int x, int st, int h)
+
+int n, s, ls, n1s, n2s, sta, des, cnt, G[MAXN][MAXN], dis[MAXN][MAXN];
+map<Node, int> mp;
+
+int floyd()
 {
-    for (int i = st; i >= 0; i--)
+    int ans = INF;
+    memcpy(dis, G, sizeof(G));
+    for (int k = 1; k <= cnt; k++)
     {
-        if (st == 0)
-            return 0;
-        if (h - layer[i].h > Max)
-            return -1;
-        if (x < layer[st].rx && x > layer[st].lx)
-            return i;
+        for (int i = 1; i < k; i++)
+            for (int j = i + 1; j < k; j++)
+            {
+                ans = min(ans, dis[i][j] + G[i][k] + G[k][j]);
+            }
+        for (int i = 1; i <= cnt; i++)
+        {
+            for (int j = 1; j <= cnt; j++)
+            {
+                dis[i][j] = min(dis[i][j], dis[i][k] + dis[k][j]);
+            }
+        }
     }
+    return ans;
 }
+
 int main()
 {
-    ios::sync_with_stdio(false);
-    int sx, sy;
-    cin >> n >> Max >> sx >> sy;
-    layer[0].lx = layer[0].rx = sx;
-    layer[0].h = sy;
-    layer[1].lx = 0;
-    layer[1].rx = 0;
-    layer[1].h = 0;
-    for (int i = 2; i <= n + 1; i++)
+    for (int i = 0; i < MAXN; i++)
     {
-        cin >> layer[i].h >> layer[i].lx >> layer[i].rx;
+        fill(G[i], G[i] + MAXN, INF);
     }
-    sort(layer, layer + n + 2);
-    int lx, rx;
-    int downl, downr;
-    memset(dp, 0, sizeof(dp));
-    for (int i = 1; i <= n + 1; i++)
+    cin >> n;
+    for (int i = 1; i <= n; i++)
     {
-        lx = layer[i].lx;
-        rx = layer[i].rx; //从最低到最高 如果从最高到最低?
-        downl = down(lx, i - 1, layer[i].h);
-        downr = down(rx, i - 1, layer[i].h);
-        cout << "downl:" << downl << " downr: " << downr << endl;
-        if (downl > 0)
-        {
-            dp[i][0] = min((dp[downl][0] + lx - layer[downl].lx),
-                           (dp[downl][1] + layer[downl].rx - lx));
-        }
-        else if (downl == 0)
-            dp[i][0] = 0;
-        else
-            dp[i][0] = inf;
-        if (downr > 0)
-        {
-            dp[i][1] = min(dp[downr][0] + rx - layer[downr].lx,
-                           dp[downr][1] + layer[downr].rx - rx);
-        }
-        else if (downr == 0)
-            dp[i][1] = 0;
-        else
-            dp[i][1] = inf;
-        cout << "i:" << i << " dp[0]: " << dp[i][0] << " dp[1]: " << dp[i][1] << endl;
+        Node f1, f2;
+        cin >> s >> ls >> n1s >> n2s;
+        f1.s[8] = f2.s[8] = s;
+        while (n1s--)
+            cin >> f1.s[n1s];
+        sort(f1.s, f1.s + 9);
+        if (mp[f1] == 0)
+            mp[f1] = ++cnt;
+        while (n2s--)
+            cin >> f2.s[n2s];
+        sort(f2.s, f2.s + 9);
+        if (mp[f2] == 0)
+            mp[f2] = ++cnt;
+        sta = mp[f1];
+        des = mp[f2];
+        G[sta][des] = G[des][sta] = ls;
     }
-    cout << dp[n + 1][0] + sy << endl;
-    cout << dp[n + 1][1] + sy << endl;
+    cout << floyd() << endl;
     system("pause");
-} //  WA!!
+    return 0;
+}
