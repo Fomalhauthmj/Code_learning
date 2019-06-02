@@ -1,92 +1,109 @@
+/****************************************************
+* author:xiefubao
+*******************************************************/
+#pragma comment(linker, "/STACK:102400000,102400000")
 #include <algorithm>
+#include <cmath>
+#include <cstdio>
+#include <cstdlib>
 #include <cstring>
 #include <iostream>
 #include <map>
+#include <queue>
+#include <set>
+#include <stack>
+#include <string.h>
+#include <vector>
+
 using namespace std;
-const int MAXN = 110;
-const int INF = 10000000;
 
-struct Node
+#define eps 1e-8
+typedef long long LL;
+
+char s[30];
+int per;
+int len = 0;
+LL fac[21];
+struct point
 {
-    int s[9];
-    Node()
-    {
-        memset(s, 0, sizeof(s));
-    }
-    bool operator==(const Node &a) const
-    {
-        for (int i = 0; i < 9; i++)
-        {
-            if (s[i] != a.s[i])
-                return false;
-        }
-        return true;
-    }
-    bool operator<(const Node &a) const
-    {
-        for (int i = 0; i < 9; i++)
-        {
-            if (s[i] < a.s[i])
-                return true;
-            else if (s[i] > a.s[i])
-                return false;
-        }
-        return false;
-    }
-};
-
-int n, s, ls, n1s, n2s, sta, des, cnt, G[MAXN][MAXN], dis[MAXN][MAXN];
-map<Node, int> mp;
-
-int floyd()
+    char c;
+    int x;
+} points[100];
+int tot = 0;
+void init()
 {
-    int ans = INF;
-    memcpy(dis, G, sizeof(G));
-    for (int k = 1; k <= cnt; k++)
-    {
-        for (int i = 1; i < k; i++)
-            for (int j = i + 1; j < k; j++)
-            {
-                ans = min(ans, dis[i][j] + G[i][k] + G[k][j]);
-            }
-        for (int i = 1; i <= cnt; i++)
-        {
-            for (int j = 1; j <= cnt; j++)
-            {
-                dis[i][j] = min(dis[i][j], dis[i][k] + dis[k][j]);
-            }
-        }
-    }
-    return ans;
+    fac[0] = 1;
+    for (LL i = 1; i <= 20; i++)
+        fac[i] = fac[i - 1] * i;
 }
-
+LL cal()
+{
+    LL tool = 1;
+    int t = 0;
+    for (int i = 0; i <= tot; i++)
+        t += points[i].x, tool *= fac[points[i].x];
+    return fac[t] / tool;
+}
+void solve()
+{
+    if (cal() < per)
+    {
+        printf("Impossible\n");
+        return;
+    }
+    for (int i = 0; i < len; i++)
+    {
+        LL tool = 0;
+        int j;
+        for (j = 0; j <= tot; j++)
+        {
+            points[j].x--;
+            LL now = cal();
+            tool += now;
+            if (tool >= per)
+            {
+                putchar(points[j].c);
+                per -= tool - now;
+                break;
+            }
+            points[j].x++;
+        }
+        if (points[j].x == 0)
+        {
+            for (int k = j; k < tot; k++)
+                points[k] = points[k + 1];
+            tot--;
+        }
+    }
+    puts("");
+}
 int main()
 {
-    for (int i = 0; i < MAXN; i++)
+    int t;
+    cin >> t;
+    int kk = 1;
+    init();
+    while (t--)
     {
-        fill(G[i], G[i] + MAXN, INF);
+        tot = 0;
+        scanf("%s%d", s, &per);
+        len = strlen(s);
+        sort(s, s + len);
+        points[tot].c = s[0];
+        points[tot].x = 1;
+        for (int i = 1; i < len; i++)
+        {
+            if (s[i] == s[i - 1])
+                points[tot].x++;
+            else
+            {
+                points[++tot].c = s[i];
+                points[tot].x = 1;
+            }
+        }
+        printf("Case %d: ", kk++);
+        solve();
     }
-    cin >> n;
-    for (int i = 1; i <= n; i++)
-    {
-        Node f1, f2;
-        cin >> s >> ls >> n1s >> n2s;
-        f1.s[8] = f2.s[8] = s;
-        while (n1s--)
-            cin >> f1.s[n1s];
-        sort(f1.s, f1.s + 9);
-        if (mp[f1] == 0)
-            mp[f1] = ++cnt;
-        while (n2s--)
-            cin >> f2.s[n2s];
-        sort(f2.s, f2.s + 9);
-        if (mp[f2] == 0)
-            mp[f2] = ++cnt;
-        sta = mp[f1];
-        des = mp[f2];
-        G[sta][des] = G[des][sta] = ls;
-    }
-    cout << floyd() << endl;
     system("pause");
     return 0;
 }
