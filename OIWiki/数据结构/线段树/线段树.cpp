@@ -23,14 +23,11 @@ void PushUp(int rt)
 }
 void PushDown(int ls, int rs, int rt)
 {
-    if (tree[rt].lazy)
-    {
-        tree[ls(rt)].val += ls * tree[rt].lazy;
-        tree[rs(rt)].val += rs * tree[rt].lazy;
-        tree[ls(rt)].lazy += tree[rt].lazy;
-        tree[rs(rt)].lazy += tree[rt].lazy;
-        tree[rt].lazy = 0;
-    }
+    tree[ls(rt)].val += ls * tree[rt].lazy;
+    tree[rs(rt)].val += rs * tree[rt].lazy;
+    tree[ls(rt)].lazy += tree[rt].lazy;
+    tree[rs(rt)].lazy += tree[rt].lazy;
+    tree[rt].lazy = 0;
 }
 void Build(int left, int right, int rt)
 {
