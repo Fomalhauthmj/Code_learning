@@ -11,7 +11,7 @@ using namespace std;
 #define ll long long
 #define inf 0x3f3f3f3f
 const int M = 205;
-ll origin[M][M];
+ll c[M][M];
 int pre[M];
 ll flow[M];
 int n, m;
@@ -24,19 +24,19 @@ ll BFS(int s, int t)
     q.push(s);
     while (!q.empty())
     {
-        int now = q.front();
+        int u = q.front();
         q.pop();
-        if (now == t)
+        if (u == t)
         {
             break;
         }
-        for (int i = 1; i <= m; i++)
+        for (int v = 1; v <= m; v++)
         {
-            if (origin[now][i] > 0 && pre[i] == -1)
+            if (c[u][v] > 0 && pre[v] == -1&&v!=s)
             {
-                pre[i] = now;
-                flow[i] = min(origin[now][i], flow[now]);
-                q.push(i);
+                pre[v] = u;
+                flow[v] = min(c[u][v], flow[u]);
+                q.push(v);
             }
         }
     }
@@ -55,8 +55,8 @@ ll Edmonds_Karp(int s, int t)
         while (k != s)
         {
             last = pre[k];
-            origin[last][k] -= inc;
-            origin[k][last] += inc;
+            c[last][k] -= inc;
+            c[k][last] += inc;
             k = last;
         }
         ans += inc;
@@ -69,12 +69,12 @@ int main()
     ios::sync_with_stdio(false);
     cin.tie(0);
     cin >> n >> m;
-    memset(origin, 0, sizeof(origin));
+    memset(c, 0, sizeof(c));
     ll si, ei, ci;
     for (int i = 0; i < n; i++)
     {
         cin >> si >> ei >> ci;
-        origin[si][ei] += ci;
+        c[si][ei] += ci;
     }
     cout << Edmonds_Karp(1, m) << endl;
     //system("pause");
