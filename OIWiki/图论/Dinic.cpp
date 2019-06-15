@@ -93,6 +93,7 @@ ll Dinic()
         {
             cur[i] = head[i];
         }
+        //每次建完分层图后 cur重置
         ans += DFS(s, inf);
     }
     return ans;
