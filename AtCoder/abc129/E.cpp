@@ -1,28 +1,36 @@
 #include <iostream>
 #include <string>
 using namespace std;
+#define ll long long
+const ll mod = 1e9 + 7;
 string l;
+long long quick_pow(long long a, long long b)
+{
+    if (b == 0)
+        return 1;
+    long long temp = quick_pow(a, b >> 1);
+    if (b & 1)
+        return a % mod * temp % mod * temp % mod;
+    else
+        return temp % mod * temp % mod; //快速幂
+}
 int main()
 {
     ios::sync_with_stdio(false);
     cin.tie(0);
-    //cin >> l;
-    for (int num = 1; num <= 20; num++)
+    cin >> l;
+    int len = l.length();
+    ll ans = 0;
+    int num = 0;
+    for (int i = 0; i < len; i++)
     {
-        int temp = 0;
-        for (int i = 0; i <= num; i++)
+        if (l[i] == '1')
         {
-            for (int j = 0; j + i <= num; j++)
-            {
-                if (i + j == (i ^ j))
-                {
-                    //cout << i << " " << j << endl;
-                    temp++;
-                }
-            }
+            ans = (ans + quick_pow(2, num++) * quick_pow(3, len - 1 - i)) % mod;
         }
-        cout << num << " " << temp - 1 - num * 2 << endl;
     }
-    system("pause");
+    ans = (ans + quick_pow(2, num)) % mod;
+    cout << ans % mod << endl;
+    //system("pause");
     return 0;
 }
