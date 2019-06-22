@@ -8,7 +8,7 @@ struct node
     bool operator<(const node &n) const
     {
         if(wi!=n.wi) return wi>n.wi;
-        return ti>n.ti;
+        return ti<n.ti;
     }
 };
 int m,n;
