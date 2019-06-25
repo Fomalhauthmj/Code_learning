@@ -1,36 +1,69 @@
+#include <cstdio>
 #include <iostream>
-#include <string>
 using namespace std;
-int Next[1010];
-void GetNext(string s)
+const int N = 110;
+bool isUse[N];
+int n, t;
+int a[N], b[N];
+bool isSmall()
 {
-    int i = 0;
-    int j = -1;
-    Next[0] = -1;
-    int len = s.length();
-    while (i < len)
+    for (int i = 1; i <= n; ++i)
+        if (a[i] != b[i])
+            return a[i] < b[i];
+    return false;
+}
+bool getPermutation(int pos)
+{
+    if (pos > n)
     {
-        while (j != -1 && s[i] != s[j])
-            j = Next[j];
-        i++;
-        j++;
-        if (s[i] == s[j])
-            Next[i] = Next[j];
-        else
-            Next[i] = j;
+        return isSmall();
     }
-    for (int i = 0; i < len; i++)
+    for (int i = 1; i <= n; ++i)
     {
-        cout << Next[i] << " ";
+        if (!isUse[i])
+        {
+            b[pos] = i;
+            isUse[i] = true;
+            if (getPermutation(pos + 1))
+            {
+                return true;
+            }
+            isUse[i] = false;
+        }
     }
-    cout << endl;
+    return false;
+}
+void getNext()
+{
+    for (int i = 1; i <= n; ++i)
+    {
+        isUse[i] = false;
+    }
+    getPermutation(1);
+    for (int i = 1; i <= n; ++i)
+    {
+        a[i] = b[i];
+    }
 }
 int main()
 {
-    ios::sync_with_stdio(false);
-    cin.tie(0);
-    GetNext("abaabcac");
-    GetNext("abcaababc");
+    scanf("%d%d", &n, &t);
+    for (int i = 1; i <= n; ++i)
+    {
+        scanf("%d", &a[i]);
+    }
+    for (int i = 1; i <= t; ++i)
+    {
+        getNext();
+    }
+    for (int i = 1; i <= n; ++i)
+    {
+        printf("%d", a[i]);
+        if (i == n)
+            putchar('\n');
+        else
+            putchar(' ');
+    }
     system("pause");
     return 0;
 }
