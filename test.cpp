@@ -1,69 +1,66 @@
+#include <algorithm>
 #include <cstdio>
-#include <iostream>
+#include <cstring>
 using namespace std;
-const int N = 110;
-bool isUse[N];
-int n, t;
-int a[N], b[N];
-bool isSmall()
+const int N = 100000 + 10;
+int read()
 {
-    for (int i = 1; i <= n; ++i)
-        if (a[i] != b[i])
-            return a[i] < b[i];
-    return false;
+    int x = 0, f = 1;
+    char ch = ' ';
+    while (ch > '9' || ch < '0')
+    {
+        if (ch == '-')
+            f = -1;
+        ch = getchar();
+    }
+    while (ch >= '0' && ch <= '9')
+    {
+        x = (x << 3) + (x << 1) + (ch ^ '0');
+        ch = getchar();
+    }
+    return x * f;
 }
-bool getPermutation(int pos)
+int n, L;
+double a[N];
+double tp[N];
+double s[N];
+bool check(double x)
 {
-    if (pos > n)
+    for (int i = 1; i <= n; i++)
+        tp[i] = a[i] - x;
+    s[0] = 0;
+    for (int i = 1; i <= n; i++)
+        s[i] = s[i - 1] + tp[i];
+    double ans = -(1 << 30), minval = (1 << 30);
+    for (int i = L; i <= n; i++)
     {
-        return isSmall();
+        minval = min(minval, s[i - L]);
+        ans = max(ans, s[i] - minval);
     }
-    for (int i = 1; i <= n; ++i)
-    {
-        if (!isUse[i])
-        {
-            b[pos] = i;
-            isUse[i] = true;
-            if (getPermutation(pos + 1))
-            {
-                return true;
-            }
-            isUse[i] = false;
-        }
-    }
-    return false;
-}
-void getNext()
-{
-    for (int i = 1; i <= n; ++i)
-    {
-        isUse[i] = false;
-    }
-    getPermutation(1);
-    for (int i = 1; i <= n; ++i)
-    {
-        a[i] = b[i];
-    }
+    if (ans >= 0)
+        return true;
+    else
+        return false;
 }
 int main()
 {
-    scanf("%d%d", &n, &t);
-    for (int i = 1; i <= n; ++i)
+    freopen("cowfnc.14.in", "r", stdin);
+    freopen("output.out", "w", stdout);
+    n = read(), L = read();
+    for (int i = 1; i <= n; i++)
     {
-        scanf("%d", &a[i]);
+        scanf("%lf", &a[i]);
     }
-    for (int i = 1; i <= t; ++i)
+    double l = -(1 << 30), r = (1 << 30), mid;
+    double eps = 1e-5;
+    while (r - l > eps)
     {
-        getNext();
-    }
-    for (int i = 1; i <= n; ++i)
-    {
-        printf("%d", a[i]);
-        if (i == n)
-            putchar('\n');
+        mid = (l + r) / 2;
+        if (check(mid))
+            l = mid;
         else
-            putchar(' ');
+            r = mid;
     }
-    system("pause");
+    printf("%d", int(1000 * r));
     return 0;
 }
