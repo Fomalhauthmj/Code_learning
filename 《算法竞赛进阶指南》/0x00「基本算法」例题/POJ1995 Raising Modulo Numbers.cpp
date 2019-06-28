@@ -17,8 +17,20 @@ int main()
 {
     ios::sync_with_stdio(false);
     cin.tie(0);
-    cin >> a >> b >> p;
-    cout << power(a, b, p) << endl;
+    int t;
+    int n;
+    cin >> t;
+    while (t--)
+    {
+        cin >> p >> n;
+        ll ans = 0;
+        for (int i = 0; i < n; i++)
+        {
+            cin >> a >> b;
+            ans += power(a, b, p);
+        }
+        cout << ans % p << endl;
+    }
     //system("pause");
     return 0;
 }
