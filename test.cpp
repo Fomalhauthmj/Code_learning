@@ -47,6 +47,7 @@ int main()
     freopen("cowfnc.14.in", "r", stdin);
     freopen("output.out", "w", stdout);
     n = read(), L = read();
+    __builtin_
     for (int i = 1; i <= n; i++)
     {
         scanf("%lf", &a[i]);
