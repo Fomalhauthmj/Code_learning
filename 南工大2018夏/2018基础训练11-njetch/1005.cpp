@@ -1,4 +1,4 @@
-//!:最大连续子序列 输出起始点与结束点 若有多解 输出较前解
+//!:最大连续子段 输出起始点与结束点 若有多解 输出较前解
 #include<iostream>
 #include<cstring>
 using namespace std;

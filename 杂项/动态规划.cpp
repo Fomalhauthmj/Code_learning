@@ -474,7 +474,7 @@
 
 !:Humble Numbers  HDU 1058
 number=2^k1 * 3^k2 * 5^k3 * 7^k4
-F(n)=min(F(i)*2,F(j)*3,F(k)*m),F(m)*7)
+// F(n)=min(F(i)*2,F(j)*3,F(k)*5,F(m)*7)
 #include<iostream>
 #include<algorithm>
 using namespace std;
