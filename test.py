@@ -1,11 +1,19 @@
 import os
 import os.path
 import shutil
-rootdir = "C:\\Users\\lenovo\\OneDrive\\ACM\\AtCoder"
+rootdir = "C:\\Users\\lenovo\\OneDrive\\Code"
 if __name__ == "__main__":
+    cnt = 0
+    lines = 0
     for dirpath, dirnames, filenames in os.walk(rootdir):
         for filename in filenames:
-            if not os.path.exists(rootdir+"/"+filename[0:6]):
-                os.mkdir(rootdir+"/"+filename[0:6])
-            shutil.move(dirpath+"/"+filename,rootdir+"/"+filename[0:6])
-            print(filename[0:6])
+            if filename.endswith('.cpp'):
+                cnt += 1
+                #print(dirpath+'\\'+filename)
+                try:
+                    temp = len(open(dirpath + '\\'+filename,'r',encoding=' UTF - 8 ').readlines())
+                except UnicodeDecodeError:
+                    temp = len(open(dirpath + '\\'+filename,'r').readlines())
+                lines += temp
+                print(cnt, filename,temp,lines)
+    print("总计:",cnt,lines)
