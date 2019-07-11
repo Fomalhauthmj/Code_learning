@@ -1,7 +1,7 @@
 import os
 import os.path
 import shutil
-rootdir = "C:\\Users\\lenovo\\OneDrive\\Code"
+rootdir = "C:\\Users\\lenovo\\OneDrive"
 if __name__ == "__main__":
     cnt = 0
     lines = 0
