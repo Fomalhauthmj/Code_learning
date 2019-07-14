@@ -22,7 +22,7 @@ int main()
             cin>>a[i];
         a[n]=0;
         top=0;
-        ll ans=-1;
+        ll ans=0;
         for(int i=0;i<=n;i++)
         {
             if(a[i]>stack[top])
@@ -33,7 +33,7 @@ int main()
             else
             {
                 int width_sum=0;
-                while(top&&a[i]<stack[top])
+                while(a[i]<stack[top])
                 {
                     width_sum+=width[top];
                     ans=max(ans,width_sum*stack[top]);
