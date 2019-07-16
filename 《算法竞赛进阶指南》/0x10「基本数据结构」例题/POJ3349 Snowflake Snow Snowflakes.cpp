@@ -6,6 +6,7 @@
  */
 #include <cstring>
 #include <iostream>
+#include <stdio.h>
 using namespace std;
 #define P 99991
 #define ll long long
@@ -39,14 +40,14 @@ int H(int *a)
     for (int i = 0; i < 6; i++)
     {
         sum = (sum + a[i]) % P, mul = (mul * a[i]) % P;
-        cout << a[i] << " " << sum << " " << mul << endl;
+        //cout << a[i] << " " << sum << " " << mul << endl;
     }
     return (sum + mul) % P;
 }
 bool Insert(int *a)
 {
     int key = H(a);
-    cout << key << endl;
+    //cout << key << endl;
     for (int i = head[key]; i; i = nxt[i])
         if (Equal(a, snow[i]))
             return true;
@@ -58,15 +59,15 @@ bool Insert(int *a)
 }
 int main()
 {
-    ios::sync_with_stdio(false);
-    cin.tie(0);
+    //ios::sync_with_stdio(false);
+    //cin.tie(0);
     cin >> n;
     int a[6];
     bool flag = true;
     for (int i = 1; i <= n; i++)
     {
         for (int j = 0; j < 6; j++)
-            cin >> a[j];
+            scanf("%d", &a[j]);
         if (Insert(a))
         {
             cout << "Twin snowflakes found." << endl;
@@ -76,6 +77,6 @@ int main()
     }
     if (flag)
         cout << "No two snowflakes are alike." << endl;
-    system("pause");
+    //system("pause");
     return 0;
 }
