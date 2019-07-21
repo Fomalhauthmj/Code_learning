@@ -1,73 +1,44 @@
-//单数据版本,NOIP可AC,Acwing WA了,后来修改多组数据,我也不知道为什么WA了.
-#include<bits/stdc++.h>
+#include <bits/stdc++.h>
 using namespace std;
-#define INF 0x3f3f3f3f
-#define fir(i,a,b) for(int i=a;i<=b;i++)
-const int N=1110;
-int n,a[N],b[N],t[N],cnt=0;
-char ans[N<<1];
-bool flg = 1;
-bool check(int x, int bi)
-{
-    if(!bi)//没有数字
-        return 1;
-    int i;
-    for(i=x+1; i<=n; i++)
-        if(t[i]>t[x] && t[i]>b[bi])
-            break;
-    fir(j,i+1,n)
-    if(t[j]<t[x])
-        return 0;
-    return 1;
-}
-
+const int N=3e4+10;
+priority_queue<int> q;
+priority_queue<int, vector<int> ,greater<int> > q2;
+int num[N],n,m,x;
 int main()
 {
-    ios::sync_with_stdio(false);
-    cin>>n;
-    fir(i,1,n)
-    cin>>t[i];
-    a[0]=b[0]=INF;
-    int ai=0,bi=0,ti=1,num=1;
-    cnt=0;
-    flg=1;
-    fir(i,1,(n<<1))//2*N,是因为压入一次,还要弹出一次
+    scanf("%d%d",&n,&m);
+    for(int i=1; i<=n; i++)
+        scanf("%d",&num[i]);
+    int k=1;
+    for(int i=1; i<=m; i++)
     {
-        if(a[ai] == num)//A数组栈顶应该弹出了
+        scanf("%d",&x);
+        while(k<=x)
         {
-            ai--;
-            num++;
-            ans[++cnt] = 'b';
+            q2.push(num[k]);
+            cout<<"min push "<<num[k]<<endl;
+            if(!q.empty() && q.top()>q2.top())
+            {
+                int t=q.top();
+                q.pop();
+                cout<<"max pop "<<t<<endl;
+                q2.push(t);
+                cout<<"min push "<<t<<endl;
+                t=q2.top();
+                q2.pop();
+                cout<<"min pop "<<t<<endl;
+                q.push(t);
+                cout<<"max push "<<t<<endl;
+            }
+            k++;
         }
-        else if(b[bi] == num)//B数组栈顶应该弹出了
-        {
-            bi--;
-            num++;
-            ans[++cnt] = 'd';
-        }
-        else if(ti<=n && t[ti]<a[ai] && check(ti, bi))//都满足了
-        {
-            a[++ai]=t[ti++];
-            ans[++cnt]='a';//放入A数组
-        }
-        else if(ti<=n && t[ti]<b[bi])//A数组无法放入,那么B数组看能不能放入
-        {
-            b[++bi]=t[ti++];
-            ans[++cnt]='c';
-        }
-        else//都无法放入,说明无法排序
-        {
-            flg=0;
-            break;
-        }
+        printf("%d\n",q2.top());
+        int t=q2.top();
+        q2.pop();
+        cout<<"min pop "<<t<<endl;
+        q.push(t);
+        cout<<"max push "<<t<<endl;
     }
-    if(!flg)
-        puts("0");
-    else
-    {
-        fir(i,1,cnt)
-        printf("%c ",ans[i]);
-        puts("");
-    }
+    system("pause");
     return 0;
 }
