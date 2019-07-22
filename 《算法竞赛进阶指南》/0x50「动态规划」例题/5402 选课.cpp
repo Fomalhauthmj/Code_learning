@@ -16,7 +16,8 @@ void DP(int rt)
         DP(s);
         for(int j=m;j>=0;j--)//已选体积
         {
-            for(int k=0;k<=j-1;k++)//子树s选择体积
+            for(int k=0;k<=j;k++)//子树s选择体积
+            //倒序?
             {
                 if(j>=k) dp[rt][j]=max(dp[rt][j],dp[s][k]+dp[rt][j-k]);
             }            
@@ -24,7 +25,8 @@ void DP(int rt)
     }
     if(rt)
     {
-        for(int i=1;i<=m;i++)
+        //这里正序会导致加入多个credit[rt]
+        for(int i=m;i>=1;i--)
             dp[rt][i]=dp[rt][i-1]+credit[rt];
     }
 }
