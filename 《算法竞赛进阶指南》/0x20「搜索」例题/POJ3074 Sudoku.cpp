@@ -1,28 +1,13 @@
-#include <cstring>
 #include <iostream>
-#include <math.h>
-#include <queue>
 #include <string>
 using namespace std;
-int s[9][9];
 int r[9], c[9], k[9];
+int cnt[512], num[512], x[81], y[81], s[81];
+int tot;
+char str[81];
 int lowbit(int x)
 {
     return x & (-x);
-}
-void Init()
-{
-    for (int i = 0; i < 9; i++)
-    {
-        r[i] = c[i] = k[i] = (1 << 9) - 1;
-    }
-}
-int Get(int depth)
-{
-    int x = depth / 9;
-    int y = depth % 9;
-    int temp = r[x] & c[y] & k[x / 3 * 3 + y / 3];
-    return temp;
 }
 int Count(int temp)
 {
@@ -34,80 +19,79 @@ int Count(int temp)
     }
     return cnt;
 }
-struct node
+void Init()
 {
-    int depth;
-    bool operator<(const node &n) const
+    for (int i = 0; i < 9; i++)
     {
-        return Count(Get(depth)) < Count(Get(n.depth));
+        r[i] = c[i] = k[i] = (1 << 9) - 1;
     }
-};
-priority_queue<node> pq;
-bool DFS()
+}
+inline int Get(int x, int y)
 {
-    if (pq.empty())
+    return r[x] & c[y] & k[x / 3 * 3 + y / 3];
+}
+inline void Fill(int x, int y, int val)
+{
+    r[x] ^= val;
+    c[y] ^= val;
+    k[x / 3 * 3 + y / 3] ^= val;
+}
+bool DFS(int now)
+{
+    if (!now)
         return true;
-    if (pq.size())
+    int pos,temp = 0;
+    int choice = 10;
+    for (int i = 0; i < 81; i++)
     {
-        node now = pq.top();
-        pq.pop();
-        //cout << "now fill" << now.depth / 9 << " " << now.depth % 9 << endl;
-        int temp = Get(now.depth);
-        while (temp)
+        if (s[i])
+            continue;
+        temp = Get(x[i], y[i]);
+        if (cnt[temp] < choice)
         {
-            int val = lowbit(temp);
-            temp -= val;
-            int x = now.depth / 9;
-            int y = now.depth % 9;
-            r[x] -= val;
-            c[y] -= val;
-            k[x / 3 * 3 + y / 3] -= val;
-            s[x][y] = log2(val) + 1;
-            if (DFS())
-                return true;
-            r[x] += val;
-            c[y] += val;
-            k[x / 3 * 3 + y / 3] += val;
-            s[x][y] = 0;
+            choice = cnt[temp];
+            pos=i;
         }
-        pq.push(now);
+    }
+    temp = Get(x[pos], y[pos]);
+    while (temp)
+    {
+        int val = lowbit(temp);
+        Fill(x[pos], y[pos], val);
+        s[pos]= num[val];
+        if (DFS(now - 1))
+            return true;
+        Fill(x[pos], y[pos], val);
+        temp -= val;
+        s[pos] = 0;
     }
     return false;
 }
 int main()
 {
-    string str;
-    while (cin >> str && str != "end")
+    for (int i = 0; i < (1 << 9); i++)
+        cnt[i] = Count(i);
+    for (int i = 0; i < 9; i++)
+        num[1 << i] = i + 1;
+    for (int i = 0; i < 81; i++)
+        x[i] = i / 9, y[i] = i % 9;
+    while (cin >> str && str[0] != 'e')
     {
         Init();
         int val;
-        for (int i = 0; i < 9; i++)
-            for (int j = 0; j < 9; j++)
+        tot = 0;
+        for (int i = 0; i < 81; i++)
+            if (str[i] != '.')
             {
-                if (str[i * 9 + j] != '.')
-                {
-                    s[i][j] = val = str[i * 9 + j] - '0';
-                    r[i] -= (1 << (val - 1));
-                    c[j] -= (1 << (val - 1));
-                    k[i / 3 * 3 + j / 3] -= (1 << (val - 1));
-                }
-                else
-                    s[i][j] = 0;
+                s[i] = str[i] - '0';
+                Fill(x[i], y[i], 1 << (s[i] - 1));
             }
-        for (int i = 0; i < 9; i++)
-            for (int j = 0; j < 9; j++)
-                if (!s[i][j])
-                    pq.push({i * 9 + j});
-        DFS();
-        for (int i = 0; i < 9; i++)
-        {
-            for (int j = 0; j < 9; j++)
-            {
-                cout << s[i][j];
-            }
-        }
+            else
+                s[i] = 0, tot++;
+        DFS(tot);
+        for (int i = 0; i < 81; i++)
+            cout << s[i];
         cout << endl;
     }
-    //system("pause");
     return 0;
 }
