@@ -1,44 +1,83 @@
-#include <bits/stdc++.h>
+#include <algorithm>
+#include <cstdio>
+#include <cstring>
+#include <iostream>
 using namespace std;
-const int N=3e4+10;
-priority_queue<int> q;
-priority_queue<int, vector<int> ,greater<int> > q2;
-int num[N],n,m,x;
+typedef long long ll;
+const int N = 1e5 + 5, MOD = 1e9 + 7;
+inline int read()
+{
+    char c = getchar();
+    int x = 0, f = 1;
+    while (c < '0' || c > '9')
+    {
+        if (c == '-')
+            f = -1;
+        c = getchar();
+    }
+    while (c >= '0' && c <= '9')
+    {
+        x = x * 10 + c - '0';
+        c = getchar();
+    }
+    return x * f;
+}
+struct edge
+{
+    int v, ne;
+} e[N << 1];
+int cnt = 0, h[N], w[N];
+inline void ins(int u, int v)
+{
+    cnt++;
+    e[cnt].v = v;
+    e[cnt].ne = h[u];
+    h[u] = cnt;
+    cnt++;
+    e[cnt].v = u;
+    e[cnt].ne = h[v];
+    h[v] = cnt;
+}
+int n;
+ll f[N][2];
+void dp(int u, int fa)
+{
+    if (w[u])
+        f[u][1] = 1;
+    else
+        f[u][0] = 1;
+    for (int i = h[u]; i; i = e[i].ne)
+    {
+        int v = e[i].v;
+        if (v == fa)
+            continue;
+        dp(v, u);
+        f[u][1] = (f[u][1] * (f[v][0] + f[v][1]) + f[u][0] * f[v][1]) % MOD;
+        f[u][0] = f[u][0] * (f[v][0] + f[v][1]) % MOD;
+    }
+    cout << "rt: " << u << " 0:" << f[u][0] << " 1:" << f[u][1] << endl;
+}
 int main()
 {
-    scanf("%d%d",&n,&m);
-    for(int i=1; i<=n; i++)
-        scanf("%d",&num[i]);
-    int k=1;
-    for(int i=1; i<=m; i++)
-    {
-        scanf("%d",&x);
-        while(k<=x)
-        {
-            q2.push(num[k]);
-            cout<<"min push "<<num[k]<<endl;
-            if(!q.empty() && q.top()>q2.top())
-            {
-                int t=q.top();
-                q.pop();
-                cout<<"max pop "<<t<<endl;
-                q2.push(t);
-                cout<<"min push "<<t<<endl;
-                t=q2.top();
-                q2.pop();
-                cout<<"min pop "<<t<<endl;
-                q.push(t);
-                cout<<"max push "<<t<<endl;
-            }
-            k++;
-        }
-        printf("%d\n",q2.top());
-        int t=q2.top();
-        q2.pop();
-        cout<<"min pop "<<t<<endl;
-        q.push(t);
-        cout<<"max push "<<t<<endl;
-    }
+    n = read();
+    for (int i = 1; i <= n - 1; i++)
+        ins(read(), i);
+    for (int i = 0; i < n; i++)
+        w[i] = read();
+    dp(0, -1);
+    cout << f[0][1];
     system("pause");
-    return 0;
 }
+10
+0 1 2 1 4 4 4 0 8
+0 0 0 1 0 1 1 0 0 1
+rt: 9 0:0 1:1
+rt: 8 0:1 1:1
+rt: 7 0:1 1:0
+rt: 6 0:0 1:1
+rt: 5 0:0 1:1
+rt: 4 0:1 1:2
+rt: 3 0:0 1:1
+rt: 2 0:1 1:1
+rt: 1 0:6 1:7
+rt: 0 0:26 1:27
