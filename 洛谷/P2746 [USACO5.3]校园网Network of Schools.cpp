@@ -1,4 +1,8 @@
 //https://www.luogu.org/problemnew/show/P2746
+/*
+P2812 校园网络【[USACO]Network of Schools加强版】
+https://www.luogu.org/problem/P2812
+ */
 #include <algorithm>
 #include <cstring>
 #include <iostream>
