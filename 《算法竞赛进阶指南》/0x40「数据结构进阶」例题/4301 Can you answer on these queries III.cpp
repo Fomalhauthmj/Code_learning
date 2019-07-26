@@ -1,11 +1,9 @@
-//http://codeforces.com/contest/1107/problem/G
 #include <iostream>
 using namespace std;
 #define ll long long
 #define inf 0x3f3f3f3f3f3f3f3f
-const int N = 3E5 + 50;
-int n,a,d[N],s[N],top,l[N],r[N];
-ll diff[N],c[N];
+const int N = 5E5 + 50;
+ll a[N];
 struct SegmentTree
 {
     ll l, r;
@@ -25,12 +23,26 @@ void Build(int rt, int l, int r)
     t[rt].r = r;
     if (l == r)
     {
-        t[rt].dat = t[rt].sum = t[rt].lmax = t[rt].rmax = c[l];
+        t[rt].dat = t[rt].sum = t[rt].lmax = t[rt].rmax = a[l];
         return;
     }
     int mid = (l + r) >> 1;
     Build(rt << 1, l, mid);
     Build(rt << 1 | 1, mid + 1, r);
+    PushUp(rt);
+}
+void Change(int rt, int pos, int val)
+{
+    if (t[rt].l == t[rt].r)
+    {
+        t[rt].dat = t[rt].lmax = t[rt].rmax = t[rt].sum = val;
+        return;
+    }
+    int mid = (t[rt].l + t[rt].r) >> 1;
+    if (pos <= mid)
+        Change(rt << 1, pos, val);
+    else
+        Change(rt << 1 | 1, pos, val);
     PushUp(rt);
 }
 SegmentTree Query(int rt, int l, int r)
@@ -65,50 +77,25 @@ int main()
 {
     ios::sync_with_stdio(false);
     cin.tie(0);
-    cin>>n>>a;
-    ll ans=0;
-    for(int i=1;i<=n;i++)
-    {
-        cin>>d[i]>>c[i];
-        c[i]=a-c[i];
-        ans=max(ans,c[i]);
-    }
-    for(int i=1;i<=n-1;i++)
-    {
-        diff[i]=d[i+1]-d[i];
-    }
-    //diff[i]作为最大值 维护递减单调栈
-    top=0;
-    s[0]=0;
-    for(int i=1;i<=n-1;i++)
-    {
-        while(top>0&&diff[s[top]]<=diff[i])
-        {
-            top--;
-        }
-        l[i]=s[top]+1;
-        s[++top]=i;
-    }
-    top=0;
-    s[0]=n;
-    for(int i=n-1;i>=1;i--)
-    {
-        while(top>0&&diff[s[top]]<=diff[i])
-        {
-            top--;
-        }
-        r[i]=s[top];
-        s[++top]=i;
-    }
-    //[l[i],r[i]) diff[i]为最大值的区间
-    //for(int i=1;i<=n-1;i++)
-        //cout<<l[i]<<" "<<r[i]<<endl;
+    int n, m;
+    cin >> n >> m;
+    for (int i = 1; i <= n; i++)
+        cin >> a[i];
     Build(1,1,n);
-    for(int i=1;i<=n-1;i++)
+    int k, x, y;
+    for (int i = 1; i <= m; i++)
     {
-        ans=max(ans,Query(1,l[i],r[i]).dat-diff[i]*diff[i]);
+        cin >> k >> x >> y;
+        if(k==1)
+        {
+            if(x>y) swap(x,y);
+            cout<<Query(1,x,y).dat<<endl;
+        }
+        else
+        {
+            Change(1,x,y);
+        }
     }
-    cout<<ans<<endl;
-    //system("pause");
+    system("pause");
     return 0;
 }
