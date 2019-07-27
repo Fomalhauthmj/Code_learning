@@ -1,5 +1,5 @@
 //http://codeforces.com/problemset/problem/486/D
-// TODO 2300
+#include <cstring>
 #include <iostream>
 #include <vector>
 using namespace std;
@@ -9,31 +9,29 @@ const int N = 2005;
 int a[N], d, n;
 vector<int> son[N];
 bool vis[N];
-ll dp[N][3];
+ll dp[N];
 /*
-dp[rt][0] rt为根的子树中最大值
-dp[rt][1] rt为根的子树中最小值
-
-dp[rt][dis]
+枚举rt作为最小或最大 n遍O(n)的DFS 注意重复计数
  */
-void DP(int rt)
+void DP(int rt, int min_a)
 {
     vis[rt] = 1;
-    dp[rt][0] = dp[rt][1] = a[rt];
-    dp[rt][2] = 1;
+    dp[rt] = 1;
     for (int i = 0; i < son[rt].size(); i++)
     {
         int s = son[rt][i];
         if (!vis[s])
         {
-            DP(s);
-            dp[rt][0] = max(dp[rt][0], dp[s][0]);
-            dp[rt][1] = min(dp[rt][1], dp[s][1]);
-            if (dp[rt][0] - dp[s][1] <= d && dp[s][0] - dp[rt][1] <= d)
-                dp[rt][2] = dp[rt][2] * dp[s][2];
+            if (a[s] >= a[min_a] && a[min_a] + d >= a[s])
+            {
+                if (a[min_a] == a[s] && min_a < s)
+                    continue;
+                DP(s,min_a);
+                dp[rt] = (dp[s] + 1) * dp[rt] % mod;
+                //选或不选
+            }
         }
     }
-    //cout << "rt: " << rt << " " << dp[rt][0] << " " << dp[rt][1] << endl;
 }
 int main()
 {
@@ -49,8 +47,14 @@ int main()
         son[u].push_back(v);
         son[v].push_back(u);
     }
-    DP(1);
-    cout << dp[1][2] << endl;
-    system("pause");
+    ll ans = 0;
+    for (int i = 1; i <= n; i++)
+    {
+        memset(vis, 0, sizeof(vis));
+        DP(i, i);
+        ans = (ans + dp[i]) % mod;
+    }
+    cout << ans << endl;
+    //system("pause");
     return 0;
 }
