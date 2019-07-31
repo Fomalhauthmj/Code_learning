@@ -1,72 +1,56 @@
-#include <algorithm>
+#include <cstring>
 #include <iomanip>
 #include <iostream>
-#include <map>
 #include <math.h>
-#include <vector>
 using namespace std;
 #define N 1010
 #define pii pair<int, int>
-#define ll long long
 #define eps 1e-6
 #define inf 0x3f3f3f3f
-int n, tot;
-map<pii, int> M;
-pii ps[N];
-int height[N];
-double dis(pii p1, pii p2)
+int n;
+int x[N], y[N], z[N];
+double dis[N][N], cost[N][N], weight[N][N], d[N];
+bool vis[N];
+double distance(pii p1, pii p2)
 {
     return sqrt((p1.first - p2.first) * (p1.first - p2.first) + (p1.second - p2.second) * (p1.second - p2.second));
 }
-struct edge
-{
-    int u, v, h;
-    double d, w;
-    edge(int uu, int vv) : u(uu), v(vv)
-    {
-        d = dis(ps[uu], ps[vv]);
-        h = abs(height[uu] - height[vv]);
-    }
-    bool operator<(const edge &e) const
-    {
-        return w < e.w;
-    }
-};
-vector<edge> e;
-int fa[N];
-void Init()
-{
-    for (int i = 0; i < N; i++)
-        fa[i] = i;
-}
-int Find(int x)
-{
-    if (x == fa[x])
-        return x;
-    else
-        return fa[x] = Find(fa[x]);
-}
-bool Kruskal(double mid)
+bool Prim(double mid)
 {
     //重新构图 求最小生成树
-    for (int i = 0; i < e.size(); i++)
-        e[i].w = e[i].d - mid * e[i].h;
-    Init();
-    sort(e.begin(), e.end());
-    double ret = 0.0;
-    for (int i = 0; i < e.size(); i++)
+    for (int i = 1; i <= n; i++)
     {
-        //cout << e[i].u << " " << e[i].v << " " << e[i].w << endl;
-        int fu = Find(e[i].u);
-        int fv = Find(e[i].v);
-        if (fu != fv)
+        for (int j = i; j <= n; j++)
         {
-            fa[fu] = fv;
-            ret += e[i].w;
+            if (i == j)
+                weight[i][j] = inf;
+            else
+                weight[i][j] = weight[j][i] = cost[i][j] - mid * dis[i][j];
         }
     }
-    cout << "ret:" << ret << endl;
-    return ret < 0;
+    memset(vis, 0, sizeof(vis));
+    for (int i = 1; i <= n; i++)
+        d[i] = inf;
+    d[1] = 0;
+    double ret = 0;
+    int temp = n;
+    while (temp--)
+    {
+        int min_pos = 0;
+        for (int i = 1; i <= n; i++)
+            if (!vis[i] && (!min_pos || d[i] < d[min_pos]))
+                min_pos = i;
+        if (min_pos)
+        {
+            vis[min_pos] = 1;
+            ret += d[min_pos];
+            for (int i = 1; i <= n; i++)
+                d[i] = min(d[i], weight[min_pos][i]);
+        }
+    }
+    if (ret < 0.0)
+        return true;
+    return false;
 }
 int main()
 {
@@ -74,33 +58,26 @@ int main()
     cin.tie(0);
     while (cin >> n && n)
     {
-        M.clear();
-        tot = 0;
-        int x, y, z;
-        for (int i = 0; i < n; i++)
+        for (int i = 1; i <= n; i++)
         {
-            cin >> x >> y >> z;
-            if (!M[{x, y}])
-                M[{x, y}] = ++tot;
-            ps[M[{x, y}]] = {x, y};
-            height[M[{x, y}]] = z;
+            cin >> x[i] >> y[i] >> z[i];
         }
-        for (int i = 1; i <= tot; i++)
+        for (int i = 1; i <= n; i++)
         {
-            for (int j = 1; j <= tot; j++)
+            for (int j = i + 1; j <= n; j++)
             {
-                if (i != j)
-                    e.push_back(edge(i, j));
+                dis[i][j] = dis[j][i] = distance({x[i], y[i]}, {x[j], y[j]});
+                cost[i][j] = cost[j][i] = fabs(z[i] - z[j]);
             }
         }
         double left = 0.0;
         double right = inf;
         double mid;
-        while (right - left > eps)
+        while (left + eps <= right)
         {
             mid = (left + right) / 2;
-            cout << "cur:" << mid << endl;
-            if (Kruskal(mid))
+            //cout << "cur:" << mid << endl;
+            if (Prim(mid))
             {
                 right = mid;
             }
