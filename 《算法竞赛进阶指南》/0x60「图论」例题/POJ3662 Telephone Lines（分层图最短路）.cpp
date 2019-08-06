@@ -16,6 +16,7 @@ int dis[N * N];
 void SPFA()
 {
     memset(dis, 0x3f, sizeof(dis));
+    memset(vis, 0, sizeof(vis));
     queue<int> q;
     //1:  1+0*n
     dis[1] = 0;

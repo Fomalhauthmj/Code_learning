@@ -70,7 +70,6 @@ void DFS(int cur, int pre)
             }
             DFS(i, cur);
         }
-        \
     }
 }
 int main()
