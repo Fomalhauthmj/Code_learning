@@ -3,131 +3,83 @@
 P2812 校园网络【[USACO]Network of Schools加强版】
 https://www.luogu.org/problem/P2812
  */
-#include <algorithm>
-#include <cstring>
-#include <iostream>
-#include <set>
-#include <stack>
-#include <vector>
+#include<iostream>
+#include<stdio.h>
 using namespace std;
-const int N = 10500;
-vector<int> V[N];
-set<int> S[N];
-int n;
-bool vis[N];
-int dfn[N];
-int low[N];
-int color[N];
-int outdegree[N];
-int indegree[N];
-stack<int> s;
-int cnt;
-int sum;
-void Init()
+const int N=1E4+50;
+const int M=5E6+20;
+int head[N],ver[M<<1],nxt[M<<1],tot;
+void add(int u,int v)
 {
-    cnt = 0;
-    sum = 0;
-    memset(vis, 0, sizeof(vis));
-    memset(dfn, 0, sizeof(dfn));
-    memset(indegree, 0, sizeof(indegree));
-    memset(outdegree, 0, sizeof(outdegree));
+    ver[++tot]=v,nxt[tot]=head[u],head[u]=tot;
 }
-void Tarjan(int cur)
+int n,stack[N],top,dfn[N],low[N],num,cnt,color[N];
+bool in_stack[N];
+void Tarjan(int x)
 {
-    dfn[cur] = low[cur] = ++cnt;
-    vis[cur] = 1;
-    s.push(cur);
-    for (auto ele : V[cur])
+    dfn[x]=low[x]=++num;
+    stack[++top]=x,in_stack[x]=true;
+    for(int i=head[x];i;i=nxt[i])
     {
-        if (!dfn[ele])
+        int y=ver[i];
+        if(!dfn[y])
         {
-            Tarjan(ele);
-            low[cur] = min(low[cur], low[ele]);
+            Tarjan(y);
+            low[x]=min(low[x],low[y]);
         }
-        else if (vis[ele])
-        {
-            low[cur] = min(low[cur], dfn[ele]);
-        }
+        else if(in_stack[y])
+            low[x]=min(low[x],dfn[y]);
     }
-    if (dfn[cur] == low[cur])
+    if(dfn[x]==low[x])
     {
-        ++sum;
-        while (1)
+        cnt++;
+        int y;
+        do
         {
-            int now = s.top();
-            s.pop();
-            color[now] = sum;
-            vis[now] = 0;
-            //cout << now << " ";
-            if (now == cur)
-                break;
+            y=stack[top--],in_stack[y]=false;
+            color[y]=cnt;
+        } while (x!=y);
+    }
+}
+int ind[N],outd[N];
+void SCC()
+{
+    for(int i=1;i<=n;i++)
+        if(!dfn[i]) Tarjan(i);
+    //SCC 缩点
+    for(int x=1;x<=n;x++)
+    {
+        for(int i=head[x];i;i=nxt[i])
+        {
+            int y=ver[i];
+            int u=color[x],v=color[y];
+            if(u!=v)
+            {
+                ind[v]++,outd[u]++;  
+            }
         }
-        //cout << endl;
     }
 }
 int main()
 {
-    ios::sync_with_stdio(false);
-    cin.tie(0);
-    cin >> n;
-    int num;
-    for (int i = 0; i < n; i++)
+    scanf("%d",&n);
+    for(int x=1;x<=n;x++)
     {
-        cin >> num;
-        while (num)
+        int y;
+        while(scanf("%d",&y)&&y)
         {
-            V[i + 1].push_back(num);
-            cin >> num;
+            add(x,y);
         }
     }
-    Init();
-    for (int i = 1; i <= n; i++)
+    SCC();
+    int in0=0,out0=0;
+    for(int i=1;i<=cnt;i++)
     {
-        if (!dfn[i])
-            Tarjan(i);
+        if(!ind[i]) in0++;
+        if(!outd[i]) out0++;
     }
-    for (int i = 1; i <= n; i++)
-    {
-        for (auto ele : V[i])
-        {
-            if (color[i] != color[ele] && !S[color[i]].count(color[ele]))
-            {
-                S[color[i]].insert(color[ele]);
-                outdegree[color[i]]++;
-                indegree[color[ele]]++;
-            }
-        }
-    }
-    /*
-    for (int i = 1; i <= sum; i++)
-    {
-        cout << "color" << i << ":";
-        for (auto ele : S[i])
-        {
-            cout << ele << " ";
-        }
-        cout << endl;
-    }
-    */
-    int ansA = 0;
-    int ansB = 0;
-    for (int i = 1; i <= sum; i++)
-    {
-        if (!indegree[i])
-            ansA++;
-        if (!outdegree[i])
-            ansB++;
-    }
-    if (sum == 1)
-    {
-        //特判
-        cout << 1 << endl;
-        cout << 0 << endl;
-        return 0;
-    }
-    cout << ansA << endl;
-    cout << max(ansA, ansB) << endl;
-    //这里为什么是入度出度为0的最大值？
-    //system("pause");
+    if(cnt!=1)cout<<in0<<endl<<max(in0,out0)<<endl;
+    else cout<<1<<endl<<0<<endl;
+    system("pause");
     return 0;
 }

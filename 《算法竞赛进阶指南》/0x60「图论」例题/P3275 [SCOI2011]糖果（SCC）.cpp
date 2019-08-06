@@ -1,14 +1,11 @@
 #include<iostream>
 #include<stdio.h>
-#include<queue>
 #include<cstring>
 using namespace std;
 const int N=1e5+50;
 #define inf 0x3f3f3f3f
 #define ll long long
-int head[N],ver[N],nxt[N],edge[N],tot=1,cnt[N];
-int d[N],n,m;
-bool vis[N];
+int head[N],ver[2*N],nxt[2*N],edge[2*N],tot=1,n,m;
 //差分约束
 void add(int u,int v,int w)
 {
@@ -17,33 +14,37 @@ void add(int u,int v,int w)
     head[u]=tot;
     edge[tot]=w;
 }
-bool SPFA()
+int num,dfn[N],low[N],stack[N],top,color[N],cnt;
+bool in_stack[N];
+void Tarjan(int x)
 {
-    for(int i=0;i<N;i++) d[i]=-inf;
-    queue<int> q;
-    q.push(0);
-    d[0]=0,vis[0]=1,cnt[0]=0;
-    while(!q.empty())
+    dfn[x]=low[x]=++num;
+    stack[++top]=x,in_stack[x]=true;
+    for(int i=head[x];i;i=nxt[i])
     {
-        int x=q.front();
-        q.pop();
-        vis[x]=false;
-        for(int i=head[x];i;i=nxt[i])
+        int y=ver[i];
+        if(!dfn[y])
         {
-            int y=ver[i];
-            if(d[y]<d[x]+edge[i])
-            {
-                d[y]=d[x]+edge[i];
-                cnt[y]=cnt[x]+1;
-                if(cnt[y]>=n+1) return false;
-                if(!vis[y])
-                {
-                    q.push(y),vis[y]=true;
-                }
-            }
+            Tarjan(y);
+            low[x]=min(low[x],low[y]);
         }
+        else if(in_stack[y]) low[x]=min(low[x],dfn[y]);
     }
-    return true;
+    if(dfn[x]==low[x])
+    {
+        ++cnt;
+        int y;
+        do
+        {
+            y=stack[top--],color[y]=cnt,in_stack[y]=false;
+        } while (x!=y);
+    }
+}
+bool SCC()
+{
+    for(int i=0;i<=n;i++)
+        if(!dfn[i]) Tarjan(i);
+    for(int i=1;i<=cnt;i++)
 }
 int main()
 {
@@ -79,13 +80,6 @@ int main()
             add(a,b,0);
             break;
         }
-    }
-    if(!SPFA()) cout<<-1<<endl;
-    else
-    {
-        ll ans=0;
-        for(int i=1;i<=n;i++) ans+=d[i];
-        cout<<ans<<endl;
     }
     system("pause");
     return 0;
