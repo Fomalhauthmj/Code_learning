@@ -5,7 +5,7 @@
 using namespace std;
 const int N = 305;
 //小数据可行 大数据段错误  
-//TODO 完善其他方法
+//FIXME 完善其他方法
 #define pii pair<int, int>
 #define inf 0x3f3f3f3f
 int n, s, dis[N], path[N], temp_ecc, dis_to_core[N];

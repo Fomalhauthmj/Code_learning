@@ -54,7 +54,7 @@ int main()
     ns[0] = node(start_y, start_x, start_x);
     ns[n + 1] = node(0, 0, 0);
     sort(ns, ns + n + 2);
-    //TODO 动态规划 
+    //FIXME 动态规划 
     int upl;
     int upr;
     dp[n + 1][0] = dp[n + 1][1] = 0;
