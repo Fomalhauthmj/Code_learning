@@ -167,4 +167,5 @@ int main()
         result(left,right,opmode);
         cout<<endl;
     }
+    //system("pause");
 }
