@@ -1,13 +1,17 @@
-#include <bits/stdc++.h>
+#include <cstring>
+#include <iostream>
+#include <math.h>
+#include <stdio.h>
 using namespace std;
-#define pii pair<int, int>
+#define pii pair<int,int>
 #define inf 0x3f3f3f3f
+#define eps 1e-6
 const int N = 105;
 pii black[N], white[N];
 double w[N][N], la[N], lb[N], upd[N], delta;
 int n, match[N];
 bool visa[N], visb[N];
-double distance(pii &p1, pii &p2)
+double Distance(pii &p1, pii &p2)
 {
     return sqrt((p1.first - p2.first) * (p1.first - p2.first) + (p1.second - p2.second) * (p1.second - p2.second));
 }
@@ -18,7 +22,8 @@ bool DFS(int x)
     {
         if (!visb[y])
         {
-            if (la[x] + lb[y] == w[x][y])
+            double temp = fabs(la[x] + lb[y] - w[x][y]);
+            if (temp < eps)
             {
                 visb[y] = true;
                 if (!match[y] || DFS(match[y]))
@@ -54,6 +59,7 @@ void KM()
                 break;
             else
             {
+                delta = inf;
                 for (int j = 1; j <= n; j++)
                     if (!visb[j])
                         delta = min(delta, upd[j]);
@@ -78,7 +84,7 @@ int main()
     for (int i = 1; i <= n; i++)
     {
         for (int j = 1; j <= n; j++)
-            w[i][j] = -distance(white[i], black[j]);
+            w[i][j] = -Distance(white[i], black[j]);
     }
     KM();
     for (int i = 1; i <= n; i++)
