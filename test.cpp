@@ -1,76 +1,79 @@
- //Author:XuHt
-#include <cmath>
-#include <cstdio>
-#include <vector>
-#include <cstring>
-#include <iostream>
-#define pii pair<int, int>
-#define x first
-#define y second
+#include<iostream>
+#include<vector>
+#include<cstring>
 using namespace std;
-const int N = 56, M = 2506;
-const double eps = 1e-8;
-int n, m, t, t2, V, f[M];
-double t1;
-bool v[M];
-pii a[N], b[N];
-pair<int, double> c[M];
-vector<int> e[N];
-
-inline double S(pii a, pii b) {
-	int dx = a.x - b.x, dy = a.y - b.y;
-	return sqrt(dx * dx + dy * dy);
+const int N=105;
+int dir[8][2]={{1,2},{-1,2},{1,-2},{-1,-2},{2,1},{2,-1},{-2,1},{-2,-1}};
+vector<int> v[N*N];
+int match[N*N],n,m,t;
+bool vis[N*N],invalid[N][N];
+bool Judge(int x,int y)
+{
+    if(x<1||x>n||y<1||y>m||invalid[x][y]) return false;
+    return true;
 }
-
-bool dfs(int x) {
-	for (unsigned int i = 0; i < e[x].size(); i++) {
-		int y = e[x][i];
-		if (v[y]) continue;
-		v[y] = 1;
-		if (!f[y] || dfs(f[y])) {
-			f[y] = x;
-			return 1;
-		}
-	}
-	return 0;
+inline int Pos(int x,int y)
+{
+    return x*m+y;
 }
-
-inline bool pd(double mid) {
-	memset(f, 0, sizeof(f));
-	for (int i = 1; i <= m; i++) {
-		e[i].clear();
-		for (int j = 1; j <= t; j++)
-			if (c[j].y + S(a[i], b[c[j].x]) / V <= mid)
-				e[i].push_back(j);
-	}
-	for (int i = 1; i <= m; i++) {
-		memset(v, 0, sizeof(v));
-		if (!dfs(i)) return 0;
-	}
-	return 1;
+bool DFS(int x)
+{
+    for(int i=0;i<v[x].size();i++)
+    {
+        int y=v[x][i];
+        if(!vis[y])
+        {
+            vis[y]=true;
+            if(!match[y]||DFS(match[y]))
+            {
+                match[y]=x;
+                return true;
+            }
+        }
+    }
+    return false;
 }
-
-int main() {
-	cin >> n >> m >> t1 >> t2 >> V;
-	t = n * m;
-	t1 /= 60;
-	for (int i = 1; i <= m; i++)
-		scanf("%d %d", &a[i].x, &a[i].y);
-	for (int i = 1; i <= n; i++)
-		scanf("%d %d", &b[i].x, &b[i].y);
-	for (int i = 1; i <= m; i++)
-		for (int j = 1; j <= n; j++) {
-			int k = (i - 1) * n + j;
-			c[k].x = j;
-			c[k].y = (i - 1) * (t1 + t2) + t1;
-		}
-	double l = t1, r = 100000;
-	while (l + eps < r) {
-		double mid = (l + r) / 2;
-		if (pd(mid)) r = mid;
-		else l = mid;
-	}
-	printf("%.6f\n", l);
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(0);
+    cin>>n>>m>>t;
+    int x,y;
+    for(int i=0;i<t;i++)
+    {
+        cin>>x>>y;
+        invalid[x][y]=1;
+    }
+    for(int i=1;i<=n;i++)
+    {
+        for(int j=1;j<=m;j++)
+        {
+            if(!invalid[i][j])
+            {
+                for(int k=0;k<8;k++)
+                {
+                    int nx=i+dir[k][0];
+                    int ny=j+dir[k][1];
+                    if(Judge(nx,ny))
+                        v[Pos(i,j)].push_back(Pos(nx,ny)),v[Pos(nx,ny)].push_back(Pos(i,j));
+                }
+            }
+        }
+    }
+    int ans=0;
+    for(int i=1;i<=n;i++)
+    {
+        for(int j=1;j<=m;j++)
+        {
+            if(!invalid[i][j]&&((i+j)&1))
+            {
+                memset(vis,0,sizeof(vis));
+                if(DFS(Pos(i,j))) ans++;
+            }
+        }
+    }
+    cout<<ans<<endl;
+    cout<<n*m-t-ans<<endl;
     system("pause");
-	return 0;
+    return 0;
 }
