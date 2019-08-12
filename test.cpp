@@ -61,7 +61,7 @@ int Dinic(int x, int flow)
 }
 int main()
 {
-    while (scanf("%d%d", &n, &m) != EOF)
+    while (cin>>n>>m)
     {
         memset(connect, 0, sizeof(connect));
         char str[20];
