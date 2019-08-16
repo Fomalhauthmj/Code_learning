@@ -1,43 +1,32 @@
-#include<iostream>
-#include<string>
+#include <iostream>
+#include <string>
 using namespace std;
-//二分
-string s,t;
-bool Judge(int mid)
-{
-    int len=s.length();
-    for(int i=0;i+mid-1<=len-1;i++)
-    {
-        int pos=0;
-        for(int j=0;j<=i-1;j++)
-        {
-            if(s[j]==t[pos]) pos++;
-        }
-        for(int j=i+mid;j<=len-1;j++)
-        {
-            if(s[j]==t[pos]) pos++;
-        }
-        if(pos>=t.length()) return true;
-    }
-    return false;
-}
+const int N = 2e5 + 50;
+int lm[N], rm[N]; //left_most,right_most
+string s, t;
 int main()
 {
     ios::sync_with_stdio(false);
     cin.tie(0);
-    cin>>s>>t;
-    int left=0;
-    int right=s.length()-t.length();
-    int mid;
-    while(left<right)
+    cin >> s >> t;
+    int lens = s.length();
+    int lent = t.length();
+    for (int i = 0, j = 0; i < lens; i++)
     {
-        mid=(left+right+1)>>1;
-        //cout<<"cur :"<<mid<<endl;
-        if(Judge(mid))
-            left=mid;
-        else right=mid-1;
+        if (j < lent && t[j] == s[i])
+            lm[j] = i, j++;
     }
-    cout<<left<<endl;
+    for (int i = lens - 1, j = lent - 1; i >= 0; i--)
+    {
+        if (j >= 0 && t[j] == s[i])
+            rm[j] = i, j--;
+    }
+    int ans = max(lens - 1 - lm[lent - 1], rm[0]);
+    for (int i = 1; i < lent; i++)
+    {
+        ans = max(ans, rm[i] - lm[i - 1] - 1);
+    }
+    cout << ans << endl;
     //system("pause");
     return 0;
 }

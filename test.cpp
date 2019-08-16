@@ -1,157 +1,126 @@
 //Author:XuHt
 #include <algorithm>
 #include <cstdio>
-#include <cstring>
 #include <iostream>
-#include <queue>
-#include <vector>
 #define ll long long
 using namespace std;
-const int N = 50006;
-int head[N], Edge[N << 1], Leng[N << 1], Next[N << 1], tot;
-int n, m, t, a[N], b[N], g[N], fa[N][16], sh[N];
-ll c[N], d[N], f[N], dis[N][16], sum;
-vector<ll> arv[N];
-queue<int> q;
-bool v[N], w[N];
+const int N = 1000006;
+int Head[N], Edge[N << 1], Leng[N << 1], Next[N << 1], tot;
+int n, du[N], c[N], q[N << 1];
+ll f[N], d[N], a[N << 1], b[N << 1], ans;
+bool v[N];
 
-void add(int x, int y, int z)
+inline void add(int x, int y, int z)
 {
     Edge[++tot] = y;
     Leng[tot] = z;
-    Next[tot] = head[x];
-    head[x] = tot;
+    Next[tot] = Head[x];
+    Head[x] = tot;
+    ++du[y];
 }
 
-void bfs()
+void bfs(int s, int t)
 {
-    v[1] = 1;
-    for (int i = head[1]; i; i = Next[i])
+    int l = 1, r = 1;
+    c[q[1] = s] = t;
+    while (l <= r)
     {
-        int y = Edge[i];
-        q.push(y);
-        v[y] = 1;
-        b[sh[y] = ++t] = i;
+        for (int i = Head[q[l]]; i; i = Next[i])
+            if (!c[Edge[i]])
+                c[q[++r] = Edge[i]] = t;
+        ++l;
     }
-    while (q.size())
+}
+
+void topsort()
+{
+    int l = 1, r = 0;
+    for (int i = 1; i <= n; i++)
+        if (du[i] == 1)
+            q[++r] = i;
+    while (l <= r)
     {
-        int x = q.front();
-        q.pop();
-        for (int i = head[x]; i; i = Next[i])
-        {
-            int y = Edge[i];
-            if (v[y])
-                continue;
-            q.push(y);
-            v[y] = 1;
-            fa[y][0] = x;
-            dis[y][0] = Leng[i];
-            for (int j = 1; j < 16; j++)
+        for (int i = Head[q[l]]; i; i = Next[i])
+            if (du[Edge[i]] > 1)
             {
-                fa[y][j] = fa[fa[y][j - 1]][j - 1];
-                dis[y][j] = dis[y][j - 1] + dis[fa[y][j - 1]][j - 1];
+                d[c[q[l]]] = max(d[c[q[l]]], f[q[l]] + f[Edge[i]] + Leng[i]);
+                f[Edge[i]] = max(f[Edge[i]], f[q[l]] + Leng[i]);
+                if (--du[Edge[i]] == 1)
+                    q[++r] = Edge[i];
             }
-        }
+        ++l;
     }
 }
 
-bool dfs(int x)
+void dp(int t, int x)
 {
-    v[x] = 1;
-    if (!sh[x] && w[x])
-        return 1;
-    bool flag = 0;
-    for (int i = head[x]; i; i = Next[i])
+    int m = 0, y = x, k, z = 0;
+    do
     {
-        int y = Edge[i];
-        if (v[y])
-            continue;
-        flag = 1;
-        if (!dfs(Edge[i]))
-            return 0;
-    }
-    return flag;
-}
-
-bool work(ll now)
-{
-    for (int i = 1; i <= t; i++)
-        arv[i].clear();
-    memset(v, 0, sizeof(v));
-    memset(w, 0, sizeof(w));
-    v[1] = 1;
-    for (int i = 1; i <= m; i++)
-    {
-        g[i] = a[i];
-        d[i] = 0;
-        for (int j = 15; j >= 0; j--)
-            if (fa[g[i]][j] && d[i] + dis[g[i]][j] <= now)
+        a[++m] = f[y];
+        du[y] = 1;
+        for (k = Head[y]; k; k = Next[k])
+            if (du[Edge[k]] > 1)
             {
-                d[i] += dis[g[i]][j];
-                g[i] = fa[g[i]][j];
+                b[m + 1] = b[m] + Leng[k];
+                y = Edge[k];
+                break;
             }
-        w[g[i]] = 1;
-        int j = sh[g[i]];
-        if (j)
-        {
-            arv[j].push_back(now - d[i]);
-            if (arv[j].size() > 1 && now - d[i] > arv[j][arv[j].size() - 2])
-                swap(arv[j][arv[j].size() - 1], arv[j][arv[j].size() - 2]);
-        }
-    }
-    int p = 0, q = 0;
-    for (int i = 1; i <= t; i++)
+    } while (k);
+    if (m == 2)
     {
-        if (!dfs(Edge[b[i]]))
-        {
-            if (arv[i].size() && arv[i][arv[i].size() - 1] < (Leng[b[i]] << 1))
-                arv[i].pop_back();
-            else
-                f[++q] = Leng[b[i]];
-        }
-        for (unsigned int j = 0; j < arv[i].size(); j++)
-            if (arv[i][j] >= Leng[b[i]])
-                c[++p] = arv[i][j] - Leng[b[i]];
+        for (int i = Head[y]; i; i = Next[i])
+            if (Edge[i] == x)
+                z = max(z, Leng[i]);
+        d[t] = max(d[t], f[x] + f[y] + z);
+        return;
     }
-    sort(c + 1, c + p + 1);
-    sort(f + 1, f + q + 1);
-    if (p < q)
-        return 0;
-    for (int i = q, j = p; i; i--, j--)
-        if (c[j] < f[i])
-            return 0;
-    return 1;
+    for (int i = Head[y]; i; i = Next[i])
+        if (Edge[i] == x)
+        {
+            b[m + 1] = b[m] + Leng[i];
+            break;
+        }
+    for (int i = 1; i < m; i++)
+    {
+        a[m + i] = a[i];
+        b[m + i] = b[m + 1] + b[i];
+    }
+    int l = 1, r = 1;
+    q[1] = 1;
+    for (int i = 2; i < (m << 1); i++)
+    {
+        if (l <= r && i - q[l] >= m)
+            ++l;
+        d[t] = max(d[t], a[i] + a[q[l]] + b[i] - b[q[l]]);
+        while (l <= r && a[q[r]] - b[q[r]] <= a[i] - b[i])
+            --r;
+        q[++r] = i;
+    }
 }
 
 int main()
 {
     cin >> n;
-    for (int i = 1; i < n; i++)
+    for (int x = 1; x <= n; x++)
     {
-        int x, y, z;
-        scanf("%d %d %d", &x, &y, &z);
+        int y, z;
+        scanf("%d %d", &y, &z);
         add(x, y, z);
         add(y, x, z);
-        sum += z;
     }
-    cin >> m;
-    for (int i = 1; i <= m; i++)
-        scanf("%d", &a[i]);
-    bfs();
-    ll l = 0, r = sum + 1;
-    while (l < r)
-    {
-        int mid = (l + r) >> 1;
-        cout << mid << endl;
-        if (work(mid))
-            r = mid;
-        else
-            l = mid + 1;
-    }
-    if (l > sum)
-        puts("-1");
-    else
-        cout << l << endl;
-    system("pause");
+    int t = 0;
+    for (int i = 1; i <= n; i++)
+        if (!c[i])
+            bfs(i, ++t);
+    topsort();
+    for (int i = 1; i <= n; i++)
+        if (du[i] > 1 && !v[c[i]])
+        {
+            v[c[i]] = 1;
+            dp(c[i], i);
+            ans += d[c[i]];
+        }
+    cout << ans << endl;
     return 0;
 }
