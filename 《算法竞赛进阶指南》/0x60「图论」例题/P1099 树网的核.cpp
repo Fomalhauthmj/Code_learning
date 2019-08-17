@@ -4,8 +4,6 @@
 #include <vector>
 using namespace std;
 const int N = 5e5 + 500;
-//小数据可行 大数据段错误
-//FIXME 完善其他方法
 #define pii pair<int, int>
 #define inf 0x3f3f3f3f
 int n, s, dis[N], path[N], d[N];
