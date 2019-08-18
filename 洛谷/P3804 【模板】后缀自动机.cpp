@@ -7,17 +7,15 @@ struct state
     int len, link;
     map<char, int> next;
 };
-const int MAXLEN = 10;
+const int MAXLEN = 1e6 + 50;
 state st[MAXLEN * 2];
 int sz, last;
-void sam_init()
+void SAM_Init()
 {
-    st[0].len = 0;
-    st[0].link = -1;
-    sz++;
-    last = 0;
+    st[0].len = 0, st[0].link = -1;
+    sz++, last = 0;
 }
-void sam_extend(char c)
+void SAM_Extend(char c)
 {
     int cur = sz++;
     st[cur].len = st[last].len + 1;
@@ -28,16 +26,12 @@ void sam_extend(char c)
         p = st[p].link;
     }
     if (p == -1)
-    {
         st[cur].link = 0;
-    }
     else
     {
         int q = st[p].next[c];
-        if (st[p].len + 1 == st[q].len)
-        {
+        if (st[q].len == st[p].len + 1)
             st[cur].link = q;
-        }
         else
         {
             int clone = sz++;
@@ -56,10 +50,6 @@ void sam_extend(char c)
 }
 int main()
 {
-    string str = "abcbc";
-    sam_init();
-    for (auto it : str)
-        sam_extend(it);
     system("pause");
     return 0;
 }
