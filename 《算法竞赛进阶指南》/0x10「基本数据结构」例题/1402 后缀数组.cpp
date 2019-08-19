@@ -16,8 +16,7 @@ char str[N];
 int SA[N], n, Height[N];
 void Init()
 {
-    p[0] = 1;
-    f[0] = 0;
+    p[0] = 1, f[0] = 0;
     for (int i = 1; i <= n; i++)
     {
         p[i] = p[i - 1] * P;
