@@ -18,7 +18,7 @@ int main()
         string str;
         cin >> str;
         int len = str.length();
-        int temp_cnt = 0, xor_cnt = 0;
+        int temp_cnt = 0;
         ret.clear();
         memset(vis, 0, sizeof(vis));
         for (int i = 0; i < len; i++)
@@ -29,7 +29,6 @@ int main()
             {
                 if (temp_cnt)
                     ret.push_back(temp_cnt + 1), temp_cnt = 0;
-                xor_cnt++;
             }
         }
         if (temp_cnt)
@@ -38,7 +37,6 @@ int main()
         int ans = 0;
         for (int i = 0; i < ret.size(); i++)
         {
-            bool flag = false;
             for (int j = 25; j >= 1; j--)
             {
                 int temp = pow(2, j);
@@ -48,17 +46,10 @@ int main()
                     ans += temp;
                     //cout << "add:" << temp << endl;
                     ret[i] -= temp;
-                    flag = true;
                 }
             }
-            if (ret[i] == 1)
-                xor_cnt++;
-            else if (ret[i] > 1)
-                xor_cnt += ret[i] - 1;
-            if (flag)
-                xor_cnt--;
         }
-        xor_cnt++;
+        int xor_cnt = len + 1 - ans;
         if (xor_cnt & 1)
             cout << (ans ^ 1) << endl;
         else
