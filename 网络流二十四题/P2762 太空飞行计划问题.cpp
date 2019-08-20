@@ -2,7 +2,6 @@
 #include <iostream>
 #include <queue>
 #include <stdio.h>
-#include <vector>
 using namespace std;
 const int N = 205;
 const int M = 1e6 + 50;
@@ -92,23 +91,14 @@ int main()
     while (BFS())
         while (flow = Dinic(S, inf))
             maxflow += flow;
-    vector<int> v1, v2;
     for (int i = 1; i <= m; i++)
         if (d[i])
-            v1.push_back(i);
+            cout << i << " ";
+    cout << endl;
     for (int i = m + 1; i <= m + n; i++)
         if (d[i])
-            v2.push_back(i - m);
-    for (int i = 0; i < v1.size(); i++)
-        if (i == v1.size() - 1)
-            cout << v1[i] << endl;
-        else
-            cout << v1[i] << " ";
-    for (int i = 0; i < v2.size(); i++)
-        if (i == v2.size() - 1)
-            cout << v2[i] << endl;
-        else
-            cout << v2[i] << " ";
+            cout << i - m << " ";
+    cout << endl;
     cout << sum - maxflow << endl;
     //system("pause");
     return 0;
