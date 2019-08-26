@@ -1,34 +1,79 @@
 #include <cstring>
-#include <ext/pb_ds/assoc_container.hpp>
-#include <ext/pb_ds/tree_policy.hpp>
 #include <iostream>
-#include <stack>
 #include <stdio.h>
 using namespace std;
 const int MAXLEN = 1e5 + 50;
+struct SegmentTree
+{
+    int lc, rc, cnt;
+} tree[2 * MAXLEN * 20];
+int tree_node, root[MAXLEN * 2];
+int Insert(int now, int l, int r, int x)
+{
+    int p = ++tree_node;
+    tree[p] = tree[now];
+    if (l == r)
+    {
+        tree[p].cnt++;
+        return p;
+    }
+    int mid = (l + r) >> 1;
+    if (x <= mid)
+        tree[p].lc = Insert(tree[now].lc, l, mid, x);
+    else
+        tree[p].rc = Insert(tree[now].rc, mid + 1, r, x);
+    tree[p].cnt = tree[tree[p].lc].cnt + tree[tree[p].rc].cnt;
+    return p;
+}
+int Ask(int p, int l, int r, int k)
+{
+    if (tree[p].cnt < k)
+        return -1;
+    if (l == r)
+        return l;
+    int mid = (l + r) >> 1;
+    int lcnt = tree[tree[p].lc].cnt;
+    if (k <= lcnt)
+        return Ask(tree[p].lc, l, mid, k);
+    else
+        return Ask(tree[p].rc, mid + 1, r, k - lcnt);
+}
+//必须新开点进行合并
+int Merge(int p, int q)
+{
+    if (!p || !q)
+        return p + q;
+    int rt = ++tree_node;
+    tree[rt].lc = Merge(tree[p].lc, tree[q].lc);
+    tree[rt].rc = Merge(tree[p].rc, tree[q].rc);
+    tree[rt].cnt = tree[tree[rt].lc].cnt + tree[tree[rt].rc].cnt;
+    return rt;
+}
+int Merge(int p, int q, int l, int r)
+{
+    if (!p || !q)
+        return p + q;
+    if (l == r)
+    {
+        tree[p].cnt += tree[q].cnt;
+        return p;
+    }
+    int mid = (l + r) >> 1;
+    int rt = ++tree_node;
+    tree[rt].lc = Merge(tree[p].lc, tree[q].lc, l, mid);
+    tree[rt].rc = Merge(tree[p].rc, tree[q].rc, mid + 1, r);
+    tree[rt].cnt = tree[tree[rt].lc].cnt + tree[tree[rt].rc].cnt;
+    return rt;
+}
 char str[MAXLEN];
 int N, Q;
-struct node
-{
-    int l, r, k, id;
-    bool operator<(const node &n)
-    {
-        if (l != n.l)
-            return l < n.l;
-        return r < n.r;
-    }
-} ns[MAXLEN];
-int ans[MAXLEN];
-// __gnu_pbds::tree<int, __gnu_pbds::null_type, less<int>, __gnu_pbds::rb_tree_tag, __gnu_pbds::tree_order_statistics_node_update>::iterator it;
-__gnu_pbds::tree<int, __gnu_pbds::null_type, less<int>, __gnu_pbds::rb_tree_tag, __gnu_pbds::tree_order_statistics_node_update> tr;
 struct state
 {
     int len, link, next[26];
-    int first_pos;
-    bool end;
 } st[MAXLEN * 2];
 int sz, last;
 int head[MAXLEN * 2], ver[MAXLEN * 2], nxt[MAXLEN * 2], tot;
+int fa[MAXLEN * 2][20], pos[MAXLEN], val[MAXLEN * 2];
 void add(int x, int y)
 {
     ver[++tot] = y, nxt[tot] = head[x], head[x] = tot;
@@ -43,7 +88,6 @@ void SAM_Extend(int c)
 {
     int cur = sz++;
     st[cur].len = st[last].len + 1;
-    st[cur].first_pos = st[cur].len - 1;
     int p = last;
     while (p != -1 && !st[p].next[c])
     {
@@ -61,7 +105,6 @@ void SAM_Extend(int c)
         {
             int clone = sz++;
             st[clone].len = st[p].len + 1;
-            st[clone].first_pos = st[q].first_pos;
             memcpy(st[clone].next, st[q].next, sizeof(st[clone].next));
             st[clone].link = st[q].link;
             while (p != -1 && st[p].next[c] == q)
@@ -74,26 +117,16 @@ void SAM_Extend(int c)
     }
     last = cur;
 }
-void BuildLinkTree()
+void DFS(int x)
 {
-    for (int i = 1; i < sz; i++)
-        add(st[i].link, i);
-}
-stack<int> s;
-void DFS(int x, int p_len)
-{
-    s.push(x);
-    while (!s.empty())
+    for (int i = 1; i < 20; i++)
+        fa[x][i] = fa[fa[x][i - 1]][i - 1];
+    for (int i = head[x]; i; i = nxt[i])
     {
-        int now = s.top();
-        s.pop();
-        if (st[now].end)
-            tr.insert(st[now].first_pos - p_len + 2);
-        for (int i = head[now]; i; i = nxt[i])
-        {
-            int y = ver[i];
-            s.push(y);
-        }
+        int y = ver[i];
+        fa[y][0] = x;
+        DFS(y);
+        root[x] = Merge(root[x], root[y], 1, N);
     }
 }
 int main()
@@ -102,40 +135,37 @@ int main()
     cin >> T;
     while (T--)
     {
+        memset(head, 0, sizeof(head));
+        memset(val, 0, sizeof(val));
+        memset(tree, 0, sizeof(tree));
+        memset(root, 0, sizeof(root));
+        tree_node = 0, tot = 0;
         scanf("%d%d", &N, &Q);
         scanf("%s", str + 1);
         SAM_Init();
         for (int i = 1; i <= N; i++)
-            SAM_Extend(str[i] - 'a'), st[last].end = true;
-        BuildLinkTree();
+            SAM_Extend(str[i] - 'a'), pos[i] = last, val[last] = i;
+        for (int i = 1; i < sz; i++)
+            add(st[i].link, i);
+        for (int i = 1; i < sz; i++)
+            if (val[i])
+                root[i] = Insert(root[i], 1, N, val[i]);
+        DFS(0);
+        int l, r, k;
         for (int i = 1; i <= Q; i++)
         {
-            scanf("%d%d%d", &ns[i].l, &ns[i].r, &ns[i].k);
-            ns[i].id = i;
-        }
-        sort(ns + 1, ns + Q + 1);
-        int v = 0, pos;
-        ns[0].l = 0;
-        tr.clear();
-        for (int i = 1; i <= Q; i++)
-        {
-            if (ns[i].l == ns[i - 1].l)
-                pos = ns[i - 1].r + 1;
+            scanf("%d%d%d", &l, &r, &k);
+            int v = pos[r];
+            for (int j = 19; j >= 0; j--)
+                if (st[fa[v][j]].len >= r - l + 1)
+                    v = fa[v][j];
+            int ans = Ask(root[v], 1, N, k);
+            if (ans == -1)
+                printf("-1\n");
             else
-                pos = ns[i].l, v = 0;
-            //cout << "cur:" << ns[i].l << " " << ns[i].r << " " << pos << endl;
-            while (pos <= ns[i].r && st[v].next[str[pos] - 'a'])
-                v = st[v].next[str[pos] - 'a'], pos++;
-            tr.clear();
-            DFS(v, ns[i].r - ns[i].l + 1);
-            if (tr.size() < ns[i].k)
-                ans[ns[i].id] = -1;
-            else
-                ans[ns[i].id] = *tr.find_by_order(ns[i].k - 1);
+                printf("%d\n", ans - (r - l + 1) + 1);
         }
-        for (int i = 1; i <= Q; i++)
-            printf("%d\n", ans[i]);
     }
-    //system("pause");
+    system("pause");
     return 0;
 }
