@@ -3,11 +3,12 @@
 #include <queue>
 #include <stdio.h>
 using namespace std;
-const int N = 1e3 + 50;
+const int N = 2e3 + 50;
 const int M = 1e6 + 50;
 #define inf 0x3f3f3f3f
-int head[N], ver[M], nxt[M], edge[M], tot = 1;
 int d[N], S, T;
+int head[N], ver[M], nxt[M], edge[M], tot = 1;
+int f[N], x[N], k;
 void add(int x, int y, int z)
 {
     ver[++tot] = y, nxt[tot] = head[x], head[x] = tot, edge[tot] = z;
@@ -59,36 +60,47 @@ int Dinic(int x, int flow)
 }
 int main()
 {
-    int m, n;
-    scanf("%d%d", &m, &n);
-    S = 0, T = m + n + 1;
-    int sum = 0;
-    for (int i = 1, p; i <= m; i++)
-        scanf("%d", &p), add(S, i, p), sum += p;
-    for (int i = 1, c; i <= n; i++)
-        scanf("%d", &c), add(m + i, T, c);
-    for (int i = 1; i <= m; i++)
-        for (int j = 1; j <= n; j++)
-            add(i, m + j, 1);
+    int n;
+    scanf("%d", &n);
+    for (int i = 1; i <= n; i++)
+        scanf("%d", &x[i]), f[i] = 1;
+    for (int i = 1; i <= n; i++)
+    {
+        for (int j = 1; j < i; j++)
+            if (x[i] >= x[j])
+                f[i] = max(f[i], f[j] + 1);
+    }
+    k = 1;
+    for (int i = 1; i <= n; i++)
+        k = max(k, f[i]);
+    printf("%d\n", k);
+    S = 0, T = 2 * n + 1;
+    for (int i = 1; i <= n; i++)
+    {
+        add(i, i + n, 1);
+        if (f[i] == 1)
+            add(S, i, 1);
+        if (f[i] == k)
+            add(i + n, T, 1);
+        for (int j = 1; j < i; j++)
+        {
+            if (x[i] >= x[j] && f[i] == f[j] + 1)
+                add(j + n, i, 1);
+        }
+    }
     int maxflow = 0, flow;
     while (BFS())
         while (flow = Dinic(S, inf))
             maxflow += flow;
-    if (maxflow != sum)
-        printf("0\n");
-    else
-    {
-        printf("1\n");
-        for (int i = 1; i <= m; i++)
-        {
-            for (int j = head[i]; j; j = nxt[j])
-            {
-                if (!edge[j])
-                    printf("%d ", ver[j]-m);
-            }
-            printf("\n");
-        }
-    }
+    printf("%d\n", maxflow);
+    add(1, 1 + n, inf), add(n, n + n, inf);
+    add(S, 1, inf);
+    if (f[n] == k)
+        add(n + n, T, inf);
+    while (BFS())
+        while (flow = Dinic(S, inf))
+            maxflow += flow;
+    printf("%d\n", maxflow);
     //system("pause");
     return 0;
 }
