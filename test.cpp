@@ -1,35 +1,44 @@
-#include <iostream>
-#include <stdio.h>
+#include<iostream>
+#include<queue>
+#include<stack>
+#include<algorithm>
 using namespace std;
-#define ll long long
+int a[105],n;
+bool Judge(int M)
+{
+    stack<int> s;
+    deque<int> q;
+    for(int i=0;i<n;i++) q.push_back(a[i]);
+    while(q.size())
+    {
+        s.push(q.front());
+        q.pop_front();
+        for(int i=1;i<=M;i++)
+        {
+            q.push_back(q.front());
+            q.pop_front();
+        }
+    }
+     for(int i=n;i>=1;i--)
+        if(s.top()!=i) return false;
+        else s.pop();
+    return true;
+}
 int main()
 {
-    ll T;
-    cin >> T;
-    while (T--)
+    int m;
+    cin>>n>>m;
+    for(int i=0;i<n;i++) a[i]=i+1;
+    do
     {
-        ll str, inte, exp;
-        cin >> str >> inte >> exp;
-        if (exp == 0)
+        if(Judge(m))
         {
-            if (str > inte)
-                cout << 1 << endl;
-            else
-                cout << 0 << endl;
-            continue;
+            cout<<"legal:"<<endl;
+            for(int i=0;i<n;i++)
+                cout<<a[i]<<" ";
+            cout<<endl;
         }
-        ll key = str - inte;
-        ll a1 = (exp - key) / 2 ;
-        if(exp-key>=0) a1++;
-        if (a1 <= exp)
-        {
-            if (a1 < 0)
-                a1 = 0;
-            cout << exp - a1 + 1 << endl;
-        }
-        else
-            cout << 0 << endl;
-    }
-    //system("pause");
+    } while (next_permutation(a,a+n));
+    system("pause");
     return 0;
 }
