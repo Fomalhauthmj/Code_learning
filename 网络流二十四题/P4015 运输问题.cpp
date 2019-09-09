@@ -93,36 +93,31 @@ void Update()
     max_flow += incf[T];
     ans += incf[T] * dis[T];
 }
-int a[105],b[105];
 int main()
 {
-    S = 0, T = m + n + 1;
     scanf("%d%d", &m, &n);
-    for (int i = 1; i <= m; i++)
-        scanf("%d", &a[i]), add(S, i, a[i], 0);
-    for (int i = 1; i <= n; i++)
-        scanf("%d", &b[i]), add(m + i, T, b[i], 0);
+    S = 0, T = m + n + 1;
+    for (int i = 1,a; i <= m; i++)
+        scanf("%d", &a), add(S, i, a, 0);
+    for (int i = 1,b; i <= n; i++)
+        scanf("%d", &b), add(m + i, T, b, 0);
     for (int i = 1; i <= m; i++)
     {
         for (int j = 1, c; j <= n; j++)
         {
-            scanf("%d", &c), add(i, m + j,a[i], c);
+            scanf("%d", &c), add(i, m + j,inf, c);
         }
     }
-    cout<<tot<<endl;
     memcpy(edge_c, edge, sizeof(edge_c));
     max_flow = 0, ans = 0;
     while (SPFA_min())
         Update();
-    cout << max_flow << " " << ans << endl;
-    for(int i=2;i<=tot;i+=2)
-        cout<<edge[i]<<endl;
-    /*
+    cout << ans << endl;
+    memcpy(edge, edge_c, sizeof(edge));
     max_flow = 0, ans = 0;
     while (SPFA_max())
         Update();
-    cout << max_flow << " " << ans << endl;
-    */
-    system("pause");
+    cout  << ans << endl;
+    //system("pause");
     return 0;
 }
