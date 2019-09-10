@@ -1,107 +1,87 @@
-#include<iostream>
-#include<queue>
-#include<cstring>
+#include <cstring>
+#include <iostream>
+#include <queue>
+#include <stdio.h>
 using namespace std;
-const int N=3e6+50;
-const int M=8e6+50;
-#define inf 0x3f3f3f3f
-int head[N],ver[M],nxt[M],tot=1,edge[M];
-int n,m,S,T,d[N];
-char str[N],line[N];
-void add(int x,int y,int z)
+const int MAXLEN = 1e6 + 50;
+struct Trie
 {
-    ver[++tot]=y,nxt[tot]=head[x],head[x]=tot,edge[tot]=z;
-    ver[++tot]=x,nxt[tot]=head[y],head[y]=tot,edge[tot]=0;
-}
-int H(int x,int y)
-{
-    return (x-1)*m+y;
-}
-bool BFS()
-{
-    memset(d, 0, sizeof(d));
-    queue<int> q;
-    q.push(S);
-    d[S] = 1; //不为1  陷入死循环
-    while (q.size())
+    int tr[MAXLEN][26], fail[MAXLEN], End[MAXLEN];
+    int sz, rt;
+    int NewNode()
     {
-        int x = q.front();
-        q.pop();
-        for (int i = head[x]; i; i = nxt[i])
+        memset(tr[sz], 0, sizeof(tr[sz]));
+        End[sz] = 0, fail[sz] = 0;
+        return sz++;
+    }
+    void Init()
+    {
+        sz = 0, rt = NewNode();
+    }
+    void Insert(const char *s)
+    {
+        int p = rt;
+        for (int i = 0; s[i]; i++)
         {
-            int y = ver[i];
-            if (edge[i] && !d[y])
+            int c = s[i] - 'a';
+            if (!tr[p][c])
+                tr[p][c] = NewNode();
+            p = tr[p][c];
+        }
+        End[p]++;
+    }
+    void Build()
+    {
+        queue<int> q;
+        for (int c = 0; c < 26; c++)
+            if (tr[rt][c])
+                q.push(tr[rt][c]);
+        while (!q.empty())
+        {
+            int u = q.front();
+            q.pop();
+            for (int c = 0; c < 26; c++)
             {
-                d[y] = d[x] + 1;
-                q.push(y);
-                if (y == T)
-                    return true;
+                if (tr[u][c])
+                    fail[tr[u][c]] = tr[fail[u]][c], q.push(tr[u][c]);
+                else
+                    tr[u][c] = tr[fail[u]][c];
             }
         }
     }
-    return false;
-}
-int Dinic(int x, int flow)
-{
-    if (x == T)
-        return flow;
-    int rest = flow, k;
-    for (int i = head[x]; i && rest; i = nxt[i])
+    int Query(const char *s)
     {
-        int y = ver[i];
-        if (edge[i] && d[y] == d[x] + 1)
+        int u = rt, res = 0;
+        for (int i = 0; s[i]; i++)
         {
-            k = Dinic(y, min(edge[i], rest));
-            if (!k)
-                d[y] = 0;
-            edge[i] -= k;
-            edge[i ^ 1] += k;
-            rest -= k;
+            u = tr[u][s[i] - 'a']; // 转移
+            for (int j = u; j && End[j] != -1; j = fail[j])
+            {
+                res += End[j], End[j] = -1;
+            }
         }
+        return res;
     }
-    return flow - rest;
-}
-bool Judge(int x,int y)
-{
-    if(x<1||x>n||y<1||y>m||str[H(x,y)]=='#')
-        return false;
-    return true;
-}
+} ac;
+char str[MAXLEN];
 int main()
 {
-    scanf("%d%d",&n,&m);
-    int cnt=n*m;
-    for(int i=1;i<=n;i++)
+    int T;
+    scanf("%d", &T);
+    while (T--)
     {
-        scanf("%s",line);
-        for(int j=1;j<=m;j++)
-            str[H(i,j)]=line[j-1];
-    }
-    for(int i=1;i<=n;i++)
-    {
-        for(int j=1;j<=m;j++)
+        int n;
+        scanf("%d", &n);
+        ac.Init();
+        for (int i = 0; i < n; i++)
         {
-            add(H(i,j),H(i,j)+cnt,1);
-            if(Judge(i+1,j))
-                add(H(i,j)+cnt,H(i+1,j),1);
-            if(Judge(i,j+1))
-                add(H(i,j)+cnt,H(i,j+1),1);
+            scanf("%s", str);
+            ac.Insert(str);
         }
+        ac.Build();
+        scanf("%s", str);
+        printf("%d\n", ac.Query(str));
     }
-    int maxflow=0,flow;
-    S=0,T=2*n*m+1;
-    add(S,H(1,1),inf),add(H(n,m)+cnt,T,inf);
-    add(H(1,1),H(1,1)+cnt,inf),add(H(n,m),H(n,m)+cnt,inf);
-    while(BFS())
-        while(flow=Dinic(S,inf)) maxflow+=flow;
-    printf("%d\n",maxflow);
     //system("pause");
     return 0;
 }
-/*
-4 5
-.....
-....#
-.....
-..#..
-*/   

@@ -10,8 +10,8 @@ struct Trie
     int sz, rt;
     int NewNode()
     {
-        memset(tr[sz], -1, sizeof(tr[sz]));
-        End[sz] = 0, fail[sz] = 0;
+        memset(tr[sz], 0, sizeof(tr[sz]));
+        End[sz] = 0, fail[sz] = 0; //注意重置
         return sz++;
     }
     void Init()
@@ -24,7 +24,7 @@ struct Trie
         for (int i = 0; s[i]; i++)
         {
             int c = s[i] - 'a';
-            if (tr[p][c] == -1)
+            if (!tr[p][c])
                 tr[p][c] = NewNode();
             p = tr[p][c];
         }
@@ -34,7 +34,7 @@ struct Trie
     {
         queue<int> q;
         for (int c = 0; c < 26; c++)
-            if (tr[rt][c] != -1)
+            if (tr[rt][c])
                 q.push(tr[rt][c]);
         while (!q.empty())
         {
@@ -42,7 +42,7 @@ struct Trie
             q.pop();
             for (int c = 0; c < 26; c++)
             {
-                if (tr[u][c] != -1)
+                if (tr[u][c])
                     fail[tr[u][c]] = tr[fail[u]][c], q.push(tr[u][c]);
                 else
                     tr[u][c] = tr[fail[u]][c];
@@ -51,7 +51,7 @@ struct Trie
     }
     int Query(const char *s)
     {
-        int u = 0, res = 0;
+        int u = rt, res = 0;
         for (int i = 0; s[i]; i++)
         {
             u = tr[u][s[i] - 'a']; // 转移
@@ -66,22 +66,17 @@ struct Trie
 char str[MAXLEN];
 int main()
 {
-    int T;
-    scanf("%d", &T);
-    while (T--)
+    int n;
+    scanf("%d", &n);
+    ac.Init();
+    for (int i = 0; i < n; i++)
     {
-        int n;
-        scanf("%d", &n);
-        ac.Init();
-        for (int i = 0; i < n; i++)
-        {
-            scanf("%s", str);
-            ac.Insert(str);
-        }
-        ac.Build();
         scanf("%s", str);
-        printf("%d\n", ac.Query(str));
+        ac.Insert(str);
     }
+    ac.Build();
+    scanf("%s", str);
+    printf("%d\n", ac.Query(str));
     //system("pause");
     return 0;
 }
