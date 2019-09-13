@@ -1,87 +1,199 @@
-#include <cstring>
 #include <iostream>
-#include <queue>
+#include <math.h>
 #include <stdio.h>
 using namespace std;
-const int MAXLEN = 1e6 + 50;
-struct Trie
+const int SIZE = 1E5 + 50;
+#define inf 0x7fffffff
+#define ull unsigned long long
+#define P 131
+ull BASE[SIZE];
+void Init()
 {
-    int tr[MAXLEN][26], fail[MAXLEN], End[MAXLEN];
-    int sz, rt;
-    int NewNode()
+    BASE[0]=1;
+    for(int i=1;i<SIZE;i++)
+        BASE[i]=BASE[i-1]*P;
+}
+struct Treap
+{
+    int l, r;
+    int val, dat;
+    int cnt, size,ch;
+    ull hash;
+} a[SIZE];
+int tot, root, n;
+int New(int val,int ch)
+{
+    a[++tot].val = val, a[tot].dat = rand(), a[tot].cnt = a[tot].size = 1;
+    a[tot].ch=ch;
+    return tot;
+}
+void Update(int p)
+{
+    a[p].size = a[a[p].l].size + a[a[p].r].size + a[p].cnt;
+    a[p].hash=a[p].ch*BASE[a[a[p].r].size]+a[a[p].l].hash*BASE[a[a[p].r].size+1]+a[a[p].r].hash;
+}
+void Build()
+{
+    New(-inf,0), New(inf,0), root = 1, a[1].r = 2, Update(root);
+}
+int GetRankByVal(int p, int val)
+{
+    if (p == 0)
+        return 0;
+    if (val == a[p].val)
+        return a[a[p].l].size + 1;
+    if (val < a[p].val)
+        return GetRankByVal(a[p].l, val);
+    return GetRankByVal(a[p].r, val) + a[a[p].l].size + a[p].cnt;
+}
+int GetValByRank(int p, int rank)
+{
+    if (p == 0)
+        return inf;
+    if (a[a[p].l].size >= rank)
+        return GetValByRank(a[p].l, rank);
+    if (a[a[p].l].size + a[p].cnt >= rank)
+        return a[p].val;
+    return GetValByRank(a[p].r, rank - a[a[p].l].size - a[p].cnt);
+}
+void Zag(int &p)
+{
+    int q = a[p].r;
+    a[p].r = a[q].l, a[q].l = p, p = q, Update(a[p].l), Update(p);
+}
+void Zig(int &p)
+{
+    int q = a[p].l;
+    a[p].l = a[q].r, a[q].r = p, p = q, Update(a[p].r), Update(p);
+}
+void Insert(int &p, int val,int ch)
+{
+    if (p == 0)
     {
-        memset(tr[sz], -1, sizeof(tr[sz]));
-        End[sz] = 0, fail[sz] = 0;
-        return sz++;
+        p = New(val,ch);
+        return;
     }
-    void Init()
+    if (val == a[p].val)
     {
-        sz = 0, rt = NewNode();
+        a[p].cnt++, Update(p);
+        return;
     }
-    void Insert(const char *s)
+    if (val < a[p].val)
     {
-        int p = rt;
-        for (int i = 0; s[i]; i++)
+        Insert(a[p].l, val,ch);
+        if (a[p].dat < a[a[p].l].dat)
+            Zig(p);
+    }
+    else
+    {
+        Insert(a[p].r, val,ch);
+        if (a[p].dat < a[a[p].r].dat)
+            Zag(p);
+    }
+    Update(p);
+}
+int GetPre(int val)
+{
+    int ans = 1, p = root;
+    while (p)
+    {
+        if (val == a[p].val)
         {
-            int c = s[i] - 'a';
-            if (tr[p][c] == -1)
-                tr[p][c] = NewNode();
-            p = tr[p][c];
-        }
-        End[p]++;
-    }
-    void Build()
-    {
-        queue<int> q;
-        for (int c = 0; c < 26; c++)
-            if (tr[rt][c] != -1)
-                q.push(tr[rt][c]);
-        while (!q.empty())
-        {
-            int u = q.front();
-            q.pop();
-            for (int c = 0; c < 26; c++)
+            if (a[p].l > 0)
             {
-                if (tr[u][c] != -1)
-                    fail[tr[u][c]] = tr[fail[u]][c], q.push(tr[u][c]);
-                else
-                    tr[u][c] = tr[fail[u]][c];
+                p = a[p].l;
+                while (a[p].r > 0)
+                    p = a[p].r;
+                ans = p;
             }
+            break;
         }
+        if (a[p].val < val && a[p].val > a[ans].val)
+            ans = p;
+        p = val < a[p].val ? a[p].l : a[p].r;
     }
-    int Query(const char *s)
+    return a[ans].val;
+}
+int GetNext(int val)
+{
+    int ans = 2, p = root;
+    while (p)
     {
-        int u = 0, res = 0;
-        for (int i = 0; s[i]; i++)
+        if (val == a[p].val)
         {
-            u = tr[u][s[i] - 'a']; // 转移
-            for (int j = u; j && End[j] != -1; j = fail[j])
+            if (a[p].r > 0)
             {
-                res += End[j], End[j] = -1;
+                p = a[p].r;
+                while (a[p].l > 0)
+                    p = a[p].l;
+                ans = p;
             }
+            break;
         }
-        return res;
+        if (a[p].val > val && a[p].val < a[ans].val)
+            ans = p;
+        p = val < a[p].val ? a[p].l : a[p].r;
     }
-} ac;
-char str[MAXLEN];
+    return a[ans].val;
+}
+void Remove(int &p, int val)
+{
+    if (p == 0)
+        return;
+    if (val == a[p].val)
+    {
+        if (a[p].cnt > 1)
+        {
+            a[p].cnt--, Update(p);
+            return;
+        }
+        if (a[p].l || a[p].r)
+        {
+            if (a[p].r == 0 || a[a[p].l].dat > a[a[p].r].dat)
+                Zig(p), Remove(a[p].r, val);
+            else
+                Zag(p), Remove(a[p].l, val);
+            Update(p);
+        }
+        else
+            p = 0;
+        return;
+    }
+    val < a[p].val ? Remove(a[p].l, val) : Remove(a[p].r, val);
+    Update(p);
+}
+char str[SIZE];
 int main()
 {
-    int T;
-    scanf("%d", &T);
-    while (T--)
+    scanf("%s",str+1);
+    Build();
+    n=strlen(str+1);
+    for(int i=1;i<=n;i++)
+        Insert(root,i,str[i]-'a');
+    int M;
+    scanf("%d",&M);
+    while(M--)
     {
-        int n;
-        scanf("%d", &n);
-        ac.Init();
-        for (int i = 0; i < n; i++)
+        char opt[2];
+        scanf("%s",opt);
+        if(opt[0]=='Q')
         {
-            scanf("%s", str);
-            ac.Insert(str);
+            int x,y;
+            scanf("%d%d",&x,&y);
         }
-        ac.Build();
-        scanf("%s", str);
-        printf("%d\n", ac.Query(str));
+        else if(opt[0]=='R')
+        {
+            int x;
+            char d[2];
+            scanf("%d %s",&x,d);
+        }
+        else if(opt[0]=='I')
+        {
+            int x;
+            char d[2];
+            scanf("%d %s",&x,d);
+        }
     }
-    //system("pause");
+    system("pause");
     return 0;
 }
