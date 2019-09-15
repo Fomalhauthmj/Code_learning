@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <cstring>
 #include <iostream>
 #include <queue>
@@ -7,6 +8,7 @@ const int N = 1e6 + 50;
 const int M = 1e6 + 50;
 #define inf 0x3f3f3f3f
 #define ll long long
+#define pii pair<int, int>
 int S, T, tot = 1;
 int head[N], ver[M], nxt[M], edge[M], cost[M], dis[N], incf[N], pre[N];
 bool vis[N];
@@ -61,34 +63,31 @@ void Update()
     max_flow += incf[T];
     ans += incf[T] * dis[T];
 }
-int p, q;
-int H(int x, int y)
-{
-    return y * (q + 1) + x;
-}
+int p[N << 1], pcnt;
+pii q[505];
 int main()
 {
-    int a, b;
-    scanf("%d%d", &a, &b);
-    scanf("%d%d", &p, &q);
-    int k, r, x, y;
-    S = H(20, 20), T = H(21, 21);
-    int value;
-    for (int i = 0; i <= p; i++)
-        for (int j = 0; j < q; j++)
-            scanf("%d", &value), add(H(j, i), H(j + 1, i), 1, value), add(H(j, i), H(j + 1, i), inf, 0);
-    for (int i = 0; i <= q; i++)
-        for (int j = 0; j < p; j++)
-            scanf("%d", &value), add(H(i, j), H(i, j + 1), 1, value), add(H(i, j), H(i, j + 1), inf, 0);
-    for (int i = 0; i < a; i++)
+    int n, k;
+    scanf("%d%d", &n, &k);
+    pcnt = 0;
+    for (int i = 1; i <= n; i++)
     {
-        scanf("%d%d%d", &k, &y, &x);
-        add(S, H(x, y), k, 0);
+        scanf("%d%d", &q[i].first, &q[i].second);
+        if (q[i].first > q[i].second)
+            swap(q[i].first, q[i].second);
+        p[++pcnt] = q[i].first, p[++pcnt] = q[i].second;
     }
-    for (int i = 0; i < b; i++)
+    sort(p + 1, p + 1 + pcnt);
+    pcnt = unique(p + 1, p + 1 + pcnt) - (p + 1);
+    S = 0, T = 2 * n + 1;
+    add(S, 1, k, 0), add(pcnt, T, k, 0);
+    for (int i = 1; i < pcnt; i++)
+        add(i, i + 1, inf, 0);
+    for (int i = 1; i <= n; i++)
     {
-        scanf("%d%d%d", &r, &y, &x);
-        add(H(x, y), T, r, 0);
+        int u = lower_bound(p + 1, p + 1 + pcnt, q[i].first) - p;
+        int v = lower_bound(p + 1, p + 1 + pcnt, q[i].second) - p;
+        add(u, v, 1, q[i].second - q[i].first);
     }
     max_flow = ans = 0;
     while (SPFA_max())
