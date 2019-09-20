@@ -1,124 +1,81 @@
-#include <cstring>
 #include <iostream>
-#include <queue>
 #include <stdio.h>
+#include <vector>
 using namespace std;
-#define ui unsigned int
-ui seed, lastans;
-ui A[16][16], R[16][16];
-ui base1[16], base2[16];
-ui ret[16][16];
-struct node
+const int N = 1e6 + 50;
+const int M = 1e6 + 50;
+#define ll long long
+int head[N], nxt[M], ver[M], tot = 1;
+int head_c[N], nxt_c[M], ver_c[M], tot_c;
+int n, m, w[N], W[N];
+void add(int x, int y)
 {
-    ui matrix[16][16];
-};
-deque<node> q;
-deque<node> qc;
-void Init()
-{
-    base1[0] = base2[0] = 1;
-    for (int i = 1; i < 16; i++)
-        base1[i] = base1[i - 1] * 17;
-    for (int i = 1; i < 16; i++)
-        base2[i] = base2[i - 1] * 19;
+    ver[++tot] = y, nxt[tot] = head[x], head[x] = tot;
 }
-void Build()
+void add_c(int x, int y)
 {
-    seed ^= lastans;
-    for (int i = 0; i < 16; i++)
-    {
-        seed ^= seed * seed + 15;
-        for (int j = 0; j < 16; j++)
-            A[i][j] = (seed >> j) & 1;
-    }
+    ver_c[++tot_c] = y, nxt_c[tot_c] = head_c[x], head_c[x] = tot_c;
 }
-void Mul(ui m1[16][16], ui m2[16][16])
+int dfn[N], low[N], num, bridge[M], color[N], dcc;
+void Tarjan(int x, int in_edge)
 {
-    memset(R, 0, sizeof(R));
-    for (int i = 0; i < 16; i++)
+    dfn[x] = low[x] = ++num;
+    for (int i = head[x]; i; i = nxt[i])
     {
-        for (int j = 0; j < 16; j++)
+        int y = ver[i];
+        if (!dfn[y])
         {
-            for (int k = 0; k < 16; k++)
+            Tarjan(y, i);
+            low[x] = min(low[x], low[y]);
+            if (low[y] > dfn[x])
             {
-                R[i][j] = (R[i][j] + m1[i][k] * m2[k][j]) % 2;
+                bridge[i] = bridge[i ^ 1] = true;
             }
         }
+        else if (i != (in_edge ^ 1))
+            low[x] = min(low[x], dfn[y]);
     }
 }
-ui Ret()
+void DFS(int x)
 {
-    ui ans = 0;
-    for (int i = 0; i < 16; i++)
+    color[x] = dcc;
+    W[dcc] += w[x];
+    for (int i = head[x]; i; i = nxt[i])
     {
-        for (int j = 0; j < 16; j++)
-            ans += ret[i][j] * base1[i] * base2[j];
+        int y = ver[i];
+        if (!color[y] && !bridge[i])
+            DFS(y);
     }
-    return ans;
+}
+void e_DCC()
+{
+    dcc = 0;
+    for (int i = 1; i <= n; i++)
+        if (!color[i])
+            ++dcc, DFS(i);
+    tot_c = 1;
+    for (int i = 2; i <= tot; i++)
+    {
+        int u = ver[i ^ 1], v = ver[i];
+        if (color[u] != color[v])
+            add_c(color[u], color[v]);
+    }
 }
 int main()
 {
-    freopen("input", "r", stdin);
-    freopen("output2", "w", stdout);
-    int T;
-    scanf("%d", &T);
-    Init();
-    while (T--)
+    scanf("%d%d", &n, &m);
+    for (int i = 1; i <= n; i++)
+        scanf("%d", &w[i]);
+    int u, v;
+    for (int i = 1; i <= m; i++)
     {
-        while (q.size())
-            q.pop_front();
-        memset(ret, 0, sizeof(ret));
-        int n;
-        scanf("%d", &n);
-        ui t;
-        lastans = 0;
-        for (int i = 0; i < n; i++)
-        {
-            cin >> t >> seed;
-            if (t == 1)
-            {
-                Build();
-                node add;
-                if (!empty_flag)
-                    memcpy(ret, A, sizeof(ret));
-                else
-                {
-                    Mul(A, ret);
-                    memcpy(ret, R, sizeof(ret));
-                }
-                empty_flag++;
-                memcpy(add.matrix, A, sizeof(add.matrix));
-                q.push_back(add);
-            }
-            else
-            {
-                if (empty_flag)
-                {
-                    empty_flag--;
-                    q.pop_front();
-                    if (empty_flag)
-                    {
-                        qc = q;
-                        ui T[16][16];
-                        memcpy(T, qc.back().matrix, sizeof(T));
-                        qc.pop_back();
-                        while (qc.size())
-                        {
-                            Mul(T, qc.back().matrix);
-                            qc.pop_back();
-                            memcpy(T, R, sizeof(T));
-                        }
-                        memcpy(ret, T, sizeof(ret));
-                    }
-                }
-            }
-            ui ans = 0;
-            if (empty_flag)
-                ans = Ret();
-            lastans = ans;
-            cout << ans << endl;
-        }
+        scanf("%d%d", &u, &v);
+        add(u, v), add(v, u);
     }
-    system("pause");
+    int rt;
+    scanf("%d", &rt);
+    Tarjan(1, 0);
+    e_DCC();
+    //system("pause");
     return 0;
 }

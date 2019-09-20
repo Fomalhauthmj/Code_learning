@@ -1,46 +1,71 @@
-#include <cstring>
-#include <iostream>
-#include <stdio.h>
+#include<iostream>
+#include<stdio.h>
+#include<queue>
 using namespace std;
-const int MAXLEN = 5e5 + 50;
-char ori[MAXLEN], str[MAXLEN * 2], legal[MAXLEN * 2];
-int d1[MAXLEN * 2], n, m;
-long long ans = 0;
-void Manacher()
+const int N=3e5+50;
+#define ll long long
+#define pii pair<ll,int>
+ll a[N],b[N];
+int n;
+priority_queue<pii,vector<pii>,greater<pii>> pq;
+ll Solve()
 {
-    for (int i = 0, l = 0, r = -1; i < m; i+=2)
+    ll ans=0;
+    while(!pq.empty())
     {
-        int k = (i > r) ? 1 : min(d1[l + r - i], r - i);
-        while (i - k >= 0 && i + k < m && str[i - k] == legal[i + k])
-            k++;
-        d1[i] = k--;
-        if ((d1[i] - 1) % 2 == 0)
-            ans += (d1[i] - 1) / 2;
-        //cout << i << " " << (d1[i] - 1) / 2 << endl;
-        if (i + k > r)
-            l = i - k, r = i + k;
+        pii x=pq.top();
+        pq.pop();
+        //cout<<x.second<<" "<<x.first<<endl;
+        int cost=x.first,pos=x.second;
+        if(pos-1>=1)
+        {
+            if(a[pos-1]==a[pos])
+            {
+                ans+=cost;
+                a[pos]++;
+                if(pos+1<=n&&a[pos+1]==a[pos])
+                {
+                    pq.push({b[pos+1],pos+1});
+                    pq.push({b[pos],pos});
+                }
+            }
+        }
+        if(pos+1<=n)
+        {
+            if(a[pos+1]==a[pos])
+            {
+                ans+=cost;
+                a[pos]++;
+                if(pos-1>=1&&a[pos-1]==a[pos])
+                {
+                    pq.push({b[pos-1],pos-1});
+                    pq.push({b[pos],pos});
+                }
+            }
+        }
     }
+    return ans;
 }
 int main()
 {
-    scanf("%d", &n);
-    scanf("%s", ori);
-    str[0] = '#';
-    for (int i = 0; i < n; i++)
+    int Q;
+    scanf("%d",&Q);
+    while(Q--)
     {
-        str[(i + 1) * 2] = '#';
-        str[(i + 1) * 2 - 1] = ori[i];
+        while(!pq.empty()) pq.pop();
+        scanf("%d",&n);
+        for(int i=1;i<=n;i++)
+            scanf("%lld%lld",&a[i],&b[i]);
+        for(int i=1;i<n;i++)
+        {
+            if(a[i]==a[i+1])
+            {
+                pq.push({b[i+1],i+1});
+                pq.push({b[i],i});
+            }
+        }
+        printf("%lld\n",Solve());
     }
-    m = n * 2 + 1;
-    for (int i = 0; i < m; i++)
-        if (str[i] == '0')
-            legal[i] = '1';
-        else if (str[i] == '1')
-            legal[i] = '0';
-        else
-            legal[i] = '#';
-    Manacher();
-    printf("%lld\n", ans);
     //system("pause");
     return 0;
 }
