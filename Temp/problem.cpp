@@ -1,70 +1,34 @@
-#include<iostream>
-#include<stdio.h>
-#include<queue>
+#include <iostream>
+#include <stdio.h>
 using namespace std;
-const int N=3e5+50;
+const int N = 3e5 + 50;
 #define ll long long
-#define pii pair<ll,int>
-ll a[N],b[N];
+#define inf 0x3f3f3f3f
+ll a[N], b[N], dp[N][2];
 int n;
-priority_queue<pii,vector<pii>,greater<pii>> pq;
-ll Solve()
-{
-    ll ans=0;
-    while(!pq.empty())
-    {
-        pii x=pq.top();
-        pq.pop();
-        //cout<<x.second<<" "<<x.first<<endl;
-        int cost=x.first,pos=x.second;
-        if(pos-1>=1)
-        {
-            if(a[pos-1]==a[pos])
-            {
-                ans+=cost;
-                a[pos]++;
-                if(pos+1<=n&&a[pos+1]==a[pos])
-                {
-                    pq.push({b[pos+1],pos+1});
-                    pq.push({b[pos],pos});
-                }
-            }
-        }
-        if(pos+1<=n)
-        {
-            if(a[pos+1]==a[pos])
-            {
-                ans+=cost;
-                a[pos]++;
-                if(pos-1>=1&&a[pos-1]==a[pos])
-                {
-                    pq.push({b[pos-1],pos-1});
-                    pq.push({b[pos],pos});
-                }
-            }
-        }
-    }
-    return ans;
-}
 int main()
 {
     int Q;
-    scanf("%d",&Q);
-    while(Q--)
+    scanf("%d", &Q);
+    while (Q--)
     {
-        while(!pq.empty()) pq.pop();
-        scanf("%d",&n);
-        for(int i=1;i<=n;i++)
-            scanf("%lld%lld",&a[i],&b[i]);
-        for(int i=1;i<n;i++)
+        scanf("%d", &n);
+        for (int i = 1; i <= n; i++)
+            scanf("%lld%lld", &a[i], &b[i]);
+        dp[0] = 0, a[0] = 0, b[0] = inf;
+        for (int i = 1; i <= n; i++)
         {
-            if(a[i]==a[i+1])
+            if (a[i] == a[i - 1])
             {
-                pq.push({b[i+1],i+1});
-                pq.push({b[i],i});
+                if (b[i] > b[i - 1])
+                    dp[i] = dp[i - 1] + b[i - 1], a[i - 1]++;
+                else
+                    dp[i] = dp[i - 1] + b[i], a[i]++;
             }
+            else
+                dp[i] = dp[i - 1];
         }
-        printf("%lld\n",Solve());
+        printf("%lld\n", dp[n]);
     }
     //system("pause");
     return 0;
