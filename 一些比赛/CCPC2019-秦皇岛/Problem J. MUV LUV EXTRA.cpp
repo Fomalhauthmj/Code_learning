@@ -36,7 +36,7 @@ int main()
     {
         int l = p - nxt[p];
         //cout<<l<<" "<<p<<endl;
-        if(p/l>=1) ans=max(ans,a*p-b*l);
+        ans=max(ans,a*p-b*l);
     }
     printf("%lld\n",ans);
     //system("pause");

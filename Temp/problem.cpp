@@ -1,35 +1,43 @@
 #include <iostream>
+#include <map>
 #include <stdio.h>
 using namespace std;
-const int N = 3e5 + 50;
 #define ll long long
-#define inf 0x3f3f3f3f
-ll a[N], b[N], dp[N][2];
+const int N = 1e4 + 50;
+ll a[N], b[N];
+bool vis[N];
 int n;
+map<ll, int> M;
 int main()
 {
-    int Q;
-    scanf("%d", &Q);
-    while (Q--)
+    scanf("%d", &n);
+    for (int i = 1; i <= n; i++)
+        scanf("%lld", &a[i]), M[a[i]]++;
+    for (int i = 1; i <= n; i++)
+        scanf("%lld", &b[i]);
+    ll ans = 0;
+    for (int i = 1; i <= n; i++)
     {
-        scanf("%d", &n);
-        for (int i = 1; i <= n; i++)
-            scanf("%lld%lld", &a[i], &b[i]);
-        dp[0] = 0, a[0] = 0, b[0] = inf;
-        for (int i = 1; i <= n; i++)
-        {
-            if (a[i] == a[i - 1])
-            {
-                if (b[i] > b[i - 1])
-                    dp[i] = dp[i - 1] + b[i - 1], a[i - 1]++;
-                else
-                    dp[i] = dp[i - 1] + b[i], a[i]++;
-            }
-            else
-                dp[i] = dp[i - 1];
-        }
-        printf("%lld\n", dp[n]);
+        if (M[a[i]] > 1)
+            ans += b[i], vis[i] = true;
     }
+    //cout << "before" << ans << endl;
+    for (int i = 1; i <= n; i++)
+    {
+        if (!vis[i])
+        {
+            for (int j = 1; j <= n; j++)
+            {
+                if (vis[j] && (a[i] | a[j]) == a[j])
+                {
+                    ans += b[i];
+                    vis[i] = true;
+                    break;
+                }
+            }
+        }
+    }
+    printf("%lld\n", ans);
     //system("pause");
     return 0;
 }
