@@ -1,36 +1,46 @@
 #include <cstring>
 #include <iostream>
-#include <stdio.h>
+#include<stdio.h>
 using namespace std;
 const int N = 1e5 + 50;
 const int M = 2e5 + 50;
 #define ll long long
-#define inf 0x3f3f3f3f
+int mod;
 int temp[N], weight[N];
 int head[N], ver[M], nxt[M], tot;
 int fa[N], dep[N], sze[N], son[N], top[N], dfn[N], rnk[N], dfn_tot;
 struct SegmentTree
 {
     int l, r;
-    ll sum, max_val;
-#define ls(x) (x << 1)
-#define rs(x) (x << 1 | 1)
-#define l(x) tree[x].l
-#define r(x) tree[x].r
-#define sum(x) tree[x].sum
-#define max_val(x) tree[x].max_val
+    ll sum, add;
+    #define ls(x) (x << 1)
+    #define rs(x) (x << 1 | 1)
+    #define l(x) tree[x].l
+    #define r(x) tree[x].r
+    #define sum(x) tree[x].sum
+    #define add(x) tree[x].add
 } tree[N << 2];
 void PushUp(int rt)
 {
-    sum(rt) = sum(ls(rt)) + sum(rs(rt));
-    max_val(rt) = max(max_val(ls(rt)), max_val(rs(rt)));
+    sum(rt) = (sum(ls(rt)) + sum(rs(rt))) % mod;
+}
+void PushDown(int rt)
+{
+    if (add(rt))
+    {
+        sum(ls(rt)) = (sum(ls(rt)) + add(rt) * (r(ls(rt)) - l(ls(rt)) + 1)) % mod;
+        sum(rs(rt)) = (sum(rs(rt)) + add(rt) * (r(rs(rt)) - l(rs(rt)) + 1)) % mod;
+        add(ls(rt)) = (add(ls(rt)) + add(rt)) % mod;
+        add(rs(rt)) = (add(rs(rt)) + add(rt)) % mod;
+        add(rt) = 0;
+    }
 }
 void SegmentTree_Build(int rt, int l, int r)
 {
     l(rt) = l, r(rt) = r;
     if (l == r)
     {
-        max_val(rt) = sum(rt) = weight[l];
+        sum(rt) = weight[l];
         return;
     }
     int mid = (l + r) >> 1;
@@ -39,46 +49,35 @@ void SegmentTree_Build(int rt, int l, int r)
     PushUp(rt);
     //向上更新
 }
-void Update(int rt, int x, int d)
+void Update(int rt, int l, int r, int d)
 {
-    if (l(rt) == r(rt))
+    if (l <= l(rt) && r(rt) <= r)
     {
-        sum(rt) = max_val(rt) = d;
+        sum(rt) = (sum(rt) + (r(rt) - l(rt) + 1) * d) % mod;
+        add(rt) = (add(rt) + d) % mod;
         return;
     }
+    PushDown(rt);
     int mid = (l(rt) + r(rt)) >> 1;
-    if (x <= mid)
-        Update(ls(rt), x, d);
-    else
-        Update(rs(rt), x, d);
+    if (l <= mid)
+        Update(ls(rt), l, r, d);
+    if (r > mid)
+        Update(rs(rt), l, r, d);
     PushUp(rt);
 }
-ll Query_sum(int rt, int l, int r)
+ll Query(int rt, int l, int r)
 {
     if (l(rt) >= l && r(rt) <= r)
     {
-        return sum(rt);
+        return sum(rt) % mod;
     }
+    PushDown(rt);
     ll ret = 0;
     int mid = (l(rt) + r(rt)) >> 1;
     if (l <= mid)
-        ret += Query_sum(ls(rt), l, r);
+        ret = (ret + Query(ls(rt), l, r)) % mod;
     if (r > mid)
-        ret += Query_sum(rs(rt), l, r);
-    return ret;
-}
-ll Query_max(int rt, int l, int r)
-{
-    if (l(rt) >= l && r(rt) <= r)
-    {
-        return max_val(rt);
-    }
-    ll ret = -inf;
-    int mid = (l(rt) + r(rt)) >> 1;
-    if (l <= mid)
-        ret = max(ret, Query_max(ls(rt), l, r));
-    if (r > mid)
-        ret = max(ret, Query_max(rs(rt), l, r));
+        ret = (ret + Query(rs(rt), l, r)) % mod;
     return ret;
 }
 /*
@@ -122,71 +121,76 @@ void Decomposition(int x, int t)
             Decomposition(y, y);
     }
 }
-ll Path_Sum(int x, int y)
+ll Query_Path(int x, int y)
 {
     ll ret = 0;
     while (top[x] != top[y])
     {
         if (dep[top[x]] < dep[top[y]])
             swap(x, y);
-        ret += Query_sum(1, dfn[top[x]], dfn[x]);
+        ret = (ret + Query(1, dfn[top[x]], dfn[x])) % mod;
         x = fa[top[x]];
     }
     if (dep[x] > dep[y])
         swap(x, y);
-    ret += Query_sum(1, dfn[x], dfn[y]);
+    ret = (ret + Query(1, dfn[x], dfn[y])) % mod;
     return ret;
 }
-ll Path_Max(int x, int y)
+void Update_Path(int x, int y, int d)
 {
-    ll ret = -inf;
     while (top[x] != top[y])
     {
         if (dep[top[x]] < dep[top[y]])
             swap(x, y);
-        ret = max(ret, Query_max(1, dfn[top[x]], dfn[x]));
+        Update(1, dfn[top[x]], dfn[x], d);
         x = fa[top[x]];
     }
     if (dep[x] > dep[y])
         swap(x, y);
-    ret = max(ret, Query_max(1, dfn[x], dfn[y]));
-    return ret;
+    Update(1, dfn[x], dfn[y], d);
 }
 int main()
 {
-    int n;
-    scanf("%d", &n);
+    int n, m, r;
+    scanf("%d%d%d%d", &n, &m, &r, &mod);
+    for (int i = 1; i <= n; i++)
+        scanf("%d", &temp[i]);
     int x, y;
     for (int i = 1; i <= n - 1; i++)
         scanf("%d%d", &x, &y), Add(x, y), Add(y, x);
+    Build(r, 0, 1);
+    Decomposition(r, r);
     for (int i = 1; i <= n; i++)
-        scanf("%d", &temp[i]);
-    Build(1, 0, 1);
-    Decomposition(1, 1);
-    for (int i = 1; i <= n; i++)
-        weight[i] = temp[rnk[i]];
+        weight[i] = temp[rnk[i]] % mod;
     SegmentTree_Build(1, 1, dfn_tot);
-    int q;
-    scanf("%d",&q);
-    char op[10];
-    for (int i = 1; i <= q; i++)
+    for (int i = 1; i <= m; i++)
     {
-        scanf("%s", op);
+        int op;
+        scanf("%d", &op);
         int x, y, z;
-        if (op[1] == 'H')
+        if (op == 1)
         {
+            //路径修改
+            scanf("%d%d%d", &x, &y, &z);
+            Update_Path(x, y, z);
+        }
+        else if (op == 2)
+        {
+            //路径和
+            scanf("%d%d", &x, &y);
+            printf("%lld\n", Query_Path(x, y));
+        }
+        else if (op == 3)
+        {
+            //子树修改
             scanf("%d%d", &x, &z);
-            Update(1, dfn[x], z);
+            Update(1,dfn[x],dfn[x]+sze[x]-1,z);
         }
-        else if (op[1] == 'M')
+        else
         {
-            scanf("%d%d", &x, &y);
-            printf("%lld\n", Path_Max(x, y));
-        }
-        else if(op[1]=='S')
-        {
-            scanf("%d%d", &x, &y);
-            printf("%lld\n", Path_Sum(x, y));
+            //子树和
+            scanf("%d", &x);
+            printf("%lld\n", Query(1,dfn[x],dfn[x]+sze[x]-1));
         }
     }
     //system("pause");
