@@ -1,89 +1,185 @@
+#include <cstdio>
 #include <iostream>
-#include <queue>
 using namespace std;
-#define ll long long
-const int N = 3e4 + 50;
-const int M = 1e6 + 50;
-#define inf 0x3f3f3f3f
-int head[N], ver[M], nxt[M], edge[M], tot;
-int sze[N], dist[N], rt, max_part[N], sum;
-int new_dist[3];
-int n;
-ll ans = 0;
-bool vis[N];
-void add(int x, int y, int z)
+const int N = 100005;
+int rt, tot, fa[N], ch[N][2], val[N], cnt[N], sz[N];
+struct Splay
 {
-    ver[++tot] = y, nxt[tot] = head[x], head[x] = tot, edge[tot] = z;
-}
-void calc_sze(int x, int fa)
-{
-    max_part[x] = 0, sze[x] = 1;
-    for (int i = head[x]; i; i = nxt[i])
+    void maintain(int x) { sz[x] = sz[ch[x][0]] + sz[ch[x][1]] + cnt[x]; }
+    bool get(int x) { return x == ch[fa[x]][1]; }
+    void clear(int x)
     {
-        int y = ver[i];
-        if (vis[y] || y == fa)
-            continue;
-        calc_sze(y, x);
-        sze[x] += sze[y];
-        max_part[x] = max(max_part[x], sze[y]);
+        ch[x][0] = ch[x][1] = fa[x] = val[x] = sz[x] = cnt[x] = 0;
     }
-    max_part[x] = max(max_part[x], sum - sze[x]);
-    if (max_part[x] < max_part[rt])
+    void rotate(int x)
+    {
+        int y = fa[x], z = fa[y], chk = get(x);
+        ch[y][chk] = ch[x][chk ^ 1];
+        fa[ch[x][chk ^ 1]] = y;
+        ch[x][chk ^ 1] = y;
+        fa[y] = x;
+        fa[x] = z;
+        if (z)
+            ch[z][y == ch[z][1]] = x;
+        maintain(x);
+        maintain(y);
+    }
+    void splay(int x)
+    {
+        for (int f = fa[x]; f = fa[x], f; rotate(x))
+            if (fa[f])
+                rotate(get(x) == get(f) ? f : x);
         rt = x;
-}
-void calc_dist(int x, int fa)
-{
-    new_dist[dist[x]]++;
-    for (int i = head[x]; i; i = nxt[i])
-    {
-        int y = ver[i];
-        if (vis[y] || y == fa)
-            continue;
-        dist[y] = (dist[x] + edge[i]) % 3;
-        calc_dist(y, x);
     }
-}
-ll calc(int x, int z)
-{
-    //0+0 1+2 2+1
-    new_dist[0] = new_dist[1] = new_dist[2] = 0;
-    dist[x] = z, calc_dist(x, 0);
-    return new_dist[0] * new_dist[0] + (new_dist[1] * new_dist[2]) * 2;
-}
-void Solve(int x)
-{
-    vis[x] = true;
-    ans += calc(x, 0);
-    for (int i = head[x]; i; i = nxt[i])
+    void ins(int k)
     {
-        int y = ver[i];
-        if (vis[y])
-            continue;
-        ans -= calc(y, edge[i] % 3);
-        sum = max_part[rt = 0] = sze[y];
-        calc_sze(y, x), Solve(rt);
+        if (!rt)
+        {
+            val[++tot] = k;
+            cnt[tot]++;
+            rt = tot;
+            maintain(rt);
+            return;
+        }
+        int cnr = rt, f = 0;
+        while (1)
+        {
+            if (val[cnr] == k)
+            {
+                cnt[cnr]++;
+                maintain(cnr);
+                maintain(f);
+                splay(cnr);
+                break;
+            }
+            f = cnr;
+            cnr = ch[cnr][val[cnr] < k];
+            if (!cnr)
+            {
+                val[++tot] = k;
+                cnt[tot]++;
+                fa[tot] = f;
+                ch[f][val[f] < k] = tot;
+                maintain(tot);
+                maintain(f);
+                splay(tot);
+                break;
+            }
+        }
     }
-}
-ll GCD(ll a, ll b)
-{
-    if (b == 0)
-        return a;
-    else
-        return GCD(b, a % b);
-}
+    int rk(int k)
+    {
+        int res = 0, cnr = rt;
+        while (1)
+        {
+            if (k < val[cnr])
+            {
+                cnr = ch[cnr][0];
+            }
+            else
+            {
+                res += sz[ch[cnr][0]];
+                if (k == val[cnr])
+                {
+                    splay(cnr);
+                    return res + 1;
+                }
+                res += cnt[cnr];
+                cnr = ch[cnr][1];
+            }
+        }
+    }
+    int kth(int k)
+    {
+        int cnr = rt;
+        while (1)
+        {
+            if (ch[cnr][0] && k <= sz[ch[cnr][0]])
+            {
+                cnr = ch[cnr][0];
+            }
+            else
+            {
+                k -= cnt[cnr] + sz[ch[cnr][0]];
+                if (k <= 0)
+                    return val[cnr];
+                cnr = ch[cnr][1];
+            }
+        }
+    }
+    int pre()
+    {
+        int cnr = ch[rt][0];
+        while (ch[cnr][1])
+            cnr = ch[cnr][1];
+        return cnr;
+    }
+    int nxt()
+    {
+        int cnr = ch[rt][1];
+        while (ch[cnr][0])
+            cnr = ch[cnr][0];
+        return cnr;
+    }
+    void del(int k)
+    {
+        rk(k);
+        if (cnt[rt] > 1)
+        {
+            cnt[rt]--;
+            maintain(rt);
+            return;
+        }
+        if (!ch[rt][0] && !ch[rt][1])
+        {
+            clear(rt);
+            rt = 0;
+            return;
+        }
+        if (!ch[rt][0])
+        {
+            int cnr = rt;
+            rt = ch[rt][1];
+            fa[rt] = 0;
+            clear(cnr);
+            return;
+        }
+        if (!ch[rt][1])
+        {
+            int cnr = rt;
+            rt = ch[rt][0];
+            fa[rt] = 0;
+            clear(cnr);
+            return;
+        }
+        int x = pre(), cnr = rt;
+        splay(x);
+        fa[ch[cnr][1]] = x;
+        ch[x][1] = ch[cnr][1];
+        clear(cnr);
+        maintain(rt);
+    }
+} tree;
+
 int main()
 {
-    scanf("%d", &n);
-    int x, y, z;
-    for (int i = 0; i < n - 1; i++)
-        scanf("%d%d%d", &x, &y, &z), add(x, y, z), add(y, x, z);
-    sum = n;
-    max_part[rt = 0] = inf;
-    calc_sze(1, 0);
-    Solve(rt);
-    ll path = n * n;
-    ll t = GCD(ans, path);
-    printf("%lld/%lld\n", ans / t, path / t);
-    //system("pause");
+    int n, opt, x;
+    for (scanf("%d", &n); n; --n)
+    {
+        scanf("%d%d", &opt, &x);
+        if (opt == 1)
+            tree.ins(x);
+        else if (opt == 2)
+            tree.del(x);
+        else if (opt == 3)
+            printf("%d\n", tree.rk(x));
+        else if (opt == 4)
+            printf("%d\n", tree.kth(x));
+        else if (opt == 5)
+            tree.ins(x), printf("%d\n", val[tree.pre()]), tree.del(x);
+        else
+            tree.ins(x), printf("%d\n", val[tree.nxt()]), tree.del(x);
+    }
+    system("pause");
     return 0;
 }
