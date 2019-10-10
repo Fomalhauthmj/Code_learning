@@ -22,6 +22,7 @@ struct SAM
     {
         //重置
         sz = last = 0, rt = NewNode();
+        memset(sze,0,sizeof(sze));
     }
     void Extend(int c)
     {
