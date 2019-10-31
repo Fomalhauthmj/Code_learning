@@ -115,8 +115,6 @@ struct LCT
 } lct;
 int main()
 {
-    freopen("input", "r", stdin);
-    freopen("output", "w", stdout);
     int n, m;
     scanf("%d%d", &n, &m);
     for (int i = 1; i <= n; i++)
