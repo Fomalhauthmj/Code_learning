@@ -1,44 +1,55 @@
 #include <bits/stdc++.h>
 using namespace std;
 #define ll long long
+#define MAX 1010
 const int inf = 1e9;
+map<int,bool> used;
 int random(int n)
 {
     return (ll)rand() * rand() % n;
 }
+int R[MAX];
 int main()
 {
     freopen("data.in", "w", stdout);
     srand((unsigned)time(0));
-    int n = 100000;
-    int cases = 100000;
-    cout << n << " " << cases << endl;
-    for (int i = 1; i <= n; i++)
+    int N,M,Q;
+    N=1000;
+    M=1000;
+    Q=100;
+    cout<<N<<" "<<M<<" "<<Q<<endl;
+    for(int i=1;i<=N;i++)
     {
-        printf("%c", 'A' + random(2));
+        int val=random(inf);
+        while(used.find(val)!=used.end())
+            val=random(inf);
+        cout<<val<<" ";
+        used[val]=true;
     }
-    cout << endl;
-    for (int i = 1; i <= cases; i++)
+    cout<<endl;
+    for(int i=1;i<=M;i++)
     {
-        int casenum = random(2);
-        if (casenum)
+        R[i]=random(N-1)+1;
+        cout<<R[i]<<" ";
+        for(int j=1;j<=R[i];j++)
         {
-            int rdm1 = random(n) + 1;
-            int rdm2 = random(n) + 1;
-            if (rdm1 > rdm2)
-                swap(rdm1, rdm2);
-            cout << 1 << " " << rdm1 << " " << rdm2 << endl;
+            int val=random(inf);
+            while(used.find(val)!=used.end())
+                val=random(inf);
+            cout<<val<<" ";
+            used[val]=true;
         }
-        else
-        {
-            int rdm1 = random(n) + 1;
-            int rdm2 = random(n) + 1;
-            if (rdm1 > rdm2)
-                swap(rdm1, rdm2);
-            int A = random(inf);
-            int B = random(inf);
-            cout << 2 << " " << rdm1 << " " << rdm2 << " " << A << " " << B << endl;
-        }
+        cout<<endl;
+    }
+    for(int i=1;i<=Q;i++)
+    {
+        int x=random(M)+1;
+        int y=random(R[x])+1;
+        int val=random(inf);
+        while(used.find(val)!=used.end())
+            val=random(inf);
+        cout<<x<<" "<<y<<" "<<val<<endl;
+        used[val]=true;
     }
     //system("pause");
     return 0;
