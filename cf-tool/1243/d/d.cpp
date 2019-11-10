@@ -1,28 +1,3 @@
-//找环
-void DFS(int x, int fa)
-{
-    vis[x] = 1, pre[x] = fa;
-    for (int y : E[x])
-    {
-        if (y == fa)
-            continue;
-        if (!vis[y])
-            DFS(y, x);
-        else if (vis[y] == 1)
-        {
-            A.push_back(road_map[{x, y}]);
-            int t1 = x, t2 = pre[t1];
-            do
-            {
-                //cout << "cur edge" << t1 << " " << t2 << endl;
-                A.push_back(road_map[{t1, t2}]);
-                t1 = t2, t2 = pre[t1];
-            } while (t1 != y);
-        }
-    }
-    vis[x] = 2;
-}
-//补图连通块大小
 #include <bits/stdc++.h>
 using namespace std;
 const int N = 2e5 + 50;
@@ -70,11 +45,11 @@ int main()
         nxt[pre[i]] = nxt[i], pre[nxt[i]] = pre[i];
         i = nxt_p;
     }
-    sort(ans.begin(), ans.end());
-    cout << ans.size() << endl;
-    for (auto it : ans)
-        cout << it << " ";
-    cout << endl;
+    //sort(ans.begin(), ans.end());
+    cout << ans.size()-1 << endl;
+    //for (auto it : ans)
+        //cout << it << " ";
+    //cout << endl;
     //system("pause");
     return 0;
 }
