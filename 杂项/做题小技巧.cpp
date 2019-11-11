@@ -1,4 +1,4 @@
-//找环
+//无向图找环
 void DFS(int x, int fa)
 {
     vis[x] = 1, pre[x] = fa;
@@ -77,4 +77,10 @@ int main()
     cout << endl;
     //system("pause");
     return 0;
+}
+//枚举一个集合的所有子集
+int S=5;//101:101,100,001
+for(int i=S;i;i=(i-1)&S)
+{
+    cout<<S<<" "<<i<<endl;
 }
