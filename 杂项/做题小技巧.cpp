@@ -1,7 +1,8 @@
 //无向图找环
+//https://www.cnblogs.com/akura/p/10838613.html
 void DFS(int x, int fa)
 {
-    vis[x] = 1, pre[x] = fa;
+    vis[x] = 1, pre[x] = fa;//注意vis为int
     for (int y : E[x])
     {
         if (y == fa)

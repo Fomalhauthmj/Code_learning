@@ -1,91 +1,43 @@
 #include<bits/stdc++.h>
 using namespace std;
-const int maxn = 16;
-vector<pair<pair<int,long long>, int>> ans[1<<maxn];
-map<long long,int> color;
-vector<int>a[maxn];
-long long sum[maxn];
-int k;
-int dp[1<<maxn];
-int main(){
-    scanf("%d",&k);
-    long long all_sum = 0;
-    for(int i=0;i<k;i++){
-        int n;scanf("%d",&n);
-        for(int j=0;j<n;j++){
-            long long x;scanf("%lld",&x);
-            a[i].push_back(x);
-            all_sum+=x;
-            sum[i]+=x;
-            color[a[i][j]]=i;
+int vis[100];
+int pre[100];
+vector<int> E[10];
+void DFS(int x, int fa)
+{
+    vis[x] = 1, pre[x] = fa;
+    //cout<<"cur"<<x<<" "<<fa<<endl;
+    for (int y : E[x])
+    {
+        //cout<<"nxt"<<x<<" "<<y<<endl;
+        if (y == fa)
+            continue;
+        if (!vis[y])
+            DFS(y, x);
+        else if (vis[y] == 1)
+        {
+            int t=x;
+            do
+            {
+                cout<<t<<" ";
+                t=pre[t];
+            } while (t!=y);
+            cout<<y<<endl;
         }
     }
-    if(all_sum%k!=0){
-        puts("NO");
-        return 0;
-    }
-    all_sum/=k;
-    for(int i=0;i<k;i++){
-        for(int j=0;j<a[i].size();j++){
-            long long cur = a[i][j];
-            int used = 0;
-            bool isOk = true;
-            vector<pair<pair<int,long long>, int>> an;
-            do{
-                int cl = 0;
-                auto it = color.find(cur);
-                if(it!=color.end()){
-                    cl = it->second;
-                }else{
-                    isOk = false;
-                    break;
-                }
-                if(used&(1<<cl)){
-                    isOk = false;
-                    break;
-                }
-                used|=(1<<cl);
-                cur = cur + (all_sum - sum[cl]);
-                auto cl2 = color.find(cur);
-                if(cl2!=color.end()){
-                    an.push_back({{cl2->second,cur},cl});
-                }
-                // cout<<cur<<endl;
-                // cout<<cur<<" "<<cl<<" "<<cl2<<endl;
-            }while(cur!=a[i][j]);
-            if(isOk){
-                // cout<<"made! " << used << endl;
-                dp[used]=1;
-                ans[used] = std::move(an);
-            }
-            // cout<<"------"<<endl;
-        }
-    }
-
-    for(int i=0;i<(1<<k);i++){
-        if(dp[i])continue;
-        for(int j=i;j>0;j=(j-1)&i){
-            if(dp[j]&&dp[i&(~j)]){
-                dp[i]=1;
-                ans[i]=ans[j];
-                for(auto&x : ans[i&(~j)]){
-                    ans[i].push_back(x);
-                }
-                break;
-            }
-        }
-    }
-    // for(int i=0;i<(1<<k);i++){
-    //     cout<<dp[i]<<endl;
-    // }
-    int x = (1<<k) - 1;
-    if (dp[x]) {
-        cout<<"Yes"<<endl;
-        sort(ans[x].begin(),ans[x].end());
-        for(auto a:ans[x]){
-            cout<<a.first.second<<" "<<a.second+1<<endl;;
-        }
-    } else {
-        cout<<"No"<<endl;
-    }
+    //cout<<"end"<<x<<endl;
+    vis[x] = 2;
+}
+int main()
+{
+    E[1].push_back(2);
+    E[2].push_back(1);
+    E[2].push_back(3);
+    E[3].push_back(2);
+    E[1].push_back(3);
+    E[3].push_back(1);
+    for(int i=1;i<=4;i++)
+        if(!vis[i]) DFS(i,0);
+    system("pause");
+    return 0;
 }
