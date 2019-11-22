@@ -2,7 +2,7 @@ main()
 {
     int a, b, c, d;
     a = a * b / c + b - c;
-    a = 1 * (9 + 3) / 4 + 5 - 99;
+    a = d * (a + 3) / b + 5 - 99;
     if ((a * b / c + b - c) ==3)
     {
         a = a * b / c + b - c;

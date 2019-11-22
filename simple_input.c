@@ -1,5 +1,8 @@
 main()
 {
     int a, b, c, d;
-    a = a * b / c + b - c
+    if ((a * b / c + b - c) == 3)
+    {
+        a = a * b / c + b - c
+    }
 }
