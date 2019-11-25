@@ -1,18 +1,20 @@
 main()
 {
     int a, b, c, d;
-    a = a * b / c + b - c;
-    a = d * (a + 3) / b + 5 - 99;
-    if ((a * b / c + b - c) ==3)
+    a = a + b * (a + c) - b / d;
+    if (a + b * 5 > c)
     {
-        a = a * b / c + b - c;
-        a = 1 * (2 + 3) / 4 + 5 - 6
+        a = 1;
+        b = 2
     }
     else
     {
-        a = a * b / c + b - c
+        c = 2
     };
-    while ((a * b / c + b - c) == (1 * (2 + 3) / 4 + 5 - 6))
-    do
-        a = a * b / c + b - c
+    while (c < a * (b - c))
+        do
+        {
+            a = 1;
+            b = a
+        }
 }
