@@ -32,6 +32,6 @@ int main()
     n = n * 2 + 1;
     Manacher();
     printf("%d\n", ans);
-    //system("pause");
+    system("pause");
     return 0;
 }
